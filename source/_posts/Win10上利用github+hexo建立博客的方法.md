@@ -618,6 +618,11 @@ git clone -b hexo https://github.com/xxx/xxx.github.io.git
 1. 依次执行git add .、git commit -m "..."、git push origin hexo指令将改动推送到GitHub（此时当前分支应为hexo）；
 2. 然后才执行hexo g -d发布网站到master分支上。
 
+**注意：** 如果生成的页面为空可能需要看下theme文件夹里面的主题文件在不在
+我用了如下指令重新clone了next主题
+```
+git clone https://github.com/iissnan/hexo-theme-next themes/next
+```
 
 [^lixian]: http://www.yaozeyuan.online/?p=104
 

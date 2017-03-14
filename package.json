@@ -20,7 +20,6 @@
     "hexo-inject": "^1.0.0",
     "hexo-renderer-ejs": "^0.2.0",
     "hexo-renderer-markdown-it": "^3.4.1",
-    "hexo-renderer-marked": "^0.2.11",
     "hexo-renderer-stylus": "^0.2.3",
     "hexo-server": "^0.2.0"
   }
