@@ -79,19 +79,19 @@ cnpm install
 安装相关插件（复制以下命令，在Shell窗口里右键粘贴即可）
 
 ```
-npm install hexo-generator-index --save
-npm install hexo-generator-archive --save
-npm install hexo-generator-category --save
-npm install hexo-generator-tag --save
-npm install hexo-server --save
-npm install hexo-deployer-git --save
-npm install hexo-deployer-heroku --save
-npm install hexo-deployer-rsync --save
-npm install hexo-deployer-openshift --save
-npm install hexo-renderer-marked@0.2 --save
-npm install hexo-renderer-stylus@0.2 --save
-npm install hexo-generator-feed@1 --save
-npm install hexo-generator-sitemap@1 --save
+cnpm install hexo-generator-index --save
+cnpm install hexo-generator-archive --save
+cnpm install hexo-generator-category --save
+cnpm install hexo-generator-tag --save
+cnpm install hexo-server --save
+cnpm install hexo-deployer-git --save
+cnpm install hexo-deployer-heroku --save
+cnpm install hexo-deployer-rsync --save
+cnpm install hexo-deployer-openshift --save
+cnpm install hexo-renderer-marked@0.2 --save
+cnpm install hexo-renderer-stylus@0.2 --save
+cnpm install hexo-generator-feed@1 --save
+cnpm install hexo-generator-sitemap@1 --save
 ```
 
 安装完成后，输入以下命令后，在浏览器中打开`localhost:4000`即可看到博客在本地的效果。在测试主题的一些效果的时候可以用这个命令在本地查看，等效果满意了再deploy到GitHub。
@@ -602,6 +602,22 @@ mathjax:
 
 测试一下，应该可以啦~
 $$\sum_{i=1}^n a_i=0$$
+
+
+### 10. 迁移博客
+
+最近换了电脑，需要迁移博客，把流程记录一下
+我把源文件存在了github.xxx.io.git的hexo分支上，所以要先从这里clone 源文件
+```
+git clone -b hexo https://github.com/xxx/xxx.github.io.git
+```
+
+在本地新拷贝xxx.github.io文件夹下通过Git bash依次执行下列指令：npm install hexo、npm install、npm install hexo-deployer-git
+
+在本地对博客进行修改（添加新博文、修改样式等等）后，通过下面的流程进行管理。
+1. 依次执行git add .、git commit -m "..."、git push origin hexo指令将改动推送到GitHub（此时当前分支应为hexo）；
+2. 然后才执行hexo g -d发布网站到master分支上。
+
 
 [^lixian]: http://www.yaozeyuan.online/?p=104
 
