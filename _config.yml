@@ -12,7 +12,7 @@ language: zh-Hans
 timezone:
 
 #博客地址,与申请的GitHub一致
-url: http://hujichn.github.io
+url: https://hujichn.github.io
 root: /
 #博客链接格式
 permalink: :year/:month/:day/:title/
