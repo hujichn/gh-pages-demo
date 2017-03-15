@@ -1,0 +1,1095 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Blog," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Ji Hu's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="这几天心血来潮在Github上建了个博客，纠结了半天才倒腾好，希望以后自己能多总结下学的知识，先从建立博客开始咯~">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Win10上利用github+hexo建立博客的方法">
+<meta property="og:url" content="http://hujichn.github.io/2016/04/06/Win10上利用github+hexo建立博客的方法/index.html">
+<meta property="og:site_name" content="Ji Hu's Blog">
+<meta property="og:description" content="这几天心血来潮在Github上建了个博客，纠结了半天才倒腾好，希望以后自己能多总结下学的知识，先从建立博客开始咯~">
+<meta property="og:image" content="http://static.zybuluo.com/huji/k9w3r3pthtflj27qc8293ty1/User%20or%20organization%20site.png">
+<meta property="og:image" content="http://static.zybuluo.com/huji/4v6i1chihhfmsg3kfzwqd3uy/githubwindows.png">
+<meta property="og:image" content="http://static.zybuluo.com/huji/qy08e7rtzpt9hd4ym5rii0zh/changeSourse.png">
+<meta property="og:image" content="http://static.zybuluo.com/huji/m66fsq13ywwzj3xdrzzvwrg1/QQ%E6%88%AA%E5%9B%BE20160406160448.png">
+<meta property="og:image" content="http://static.zybuluo.com/huji/91xx7uzlhaptef9tv1x66x65/UA.png">
+<meta property="og:image" content="http://static.zybuluo.com/huji/dgjg98df8rcrj3vo58f7dr9x/comment.png">
+<meta property="og:image" content="http://7xsoqo.com1.z0.glb.clouddn.com/hexo%2Finsert_vedio.png">
+<meta property="og:updated_time" content="2017-03-14T08:06:11.348Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Win10上利用github+hexo建立博客的方法">
+<meta name="twitter:description" content="这几天心血来潮在Github上建了个博客，纠结了半天才倒腾好，希望以后自己能多总结下学的知识，先从建立博客开始咯~">
+<meta name="twitter:image" content="http://static.zybuluo.com/huji/k9w3r3pthtflj27qc8293ty1/User%20or%20organization%20site.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '6270299573625816000',
+      author: 'Root'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hujichn.github.io/2016/04/06/Win10上利用github+hexo建立博客的方法/"/>
+
+
+
+
+
+  <title> Win10上利用github+hexo建立博客的方法 | Ji Hu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?468728c0165ededf9f1a17571c8ac0e4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ji Hu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写点东西~</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://hujichn.github.io/2016/04/06/Win10上利用github+hexo建立博客的方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ji Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/cat.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ji Hu's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Win10上利用github+hexo建立博客的方法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-06T16:55:47+08:00">
+                2016-04-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/other/" itemprop="url" rel="index">
+                    <span itemprop="name">other</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/04/06/Win10上利用github+hexo建立博客的方法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/06/Win10上利用github+hexo建立博客的方法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2016/04/06/Win10上利用github+hexo建立博客的方法/" class="leancloud_visitors" data-flag-title="Win10上利用github+hexo建立博客的方法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这几天心血来潮在Github上建了个博客，纠结了半天才倒腾好，希望以后自己能多总结下学的知识，先从建立博客开始咯~</p>
+<a id="more"></a>
+<p>author: <a href="https://hujichn.github.io/">@Huji</a></p>
+<h2 id="1-安装环境"><a class="header-anchor" href="#1-安装环境">¶</a>1. 安装环境</h2>
+<p>Windows 10 64位系统</p>
+<hr>
+<h2 id="2-创建自己的github-pages"><a class="header-anchor" href="#2-创建自己的github-pages">¶</a>2. 创建自己的GitHub Pages</h2>
+<ul>
+<li>
+<p>首先注册<a href="https://github.com/" target="_blank" rel="external">GitHub</a>账号，用户名如hujichn</p>
+</li>
+<li>
+<p>参考<a href="https://pages.github.com/" target="_blank" rel="external">教程</a>创建<code>GitHub Pages</code>。</p>
+</li>
+<li>
+<p>访问上述教程时，注意选择左边创建<code>User or organization site</code>。</p>
+</li>
+</ul>
+<p><img src="http://static.zybuluo.com/huji/k9w3r3pthtflj27qc8293ty1/User%20or%20organization%20site.png" alt="User or organization site.png-9.8kB"></p>
+<ul>
+<li>
+<p>第一步：Create a repository，<a href="http://xn--namehujichn-om8qi34d1sbm01bytxf6eo6fuv5dcr8ayf8c2t2f.github.io" target="_blank" rel="external">注意name必须和用户名一致如hujichn.github.io</a></p>
+</li>
+<li>
+<p>在What git client are you using？这一步，如果没有下载过<code>Github for Windows</code>，可以选择<code>I don't know</code>，后面会出现下载链接，点击下载即可。这个下载的是在线安装包，可能会慢的感人，我后来找了一个<a href="http://pan.baidu.com/s/1Hkewm" target="_blank" rel="external">离线安装包</a> <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>，双击运行GitHub.application即可安装。</p>
+</li>
+</ul>
+<p><img src="http://static.zybuluo.com/huji/4v6i1chihhfmsg3kfzwqd3uy/githubwindows.png" alt="githubwindows.png-31.7kB"></p>
+<hr>
+<h2 id="3-安装hexo"><a class="header-anchor" href="#3-安装hexo">¶</a>3. 安装Hexo</h2>
+<ul>
+<li>第一步是安装<a href="https://nodejs.org/en/" target="_blank" rel="external">Node.js</a>，根据自己的电脑选择合适的版本下载即可安装。 安装完成后添加Path环境变量，使npm命令生效。</li>
+</ul>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:<span class="symbol">\P</span>rogram Files<span class="symbol">\n</span>odejs<span class="symbol">\n</span>ode_modules<span class="symbol">\n</span>pm</div></pre></td></tr></table></figure>
+<p>安装完后在cmd中分别输入</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">node</span> <span class="title">-v</span></div><div class="line">npm -v</div></pre></td></tr></table></figure>
+<p>如果都显示了版本号，那么就安装成功了。</p>
+<ul>
+<li>GitHub Windows安装好之后，桌面上应该有一个Git Shell，双击打开，输入以下命令换源，否则安装hexo速度感人。</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">npm</span> install -g cnpm --registry=https:<span class="regexp">//</span>registry.<span class="built_in">npm</span>.taobao.org</div></pre></td></tr></table></figure>
+<p><img src="http://static.zybuluo.com/huji/qy08e7rtzpt9hd4ym5rii0zh/changeSourse.png" alt="changeSourse.png-3.2kB"></p>
+<p>然后再输入以下两行命令：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cnpm <span class="keyword">install</span> hexo-cli -g</div><div class="line">cnpm <span class="keyword">install</span> hexo <span class="comment">--save</span></div></pre></td></tr></table></figure>
+<p>安装完成后，在GitHub默认路径下建立一个hexo的文件夹，如
+<code>C:\Users\Huji\Documents\GitHub\hexo</code>。</p>
+<p>在Git Shell中输入命令<code>cd hexo</code>切换到该文件夹下。再分别输入以下命令：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo init</div><div class="line">cnpm <span class="keyword">install</span></div></pre></td></tr></table></figure>
+<p>安装相关插件（复制以下命令，在Shell窗口里右键粘贴即可）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">cnpm <span class="keyword">install</span> hexo-generator-<span class="keyword">index</span> <span class="comment">--save</span></div><div class="line">cnpm <span class="keyword">install</span> hexo-generator-<span class="keyword">archive</span> <span class="comment">--save</span></div><div class="line">cnpm <span class="keyword">install</span> hexo-generator-<span class="keyword">category</span> <span class="comment">--save</span></div><div class="line">cnpm <span class="keyword">install</span> hexo-generator-tag <span class="comment">--save</span></div><div class="line">cnpm <span class="keyword">install</span> hexo-<span class="keyword">server</span> <span class="comment">--save</span></div><div class="line">cnpm <span class="keyword">install</span> hexo-deployer-git <span class="comment">--save</span></div><div class="line">cnpm <span class="keyword">install</span> hexo-deployer-heroku <span class="comment">--save</span></div><div class="line">cnpm <span class="keyword">install</span> hexo-deployer-rsync <span class="comment">--save</span></div><div class="line">cnpm <span class="keyword">install</span> hexo-deployer-openshift <span class="comment">--save</span></div><div class="line">cnpm <span class="keyword">install</span> hexo-renderer-marked@<span class="number">0.2</span> <span class="comment">--save</span></div><div class="line">cnpm <span class="keyword">install</span> hexo-renderer-stylus@<span class="number">0.2</span> <span class="comment">--save</span></div><div class="line">cnpm <span class="keyword">install</span> hexo-generator-feed@<span class="number">1</span> <span class="comment">--save</span></div><div class="line">cnpm <span class="keyword">install</span> hexo-generator-sitemap@<span class="number">1</span> <span class="comment">--save</span></div></pre></td></tr></table></figure>
+<p>安装完成后，输入以下命令后，在浏览器中打开<code>localhost:4000</code>即可看到博客在本地的效果。在测试主题的一些效果的时候可以用这个命令在本地查看，等效果满意了再deploy到GitHub。</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">hexo s -g</span></div></pre></td></tr></table></figure>
+<hr>
+<h2 id="4-利用hexo写博客并将hexo产生的静态网页部署到github"><a class="header-anchor" href="#4-利用hexo写博客并将hexo产生的静态网页部署到github">¶</a>4. 利用Hexo写博客并将Hexo产生的静态网页部署到GitHub</h2>
+<ul>
+<li>更改博客的设置信息，在hexo文件夹下，打开<code>_config.yml</code>文件，输入以下代码 <sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>，并进行相应修改。</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#博客名称</span></div><div class="line"><span class="attr">title:</span> <span class="string">我的博客</span></div><div class="line"><span class="comment">#副标题</span></div><div class="line"><span class="attr">subtitle:</span> <span class="string">一天进步一点</span></div><div class="line"><span class="comment">#简介</span></div><div class="line"><span class="attr">description:</span> <span class="string">记录生活点滴</span></div><div class="line"><span class="comment">#博客作者（请修改）</span></div><div class="line"><span class="attr">author:</span> <span class="string">John</span> <span class="string">Doe</span></div><div class="line"><span class="comment">#博客语言</span></div><div class="line"><span class="attr">language:</span> <span class="string">zh-Fans</span></div><div class="line"><span class="comment">#时区</span></div><div class="line"><span class="attr">timezone:</span></div><div class="line"></div><div class="line"><span class="comment">#博客地址,与申请的GitHub一致（请修改）</span></div><div class="line"><span class="attr">url:</span> <span class="attr">http://elfwalk.github.io</span></div><div class="line"><span class="attr">root:</span> <span class="string">/</span></div><div class="line"><span class="comment">#博客链接格式</span></div><div class="line"><span class="attr">permalink:</span> <span class="string">:year/:month/:day/:title/</span></div><div class="line"><span class="attr">permalink_defaults:</span></div><div class="line"></div><div class="line"><span class="attr">source_dir:</span> <span class="string">source</span></div><div class="line"><span class="attr">public_dir:</span> <span class="string">public</span></div><div class="line"><span class="attr">tag_dir:</span> <span class="string">tags</span></div><div class="line"><span class="attr">archive_dir:</span> <span class="string">archives</span></div><div class="line"><span class="attr">category_dir:</span> <span class="string">categories</span></div><div class="line"><span class="attr">code_dir:</span> <span class="string">downloads/code</span></div><div class="line"><span class="attr">i18n_dir:</span> <span class="string">:lang</span></div><div class="line"><span class="attr">skip_render:</span></div><div class="line"></div><div class="line"><span class="attr">new_post_name:</span> <span class="string">:title.md</span> <span class="comment"># File name of new posts</span></div><div class="line"><span class="attr">default_layout:</span> <span class="string">post</span></div><div class="line"><span class="attr">titlecase:</span> <span class="literal">false</span> <span class="comment"># Transform title into titlecase</span></div><div class="line"><span class="attr">external_link:</span> <span class="literal">true</span> <span class="comment"># Open external links in new tab</span></div><div class="line"><span class="attr">filename_case:</span> <span class="number">0</span></div><div class="line"><span class="attr">render_drafts:</span> <span class="literal">false</span></div><div class="line"><span class="attr">post_asset_folder:</span> <span class="literal">false</span></div><div class="line"><span class="attr">relative_link:</span> <span class="literal">false</span></div><div class="line"><span class="attr">future:</span> <span class="literal">true</span></div><div class="line"><span class="attr">highlight:</span></div><div class="line"><span class="attr">  enable:</span> <span class="literal">true</span></div><div class="line"><span class="attr">  line_number:</span> <span class="literal">true</span></div><div class="line"><span class="attr">  auto_detect:</span> <span class="literal">true</span></div><div class="line"><span class="attr">  tab_replace:</span></div><div class="line"></div><div class="line"><span class="attr">default_category:</span> <span class="string">uncategorized</span></div><div class="line"><span class="attr">category_map:</span></div><div class="line"><span class="attr">tag_map:</span></div><div class="line"></div><div class="line"><span class="comment">#日期格式</span></div><div class="line"><span class="attr">date_format:</span> <span class="string">YYYY-MM-DD</span></div><div class="line"><span class="attr">time_format:</span> <span class="attr">HH:mm:ss</span></div><div class="line"></div><div class="line"><span class="comment">#分页，每页文章数量</span></div><div class="line"><span class="attr">per_page:</span> <span class="number">5</span></div><div class="line"><span class="attr">pagination_dir:</span> <span class="string">page</span></div><div class="line"></div><div class="line"><span class="comment">#博客主题</span></div><div class="line"><span class="attr">theme:</span> <span class="string">landscape</span></div><div class="line"></div><div class="line"><span class="comment">#发布设置</span></div><div class="line"><span class="attr">deploy:</span> </div><div class="line"><span class="attr">  type:</span> <span class="string">git</span></div><div class="line">  <span class="comment">#elfwalk改为你的github用户名（请修改）</span></div><div class="line"><span class="attr">  repository:</span> <span class="attr">https://github.com/elfwalk/elfwalk.github.io.git</span></div><div class="line"><span class="attr">  branch:</span> <span class="string">master</span></div></pre></td></tr></table></figure>
+<ul>
+<li>在Git Shell中切换到hexo目录，输入以下命令即可创建一篇名为test的新文章，会有一个test.md出现在<code>hexo\source\_posts</code>这个目录中。</li>
+</ul>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo <span class="keyword">new</span> <span class="type"></span>“test”</div></pre></td></tr></table></figure>
+<p>打开后看到默认会有title，date，tags等等信息，要写的文章内容可以在这个md中进行修改，可以先在后面随便打几个字作为正文。</p>
+<p><img src="http://static.zybuluo.com/huji/m66fsq13ywwzj3xdrzzvwrg1/QQ%E6%88%AA%E5%9B%BE20160406160448.png" alt="test.md"></p>
+<ul>
+<li>接下来在Git Shell中输入以下命令，即可设置好身份信息</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git config --global user<span class="selector-class">.name</span> <span class="string">"你的用户名"</span></div><div class="line">git config --global user<span class="selector-class">.email</span> <span class="string">"你的邮箱"</span></div></pre></td></tr></table></figure>
+<ul>
+<li>最终，使用以下命令即可将生成的网页部署到Github上。</li>
+</ul>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">hexo deploy -g</span></div></pre></td></tr></table></figure>
+<p>访问<code>http://userName.github.io</code>就可以看到博客啦。</p>
+<p>也可以使用下面的命令先在本地生成预览</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">hexo g</span></div><div class="line">hexo s</div></pre></td></tr></table></figure>
+<p>在浏览器输入localhost:4000就可以看到本地生成的网页了，这样万一有问题可以改好了再提交到github上。</p>
+<hr>
+<h2 id="5-更换主题-使用第三方插件增加评论-阅读次数统计等功能"><a class="header-anchor" href="#5-更换主题-使用第三方插件增加评论-阅读次数统计等功能">¶</a>5. 更换主题，使用第三方插件增加评论，阅读次数统计等功能。</h2>
+<p>主题有很多好看的，这里选择了一个比较简单大方的Next主题。参考<a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="external">教程</a>即可完成配置。</p>
+<p><strong>注意的地方</strong>：</p>
+<ul>
+<li>
+<p>教程中的<code>站点配置文件</code>是指<code>hexo</code>目录下的<code>_config.yml</code>，<code>主题配置文件</code>是指<code>hexo\themes\next</code>目录下的<code>_config.yml</code>。</p>
+</li>
+<li>
+<p>教程中设置头像时修改的应该是<code>主题配置文件</code>，设置本地头像图片可以放在<code>hexo\source\images\</code>目录下，也可以放在<code>\hexo\themes\next\source\uploads</code>，要注意放置的位置要和配置相对应。</p>
+</li>
+<li>
+<p>教程中设置第三方服务的全都应该填在<code>主题配置文件</code>，这里面作者已经给写好了，只是都注释掉了，只要去掉注释，填写相应的内容即可。</p>
+</li>
+<li>
+<p>阅读统计量功能里面，Next主题文件已经不需要修改，从<code>配置LeanCloud</code>开始看即可。</p>
+</li>
+<li>
+<p>duoshuo评论功能打开之后，可以在<code>主题配置文件</code>中打开UA开关，这样会评论旁边会显示User使用的电脑环境等信息。usr_id可以在多说的网站，通过点击自己的用户名得到。</p>
+</li>
+</ul>
+<p><img src="http://static.zybuluo.com/huji/91xx7uzlhaptef9tv1x66x65/UA.png" alt="UA.png-10.4kB"></p>
+<ul>
+<li>设置头像翻转啊等一些动态效果：登录多说后台-&gt;设置，可以在自定义文本里面修改一些词语，在基本设置-&gt;自定义CSS中可以添加如下CSS代码 <sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>，实现后效果如图。</li>
+</ul>
+<p><img src="http://static.zybuluo.com/huji/dgjg98df8rcrj3vo58f7dr9x/comment.png" alt="comment.png-17.9kB"></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*UA Start*/</span></div><div class="line"><span class="selector-tag">span</span><span class="selector-class">.this_ua</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#ccc</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">4px</span>;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">5px</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">margin</span>: <span class="number">0</span> <span class="number">1px</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#BBB</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#fff</span>;</div><div class="line"></div><div class="line">    <span class="comment">/*text-transform: Capitalize!important;</span></div><div class="line">    float: right!important;</div><div class="line">    line-height: 18px!important;*/</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.platform</span><span class="selector-class">.Windows</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#39b3d7</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#46b8da</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.platform</span><span class="selector-class">.Linux</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#3A3A3A</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#1F1F1F</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.platform</span><span class="selector-class">.Ubuntu</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#DD4814</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#DD4814</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.platform</span><span class="selector-class">.Mac</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#666666</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#666666</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.platform</span><span class="selector-class">.Android</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#98C13D</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#98C13D</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.platform</span><span class="selector-class">.iOS</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#666666</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#666666</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Chrome</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#EE6252</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#EE6252</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Chromium</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#EE6252</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#EE6252</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Firefox</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#f0ad4e</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#eea236</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.IE</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#428bca</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#357ebd</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Edge</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#428bca</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#357ebd</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Opera</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#d9534f</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#d43f3a</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Maxthon</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#7373B9</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#7373B9</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Safari</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#666666</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#666666</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.sskadmin</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#00a67c</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#00a67c</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">/*UA End*/</span></div><div class="line"><span class="comment">/*Head Start*/</span></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">ul</span><span class="selector-class">.ds-comments-tabs</span> <span class="selector-tag">li</span><span class="selector-class">.ds-tab</span> <span class="selector-tag">a</span><span class="selector-class">.ds-current</span> &#123;</div><div class="line">    <span class="attribute">border</span>: <span class="number">0px</span>;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#6D6D6B</span>;</div><div class="line">    <span class="attribute">text-shadow</span>: none;</div><div class="line">    <span class="attribute">background</span>: <span class="number">#F3F3F3</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-highlight</span> &#123;</div><div class="line">    <span class="attribute">font-family</span>: Microsoft YaHei, <span class="string">"Helvetica Neue"</span>, Helvetica, Arial, Sans-serif;</div><div class="line">    ;<span class="attribute">font-size</span>: <span class="number">100%</span>;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#6D6D6B</span> <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">ul</span><span class="selector-class">.ds-comments-tabs</span> <span class="selector-tag">li</span><span class="selector-class">.ds-tab</span> <span class="selector-tag">a</span><span class="selector-class">.ds-current</span>:hover &#123;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#696a52</span>;</div><div class="line">    <span class="attribute">background</span>: <span class="number">#F2F2F2</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">a</span><span class="selector-class">.ds-highlight</span>:hover &#123;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#696a52</span> <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> &#123;</div><div class="line">    <span class="attribute">padding-left</span>: <span class="number">15px</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">li</span><span class="selector-class">.ds-post</span>,<span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-id">#ds-hot-posts</span> &#123;</div><div class="line">    <span class="attribute">overflow</span>: visible;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-post-self</span> &#123;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">10px</span> <span class="number">0</span> <span class="number">10px</span> <span class="number">10px</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">li</span><span class="selector-class">.ds-post</span>,<span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-post-self</span> &#123;</div><div class="line">    <span class="attribute">border</span>: <span class="number">0</span> <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-avatar</span>, <span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">ul</span><span class="selector-class">.ds-children</span> <span class="selector-class">.ds-avatar</span> &#123;</div><div class="line">    <span class="attribute">top</span>: <span class="number">15px</span>;</div><div class="line">    <span class="attribute">left</span>: -<span class="number">20px</span>;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">5px</span>;</div><div class="line">    <span class="attribute">width</span>: <span class="number">36px</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">36px</span>;</div><div class="line">    <span class="attribute">box-shadow</span>: -<span class="number">1px</span> <span class="number">0</span> <span class="number">1px</span> rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,.<span class="number">15</span>) inset;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">46px</span>;</div><div class="line">    <span class="attribute">background</span>: <span class="number">#FAFAFA</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-class">.ds-avatar</span> <span class="selector-tag">a</span> &#123;</div><div class="line">    <span class="attribute">display</span>: inline-block;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">1px</span>;</div><div class="line">    <span class="attribute">width</span>: <span class="number">32px</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">32px</span>;</div><div class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#b9baa6</span>;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">50%</span>;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#fff</span> <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-class">.ds-avatar</span> <span class="selector-tag">a</span>:hover &#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-class">.ds-avatar</span> &gt; <span class="selector-tag">img</span> &#123;</div><div class="line">    <span class="attribute">margin</span>: <span class="number">2px</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2px</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-replybox</span> &#123;</div><div class="line">    <span class="attribute">box-shadow</span>: none;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">ul</span><span class="selector-class">.ds-children</span> <span class="selector-class">.ds-replybox</span><span class="selector-class">.ds-inline-replybox</span> <span class="selector-tag">a</span><span class="selector-class">.ds-avatar</span>,</div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-replybox</span><span class="selector-class">.ds-inline-replybox</span> <span class="selector-tag">a</span><span class="selector-class">.ds-avatar</span> &#123;</div><div class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">width</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">background</span>: none;</div><div class="line">    <span class="attribute">box-shadow</span>: none;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-replybox</span><span class="selector-class">.ds-inline-replybox</span> <span class="selector-tag">a</span><span class="selector-class">.ds-avatar</span> <span class="selector-tag">img</span> &#123;</div><div class="line">    <span class="attribute">width</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">50%</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-replybox</span> <span class="selector-tag">a</span><span class="selector-class">.ds-avatar</span>,</div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-replybox</span> <span class="selector-class">.ds-avatar</span> <span class="selector-tag">img</span> &#123;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">width</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">5px</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-avatar</span> <span class="selector-tag">img</span> &#123;</div><div class="line">    <span class="attribute">width</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">32px</span>;</div><div class="line">    <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">1px</span> <span class="number">3px</span> rgba(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.22</span>);</div><div class="line">    -webkit-<span class="attribute">transition</span>: .<span class="number">8s</span> all ease-in-out;</div><div class="line">    -moz-<span class="attribute">transition</span>: .<span class="number">4s</span> all ease-in-out;</div><div class="line">    -o-<span class="attribute">transition</span>: .<span class="number">4s</span> all ease-in-out;</div><div class="line">    -ms-<span class="attribute">transition</span>: .<span class="number">4s</span> all ease-in-out;</div><div class="line">    <span class="attribute">transition</span>: .<span class="number">4s</span> all ease-in-out;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.ds-post-self</span>:hover <span class="selector-class">.ds-avatar</span> <span class="selector-tag">img</span> &#123;</div><div class="line">    -webkit-<span class="attribute">transform</span>: rotateX(<span class="number">360deg</span>);</div><div class="line">    -moz-<span class="attribute">transform</span>: rotate(<span class="number">360deg</span>);</div><div class="line">    -o-<span class="attribute">transform</span>: rotate(<span class="number">360deg</span>);</div><div class="line">    -ms-<span class="attribute">transform</span>: rotate(<span class="number">360deg</span>);</div><div class="line">    <span class="attribute">transform</span>: rotate(<span class="number">360deg</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-comment-body</span> &#123;</div><div class="line">    -webkit-<span class="attribute">transition-delay</span>: initial;</div><div class="line">    -webkit-<span class="attribute">transition-duration</span>: <span class="number">0.4s</span>;</div><div class="line">    -webkit-<span class="attribute">transition-property</span>: all;</div><div class="line">    -webkit-<span class="attribute">transition-timing-function</span>: initial;</div><div class="line">    <span class="attribute">background</span>: <span class="number">#F7F7F7</span>;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">15px</span> <span class="number">15px</span> <span class="number">15px</span> <span class="number">47px</span>;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">5px</span>;</div><div class="line">    <span class="attribute">box-shadow</span>: <span class="number">#B8B9B9</span> <span class="number">0</span> <span class="number">1px</span> <span class="number">3px</span>;</div><div class="line">    <span class="attribute">border</span>: white <span class="number">1px</span> solid;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">ul</span><span class="selector-class">.ds-children</span> <span class="selector-class">.ds-comment-body</span> &#123;</div><div class="line">    <span class="attribute">padding-left</span>: <span class="number">15px</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-comment-body</span> <span class="selector-tag">p</span> &#123;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#787968</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-comments</span> &#123;</div><div class="line">    <span class="attribute">border-bottom</span>: <span class="number">0px</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-powered-by</span> &#123;</div><div class="line">    <span class="attribute">display</span>: none;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-comments</span> <span class="selector-tag">a</span><span class="selector-class">.ds-user-name</span> &#123;</div><div class="line">    <span class="attribute">font-weight</span>: normal;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#3D3D3D</span> <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-comments</span> <span class="selector-tag">a</span><span class="selector-class">.ds-user-name</span>:hover &#123;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#D32</span> <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-id">#ds-bubble</span> &#123;</div><div class="line">    <span class="attribute">display</span>: none <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-id">#ds-hot-posts</span> &#123;</div><div class="line">    <span class="attribute">border</span>: <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-id">#ds-hot-posts</span> <span class="selector-class">.ds-gradient-bg</span> &#123;</div><div class="line">    <span class="attribute">background</span>: none;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-comment-body</span>:hover &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#F1F1F1</span>;</div><div class="line">    -webkit-<span class="attribute">transition-delay</span>: initial;</div><div class="line">    -webkit-<span class="attribute">transition-duration</span>: <span class="number">0.4s</span>;</div><div class="line">    -webkit-<span class="attribute">transition-property</span>: all;</div><div class="line">    -webkit-<span class="attribute">transition-timing-function</span>: initial;</div><div class="line">&#125;</div><div class="line"><span class="comment">/*Head End*/</span></div></pre></td></tr></table></figure>
+<h2 id="6-新建about-categories页面以及插入外链图片或者视频"><a class="header-anchor" href="#6-新建about-categories页面以及插入外链图片或者视频">¶</a>6. 新建about，categories页面以及插入外链图片或者视频</h2>
+<ul>
+<li>新建about, categories页面，在Git Shell中切换到hexo目录输入以下命令：</li>
+</ul>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo <span class="keyword">new</span> <span class="type">page</span> <span class="string">"about"</span></div><div class="line">hexo <span class="keyword">new</span> <span class="type">page</span> <span class="string">"categories"</span></div></pre></td></tr></table></figure>
+<ul>
+<li>命令输入完之后，会生成categories文件夹，里面会有index.md的文件，打开文件，修改为：</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">---</span></div><div class="line"><span class="attr">title:</span> <span class="string">categories</span></div><div class="line"><span class="attr">date:</span> <span class="number">2016</span><span class="bullet">-04</span><span class="bullet">-06</span> <span class="number">17</span><span class="string">:21:47</span></div><div class="line"><span class="attr">type:</span> <span class="string">"categories"</span></div><div class="line"><span class="meta">---</span></div></pre></td></tr></table></figure>
+<ul>
+<li>在about页面可以插入图片，写文字等等，这里介绍下插入外链图片的方法。
+<ul>
+<li>首先，<a href="https://portal.qiniu.com/signup?code=3lo4whaobe9g2" target="_blank" rel="external">注册七牛网</a>，注册好后要实名认证，然后就可以新建一个公开空间，点击内容管理，就可以上传文件并获得图片的外链了。</li>
+<li>markdown中插入图片的方法这里顺便一提：</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">![<span class="string">图片名称</span>](<span class="link">外链地址</span>)</div></pre></td></tr></table></figure>
+<ul>
+<li>插入视频通常是在视频网站选择嵌入，复制其提供的html代码，直接粘贴进博客的md文件中即可，因为markdown是支持html语法的~</li>
+</ul>
+<p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/hexo%2Finsert_vedio.png" alt="insert_vedio"></p>
+<h2 id="7-更新的相关操作"><a class="header-anchor" href="#7-更新的相关操作">¶</a>7. 更新的相关操作</h2>
+<ul>
+<li>更新hexo：</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">npm</span> update -g hexo</div></pre></td></tr></table></figure>
+<ul>
+<li>更新主题：
+cd 到主题文件夹，执行命令：</li>
+</ul>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">git pull</span></div></pre></td></tr></table></figure>
+<ul>
+<li>更新插件：</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">npm</span> update</div></pre></td></tr></table></figure>
+<h2 id="8-增加脚注功能footnotes"><a class="header-anchor" href="#8-增加脚注功能footnotes">¶</a>8. 增加脚注功能footnotes</h2>
+<p>在Cmd Markdown里面写东西的时候是支持脚注的，但是Hexo默认的markdown渲染插件好像不支持，所以只好换了一个，步骤如下：</p>
+<ul>
+<li>在hexo目录下输入</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm un hexo-renderer-marked <span class="comment">--save</span></div><div class="line">npm i hexo-renderer-markdown-<span class="keyword">it</span> <span class="comment">--save</span></div></pre></td></tr></table></figure>
+<ul>
+<li>不过此时的hexo-renderer-markdown-it还是用不了脚注，我们需要加上plugin，这里写了一句footnote的安装，其他的也可以干脆一起装了，还可以支持emoji表情哦~~ 😄</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd node_modules/hexo-renderer-markdown-<span class="keyword">it</span>/</div><div class="line">npm install markdown-<span class="keyword">it</span>-footnote <span class="comment">--save</span></div></pre></td></tr></table></figure>
+<ul>
+<li>装好之后编辑Hexo的配置文件<code>_config.yml</code>，插入以下句子即可。</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="attr">markdown:</span></div><div class="line"><span class="attr">  render:</span></div><div class="line"><span class="attr">    html:</span> <span class="literal">true</span></div><div class="line"><span class="attr">    xhtmlOut:</span> <span class="literal">false</span></div><div class="line"><span class="attr">    breaks:</span> <span class="literal">false</span></div><div class="line"><span class="attr">    linkify:</span> <span class="literal">true</span></div><div class="line"><span class="attr">    typographer:</span> <span class="literal">true</span></div><div class="line"><span class="attr">    quotes:</span> <span class="string">'“”‘’'</span></div><div class="line"><span class="attr">  plugins:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">markdown-it-footnote</span></div><div class="line"><span class="bullet">    -</span> <span class="string">markdown-it-sup</span></div><div class="line"><span class="bullet">    -</span> <span class="string">markdown-it-sub</span></div><div class="line"><span class="bullet">    -</span> <span class="string">markdown-it-abbr</span></div><div class="line"><span class="bullet">    -</span> <span class="string">markdown-it-emoji</span></div><div class="line"><span class="attr">  anchors:</span></div><div class="line"><span class="attr">    level:</span> <span class="number">2</span></div><div class="line"><span class="attr">    collisionSuffix:</span> <span class="string">'v'</span></div><div class="line"><span class="attr">    permalink:</span> <span class="literal">true</span></div><div class="line"><span class="attr">    permalinkClass:</span> <span class="string">header-anchor</span></div><div class="line"><span class="attr">    permalinkSymbol:</span> <span class="string">¶</span></div></pre></td></tr></table></figure>
+<h2 id="9-数学公式后面有竖线的问题解决"><a class="header-anchor" href="#9-数学公式后面有竖线的问题解决">¶</a>9. 数学公式后面有竖线的问题解决</h2>
+<p>这个问题在<a href="https://github.com/iissnan/hexo-theme-next/issues/752" target="_blank" rel="external">Issues</a>里已经有人提出来，作者给出了解决方案，为了方便也在这里记录下：</p>
+<ul>
+<li>首先，编辑next的主题配置文件<code>_config.yml</code>，在里面找到mathjax的部分，替换为以下内容：</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># MathJax Support</span></div><div class="line"><span class="attr">mathjax:</span></div><div class="line"><span class="attr">  enable:</span> <span class="literal">true</span></div><div class="line"><span class="attr">  cdn:</span> <span class="string">//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML</span></div></pre></td></tr></table></figure>
+<ul>
+<li>打开<code>\hexo\themes\next\layout\_scripts\third-party\mathjax.swig</code>，将其内容替换为：</li>
+</ul>
+<figure class="highlight django"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="xml"></span><span class="template-tag">&#123;% <span class="name"><span class="name">if</span></span> theme.mathjax.enable %&#125;</span><span class="xml"></span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/x-mathjax-config"</span>&gt;</span><span class="actionscript"></span></div><div class="line">    MathJax.Hub.Config(&#123;</div><div class="line">      tex2jax: &#123;</div><div class="line">        inlineMath: [ [<span class="string">'$'</span>,<span class="string">'$'</span>], [<span class="string">"\\("</span>,<span class="string">"\\)"</span>]  ],</div><div class="line">        processEscapes: <span class="literal">true</span>,</div><div class="line">        skipTags: [<span class="string">'script'</span>, <span class="string">'noscript'</span>, <span class="string">'style'</span>, <span class="string">'textarea'</span>, <span class="string">'pre'</span>, <span class="string">'code'</span>]</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/x-mathjax-config"</span>&gt;</span><span class="actionscript"></span></div><div class="line">    MathJax.Hub.Queue(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">var</span> all = MathJax.Hub.getAllJax(), i;</div><div class="line">      <span class="keyword">for</span> (i=<span class="number">0</span>; i &lt; all.length; i += <span class="number">1</span>) &#123;</div><div class="line">        all[i].SourceElement().parentNode.className += <span class="string">' has-jax'</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"</span></span><span class="template-variable">&#123;&#123; theme.mathjax.cdn &#125;&#125;</span><span class="xml"><span class="tag"><span class="string">"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></div><div class="line"><span class="template-tag">&#123;% <span class="name"><span class="name">endif</span></span> %&#125;</span><span class="xml"></span></div></pre></td></tr></table></figure>
+<p>测试一下，应该可以啦~
+$$\sum_{i=1}^n a_i=0$$</p>
+<h3 id="10-迁移博客"><a class="header-anchor" href="#10-迁移博客">¶</a>10. 迁移博客</h3>
+<p>最近换了电脑，需要迁移博客，把流程记录一下
+我把源文件存在了github.xxx.io.git的hexo分支上，所以要先从这里clone 源文件</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="keyword">clone</span> <span class="title">-b</span> hexo https://github.com/xxx/xxx.github.io.git</div></pre></td></tr></table></figure>
+<p>在本地新拷贝xxx.github.io文件夹下通过Git bash依次执行下列指令：npm install hexo、npm install、npm install hexo-deployer-git</p>
+<p>在本地对博客进行修改（添加新博文、修改样式等等）后，通过下面的流程进行管理。</p>
+<ol>
+<li>依次执行git add .、git commit -m “…”、git push origin hexo指令将改动推送到GitHub（此时当前分支应为hexo）；</li>
+<li>然后才执行hexo g -d发布网站到master分支上。</li>
+</ol>
+<p><strong>注意：</strong> 如果生成的页面为空可能需要看下theme文件夹里面的主题文件在不在
+我用了如下指令重新clone了next主题</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone http<span class="variable">s:</span>//github.<span class="keyword">com</span>/iissnan/hexo-theme-<span class="keyword">next</span> themes/<span class="keyword">next</span></div></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="http://www.yaozeyuan.online/?p=104" target="_blank" rel="external">http://www.yaozeyuan.online/?p=104</a> <a href="#fnref1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="http://blog.csdn.net/jzooo/article/details/46781805" target="_blank" rel="external">http://blog.csdn.net/jzooo/article/details/46781805</a> <a href="#fnref2" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a href="http://wsgzao.github.io/post/duoshuo/" target="_blank" rel="external">http://wsgzao.github.io/post/duoshuo/</a> <a href="#fnref3" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Blog/" rel="tag"># Blog</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/10/第一章-Spark简介/" rel="next" title="第一章 Spark简介">
+                <i class="fa fa-chevron-left"></i> 第一章 Spark简介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/13/Tips on data analysis by python (advanced)/" rel="prev" title="Tips on data analysis by python (advanced)">
+                Tips on data analysis by python (advanced) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/06/Win10上利用github+hexo建立博客的方法/"
+           data-title="Win10上利用github+hexo建立博客的方法" data-url="http://hujichn.github.io/2016/04/06/Win10上利用github+hexo建立博客的方法/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/cat.jpg"
+               alt="Ji Hu" />
+          <p class="site-author-name" itemprop="name">Ji Hu</p>
+           
+              <p class="site-description motion-element" itemprop="description">fight！</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-安装环境"><span class="nav-number">1.</span> <span class="nav-text">¶1. 安装环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-创建自己的github-pages"><span class="nav-number">2.</span> <span class="nav-text">¶2. 创建自己的GitHub Pages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-安装hexo"><span class="nav-number">3.</span> <span class="nav-text">¶3. 安装Hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-利用hexo写博客并将hexo产生的静态网页部署到github"><span class="nav-number">4.</span> <span class="nav-text">¶4. 利用Hexo写博客并将Hexo产生的静态网页部署到GitHub</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-更换主题-使用第三方插件增加评论-阅读次数统计等功能"><span class="nav-number">5.</span> <span class="nav-text">¶5. 更换主题，使用第三方插件增加评论，阅读次数统计等功能。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-新建about-categories页面以及插入外链图片或者视频"><span class="nav-number">6.</span> <span class="nav-text">¶6. 新建about，categories页面以及插入外链图片或者视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-更新的相关操作"><span class="nav-number">7.</span> <span class="nav-text">¶7. 更新的相关操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-增加脚注功能footnotes"><span class="nav-number">8.</span> <span class="nav-text">¶8. 增加脚注功能footnotes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-数学公式后面有竖线的问题解决"><span class="nav-number">9.</span> <span class="nav-text">¶9. 数学公式后面有竖线的问题解决</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-迁移博客"><span class="nav-number">9.1.</span> <span class="nav-text">¶10. 迁移博客</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ji Hu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hujichn"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("cf1BkMNWywyAuHWUVSESYmwt-gzGzoHsz", "F2VRDQsk2yv2sP8CPtdm9C2U");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

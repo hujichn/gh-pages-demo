@@ -1,0 +1,1133 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="entropy,weight," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Ji Hu's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="日常工作中经常需要确定各个指标的权重，利用熵值法确定权重属于客观赋权法，从数据出发，避免过强的主观性，但是也同时带来了一些问题。在某个论坛的帖子中，作者提出了这样的一个问题：“熵值法用于确定权重是否合适？什么场合下熵值法是不适用的？”
+下面我们就以作者提出的例子利用熵值法进行权重的求解（原贴的求解感觉存在问题），一方面可以学习一下熵值法确定权重的步骤，一方面也体会下熵值法的优缺点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="熵值法确定权重的步骤及适用范围">
+<meta property="og:url" content="http://hujichn.github.io/2016/08/10/熵值法确定权重的步骤及适用范围/index.html">
+<meta property="og:site_name" content="Ji Hu's Blog">
+<meta property="og:description" content="日常工作中经常需要确定各个指标的权重，利用熵值法确定权重属于客观赋权法，从数据出发，避免过强的主观性，但是也同时带来了一些问题。在某个论坛的帖子中，作者提出了这样的一个问题：“熵值法用于确定权重是否合适？什么场合下熵值法是不适用的？”
+下面我们就以作者提出的例子利用熵值法进行权重的求解（原贴的求解感觉存在问题），一方面可以学习一下熵值法确定权重的步骤，一方面也体会下熵值法的优缺点。">
+<meta property="og:image" content="http://img.ph.126.net/gFHAFp4Wnb6wNGhERZ0VmQ==/3107202267925744949.jpg">
+<meta property="og:image" content="http://static.zybuluo.com/huji/ckgn77gotujfyeoh2ehg1f1h/image_1appsk18lua6qj3c2l7ube45g.png">
+<meta property="og:image" content="http://static.zybuluo.com/huji/a8o0baevoeyoakutonzwuh39/image_1apq8ve031cpb33p18q88mc1q4jt.png">
+<meta property="og:image" content="http://static.zybuluo.com/huji/lgdqsk3nh1g413fssf82mote/image_1apqaaqgo1gefia1ta01td7m031a.png">
+<meta property="og:updated_time" content="2017-03-14T07:13:35.057Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="熵值法确定权重的步骤及适用范围">
+<meta name="twitter:description" content="日常工作中经常需要确定各个指标的权重，利用熵值法确定权重属于客观赋权法，从数据出发，避免过强的主观性，但是也同时带来了一些问题。在某个论坛的帖子中，作者提出了这样的一个问题：“熵值法用于确定权重是否合适？什么场合下熵值法是不适用的？”
+下面我们就以作者提出的例子利用熵值法进行权重的求解（原贴的求解感觉存在问题），一方面可以学习一下熵值法确定权重的步骤，一方面也体会下熵值法的优缺点。">
+<meta name="twitter:image" content="http://img.ph.126.net/gFHAFp4Wnb6wNGhERZ0VmQ==/3107202267925744949.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '6270299573625816000',
+      author: 'Root'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hujichn.github.io/2016/08/10/熵值法确定权重的步骤及适用范围/"/>
+
+
+
+
+
+  <title> 熵值法确定权重的步骤及适用范围 | Ji Hu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?468728c0165ededf9f1a17571c8ac0e4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ji Hu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写点东西~</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://hujichn.github.io/2016/08/10/熵值法确定权重的步骤及适用范围/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ji Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/cat.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ji Hu's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                熵值法确定权重的步骤及适用范围
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-10T22:37:40+08:00">
+                2016-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/research/" itemprop="url" rel="index">
+                    <span itemprop="name">research</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/08/10/熵值法确定权重的步骤及适用范围/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/10/熵值法确定权重的步骤及适用范围/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2016/08/10/熵值法确定权重的步骤及适用范围/" class="leancloud_visitors" data-flag-title="熵值法确定权重的步骤及适用范围">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>日常工作中经常需要确定各个指标的权重，利用熵值法确定权重属于客观赋权法，从数据出发，避免过强的主观性，但是也同时带来了一些问题。在某个论坛的帖子中，作者提出了这样的一个问题：“<a href="http://cos.name/cn/topic/158566/#post-413325" target="_blank" rel="external">熵值法用于确定权重是否合适？什么场合下熵值法是不适用的？</a>”</p>
+<p>下面我们就以作者提出的例子利用熵值法进行权重的求解（原贴的求解感觉存在问题），一方面可以学习一下熵值法确定权重的步骤，一方面也体会下熵值法的优缺点。</p>
+<a id="more"></a>
+<p>author: <a href="https://hujichn.github.io/">@Huji</a></p>
+<h2 id="熵值法的原理"><a class="header-anchor" href="#熵值法的原理">¶</a>熵值法的原理</h2>
+<h3 id="什么是信息熵"><a class="header-anchor" href="#什么是信息熵">¶</a>什么是信息熵</h3>
+<p><code>熵</code>是热力学的一个物理概念，是体系混乱度（或无序度）的量度。熵越大说明系统越混乱，携带的信息越少，熵越小说明系统越有序，携带的信息越多。</p>
+<p><code>信息熵</code>则借鉴了热力学中熵的概念 (注意：信息熵的符号与热力学熵应该是相反的<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>)，用于描述平均而言事件信息量大小。所以数学上，信息熵其实是<strong>事件所包含的信息量的期望</strong><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>。</p>
+<blockquote>
+<p>在概率论和统计学中，数学期望(mean)（或均值，亦简称期望）是试验中每次可能结果的概率乘以其结果的总和。</p>
+</blockquote>
+<p>根据上面期望的定义，我们可以设想信息熵的公式大概是这样的一个格式</p>
+<p>$信息熵=\sum  每种可能事件的概率 * 每种可能事件包含的信息量$</p>
+<hr>
+<p>例如预测小明的考试成绩，假如只有4道大题，每道只能得0分或者满分，那么小明成绩可能的事件共有5种：0，25，50，75，100</p>
+<p>我们可以假设每种可能的事件发生的概率如下：</p>
+<table>
+<thead>
+<tr>
+<th>成绩</th>
+<th>0分</th>
+<th>25分</th>
+<th>50分</th>
+<th>75分</th>
+<th>100分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>概率</td>
+<td>1/8</td>
+<td>1/8</td>
+<td>1/4</td>
+<td>1/4</td>
+<td>1/4</td>
+</tr>
+</tbody>
+</table>
+<p>这样一来上面的<strong>每种可能的事件的概率</strong>我们就知道了，那么剩下的就是计算<strong>每种可能事件包含的信息量</strong>。</p>
+<hr>
+<p><strong>那么每种可能事件包含的信息量跟什么有关呢？</strong></p>
+<p>答案是跟这一事件的<strong>不确定性</strong>有关，即与事件发生的<strong>概率</strong>有关，概率越大，信息量越小。试想，如果上面的概率修改一下，令小明得100分的概率是1，那么你预测小明会考100分这句话就没有信息量了，因为不管怎么样他肯定都会是100分。</p>
+<p><strong>因此每种可能事件包含的信息量的计算采用不确定性函数$f$</strong>:</p>
+<p>$f = log(1/P) = -log P$</p>
+<p>采用这个函数，一方面保证了信息量是概率P的<strong>单调递降函数</strong>；另一方面保证了两个独立事件所产生的不确定性应等于各自不确定性之和，即<strong>可加性</strong>。</p>
+<hr>
+<p>综上，带入到我们一开始假设的公式中，可以得到信息熵的数学表达式如下：</p>
+<p>$H(U) = -\sum_{i=1}^{n} P_i logP_i$</p>
+<p>这里$H$是熵，$U$可以理解为所有可能事件的集合，有n种取值：$U_1,…,U_i,…,U_n$，对应概率为：$P_1,…,P_i,…,P_n$，对数的底一般取2。</p>
+<h3 id="熵值法"><a class="header-anchor" href="#熵值法">¶</a>熵值法</h3>
+<p>根据信息熵的定义，对于某项指标，我们可以<strong>用熵值来判断某个指标的离散程度</strong>，其熵值越小，指标的离散程度越大，该指标对综合评价的影响(即<strong>权重</strong>)越大。如果某项指标的值全部相等，那么该指标在综合评价中不起作用。</p>
+<h2 id="熵值法的计算步骤"><a class="header-anchor" href="#熵值法的计算步骤">¶</a>熵值法的计算步骤</h2>
+<h3 id="问题描述"><a class="header-anchor" href="#问题描述">¶</a>问题描述</h3>
+<p>作者提出的是这样一个问题</p>
+<blockquote>
+<p>题目：这群学生中“最聪明/最优秀”的学生是谁？</p>
+<table>
+<thead>
+<tr>
+<th>学生</th>
+<th>数学</th>
+<th>体育</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>学生5</td>
+<td>100</td>
+<td>90</td>
+</tr>
+<tr>
+<td>学生3</td>
+<td>97</td>
+<td>89</td>
+</tr>
+<tr>
+<td>学生13</td>
+<td>88</td>
+<td>98</td>
+</tr>
+<tr>
+<td>学生7</td>
+<td>77</td>
+<td>100</td>
+</tr>
+<tr>
+<td>学生2</td>
+<td>80</td>
+<td>96</td>
+</tr>
+<tr>
+<td>学生12</td>
+<td>98</td>
+<td>76</td>
+</tr>
+<tr>
+<td>学生9</td>
+<td>99</td>
+<td>56</td>
+</tr>
+<tr>
+<td>学生14</td>
+<td>88</td>
+<td>56</td>
+</tr>
+<tr>
+<td>学生6</td>
+<td>90</td>
+<td>43</td>
+</tr>
+<tr>
+<td>学生11</td>
+<td>89</td>
+<td>32</td>
+</tr>
+<tr>
+<td>学生8</td>
+<td>88</td>
+<td>32</td>
+</tr>
+<tr>
+<td>学生4</td>
+<td>90</td>
+<td>24</td>
+</tr>
+<tr>
+<td>学生15</td>
+<td>88</td>
+<td>21</td>
+</tr>
+<tr>
+<td>学生16</td>
+<td>99</td>
+<td>1</td>
+</tr>
+<tr>
+<td>学生1</td>
+<td>89</td>
+<td>11</td>
+</tr>
+<tr>
+<td>学生10</td>
+<td>89</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<h3 id="计算步骤"><a class="header-anchor" href="#计算步骤">¶</a>计算步骤</h3>
+<p><strong>注意：相关xlsx文件可以在此处【<a href="http://pan.baidu.com/s/1geCN3Yr" target="_blank" rel="external">下载</a>】</strong></p>
+<ol>
+<li><strong>确定指标体系</strong>
+首先需要确定评价的指标体系，例如下图是网站经营评价的两级指标体系。
+<img src="http://img.ph.126.net/gFHAFp4Wnb6wNGhERZ0VmQ==/3107202267925744949.jpg" alt="indicator">
+在我们的例子中，评价指标只有两个：数学和体育的成绩。</li>
+<li><strong>清洗指标极值</strong>
+即剔除各指标中极大或者极小的值，一般用比较合理的上下线替换这些极值，目的是减少极值数据对该指标的熵的影响。
+原则：剔除占样本总数不到1-2%但指标值贡献率超过20-30%以上的极值样本。
+我们这里样本本来也不多，也没有贡献率特别大的，所以没有做处理。</li>
+<li><strong>归一化指标处理</strong>
+将各个指标同度量化，即将指标的实际值转化为不受量纲影响的指标评价值。常用的方法有：</li>
+</ol>
+<p><strong>临界值法</strong>：
+如果原始的第$i$个人的第$j$个指标是$x_{ij}$，那么归一化后是$x_{ij}’$。</p>
+<p>$x_{ij}’ = \frac{x_{ij}-\min x_j}{\max x_j - \min x_j}$,
+$x_{ij}’ = \frac{\max x_j-x_{ij}}{\max x_j - \min x_j}$</p>
+<p>若指标是正向的选第一个公式；
+若指标是负向的选第二个公式。</p>
+<p>$\min x_j$是第$j$个指标的最小值，类似地，$\max x_j$是第$j$个指标的最大值。</p>
+<p><strong>Z-score法</strong>：
+$x_{ij}’ = \frac{x_{ij}-\bar{x_j}}{S}$</p>
+<p>这里我们采用第一种临界值法，得到结果如下图
+<img src="http://static.zybuluo.com/huji/ckgn77gotujfyeoh2ehg1f1h/image_1appsk18lua6qj3c2l7ube45g.png" alt="image_1appsk18lua6qj3c2l7ube45g.png-29.3kB"></p>
+<ol start="4">
+<li><strong>计算指标熵和权</strong></li>
+</ol>
+<ul>
+<li>
+<p>计算指标熵要先计算第$i$个人的第$j$个指标值的比重
+$y_{ij} = \frac{x_{ij}’}{\sum_{i=1}^m {x_{ij}’}}$</p>
+</li>
+<li>
+<p>计算第j项指标的信息熵的公式为
+$e_j = -K\sum_{i=1}^m y_{ij} \ln y_{ij}$
+(式中$K$为常数，$K=\frac{1}{\ln m}$，我觉得乘以这个主要是为了使得$e_j$小于等于1，这样后面求得的权重才是正数)</p>
+</li>
+<li>
+<p>某项指标的信息效用价值取决于该指标的信息熵$e_j$与1之间的差值，它的值直接影响权重的大小，信息效用值越大，对评价的重要性就越大，权重也就越大。
+$d_j = 1 - e_j$</p>
+</li>
+<li>
+<p>第$j$项指标的权重为$w_j = \frac{d_j}{\sum_j d_j}$</p>
+</li>
+</ul>
+<p>结果如下</p>
+<p><img src="http://static.zybuluo.com/huji/a8o0baevoeyoakutonzwuh39/image_1apq8ve031cpb33p18q88mc1q4jt.png" alt="image_1apq8ve031cpb33p18q88mc1q4jt.png-62kB"></p>
+<ol start="5">
+<li><strong>指标加权计算得分</strong></li>
+</ol>
+<p>最后一步就是利用加权求和公式计算样本的评价值了
+$U = \sum_j 100* y_{ij}w_j$</p>
+<p>$U$为综合评价值，$w_j$为第j个指标的权重。</p>
+<p>计算出的总分从高到低排序如下图所示：</p>
+<p><img src="http://static.zybuluo.com/huji/lgdqsk3nh1g413fssf82mote/image_1apqaaqgo1gefia1ta01td7m031a.png" alt="image_1apqaaqgo1gefia1ta01td7m031a.png-19kB"></p>
+<h2 id="熵值法的优缺点及适用范围"><a class="header-anchor" href="#熵值法的优缺点及适用范围">¶</a>熵值法的优缺点及适用范围</h2>
+<h3 id="优点"><a class="header-anchor" href="#优点">¶</a>优点</h3>
+<ul>
+<li>熵值法能深刻反映出指标的区分能力，进而确定权重</li>
+<li>是一种客观赋权法，有理论依据，相对主观赋权具有较高的可信度和精确度</li>
+<li>算法简单，实践起来比较方便，不需要借助其他分析软件</li>
+</ul>
+<h3 id="缺点"><a class="header-anchor" href="#缺点">¶</a>缺点</h3>
+<ul>
+<li>智能程度不够高。和多元回归和主成分等统计方法不同，它不能考虑指标与指标之间横向的影响（如：相关性）</li>
+<li>若无业务经验的指导，权重可能失真</li>
+<li>对样本的依赖性比较大，随着建模样本变化，权重会有一定的波动</li>
+</ul>
+<h3 id="适用范围"><a class="header-anchor" href="#适用范围">¶</a>适用范围</h3>
+<p>结合上面的实例，我们看到：体育成绩离散程度更大，导致其最后权重也更大，但是从通常评判的角度看，聪明程度往往与数学成绩关系更为密切。这就说明单单使用熵值法权重失真是经常发生的，要结合一定专家打分法才能发挥熵值法的优势，像<strong>确定指标体系</strong>中的示意图那样，构建两级评价体系，上层可能需要结合专家经验来构建，而<strong>底层的指标分的比较细，权重比较难确定，这种情况下采用熵值法比较合适</strong>。</p>
+<p>另外，确定权重前需要确定指标对目标得分的影响方向，对非线性的指标要进行预处理或者剔除。还要注意处理好极值。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="http://baike.baidu.com/link?url=obJfFcvlpippsjTLji4tvqNCx5TQbkq1mjQnLPfpPrfAKtLNCHWp3XL9qRg0qZWL" target="_blank" rel="external">http://baike.baidu.com/link?url=obJfFcvlpippsjTLji4tvqNCx5TQbkq1mjQnLPfpPrfAKtLNCHWp3XL9qRg0qZWL</a> <a href="#fnref1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="https://www.zhihu.com/question/22178202/answer/49929786" target="_blank" rel="external">https://www.zhihu.com/question/22178202/answer/49929786</a> <a href="#fnref2" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/entropy/" rel="tag"># entropy</a>
+          
+            <a href="/tags/weight/" rel="tag"># weight</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/14/什么是P、NP、NPC、NP-Hard问题/" rel="next" title="什么是P、NP、NPC、NP-Hard问题">
+                <i class="fa fa-chevron-left"></i> 什么是P、NP、NPC、NP-Hard问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/10/熵值法确定权重的步骤及适用范围/"
+           data-title="熵值法确定权重的步骤及适用范围" data-url="http://hujichn.github.io/2016/08/10/熵值法确定权重的步骤及适用范围/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/cat.jpg"
+               alt="Ji Hu" />
+          <p class="site-author-name" itemprop="name">Ji Hu</p>
+           
+              <p class="site-description motion-element" itemprop="description">fight！</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#熵值法的原理"><span class="nav-number">1.</span> <span class="nav-text">¶熵值法的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是信息熵"><span class="nav-number">1.1.</span> <span class="nav-text">¶什么是信息熵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#熵值法"><span class="nav-number">1.2.</span> <span class="nav-text">¶熵值法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#熵值法的计算步骤"><span class="nav-number">2.</span> <span class="nav-text">¶熵值法的计算步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">2.1.</span> <span class="nav-text">¶问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算步骤"><span class="nav-number">2.2.</span> <span class="nav-text">¶计算步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#熵值法的优缺点及适用范围"><span class="nav-number">3.</span> <span class="nav-text">¶熵值法的优缺点及适用范围</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">3.1.</span> <span class="nav-text">¶优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点"><span class="nav-number">3.2.</span> <span class="nav-text">¶缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#适用范围"><span class="nav-number">3.3.</span> <span class="nav-text">¶适用范围</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ji Hu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hujichn"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("cf1BkMNWywyAuHWUVSESYmwt-gzGzoHsz", "F2VRDQsk2yv2sP8CPtdm9C2U");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

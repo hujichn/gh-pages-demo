@@ -1,0 +1,1008 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Ji Hu's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="第一篇主要是一些比较基础的问题，接下来遇到了稍微复杂一些的问题，因此整理在这个advanced tips里面，以备不时之需 😃
+主要内容包括一些pandas的常用操作，利用pandas处理日期中的假期，python的异常处理、函数定义、装饰器的简单介绍等等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tips on data analysis by python (advanced)">
+<meta property="og:url" content="http://hujichn.github.io/2016/05/13/Tips on data analysis by python (advanced)/index.html">
+<meta property="og:site_name" content="Ji Hu's Blog">
+<meta property="og:description" content="第一篇主要是一些比较基础的问题，接下来遇到了稍微复杂一些的问题，因此整理在这个advanced tips里面，以备不时之需 😃
+主要内容包括一些pandas的常用操作，利用pandas处理日期中的假期，python的异常处理、函数定义、装饰器的简单介绍等等。">
+<meta property="og:image" content="http://7xsoqo.com2.z0.glb.clouddn.com/python/tips/holidayUSA2013.png">
+<meta property="og:image" content="http://7xsoqo.com2.z0.glb.clouddn.com/python/tips/holidayNYC2013.png">
+<meta property="og:updated_time" content="2017-03-14T07:13:35.013Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tips on data analysis by python (advanced)">
+<meta name="twitter:description" content="第一篇主要是一些比较基础的问题，接下来遇到了稍微复杂一些的问题，因此整理在这个advanced tips里面，以备不时之需 😃
+主要内容包括一些pandas的常用操作，利用pandas处理日期中的假期，python的异常处理、函数定义、装饰器的简单介绍等等。">
+<meta name="twitter:image" content="http://7xsoqo.com2.z0.glb.clouddn.com/python/tips/holidayUSA2013.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '6270299573625816000',
+      author: 'Root'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hujichn.github.io/2016/05/13/Tips on data analysis by python (advanced)/"/>
+
+
+
+
+
+  <title> Tips on data analysis by python (advanced) | Ji Hu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?468728c0165ededf9f1a17571c8ac0e4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ji Hu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写点东西~</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://hujichn.github.io/2016/05/13/Tips on data analysis by python (advanced)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ji Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/cat.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ji Hu's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Tips on data analysis by python (advanced)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-13T14:19:00+08:00">
+                2016-05-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/05/13/Tips on data analysis by python (advanced)/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/13/Tips on data analysis by python (advanced)/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2016/05/13/Tips on data analysis by python (advanced)/" class="leancloud_visitors" data-flag-title="Tips on data analysis by python (advanced)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>第一篇主要是一些比较基础的问题，接下来遇到了稍微复杂一些的问题，因此整理在这个advanced tips里面，以备不时之需 😃</p>
+<p>主要内容包括一些pandas的常用操作，利用pandas处理日期中的假期，python的异常处理、函数定义、装饰器的简单介绍等等。</p>
+<a id="more"></a>
+<p>author: <a href="https://hujichn.github.io">@Huji</a></p>
+<p>[toc]</p>
+<h3 id="1-对于groupby的结果分别apply函数进行计算-类似reduce的感觉"><a class="header-anchor" href="#1-对于groupby的结果分别apply函数进行计算-类似reduce的感觉">¶</a>1. 对于groupby的结果分别apply函数进行计算，类似reduce的感觉</h3>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 输入df，也就是其中的每一个group</div><div class="line">def myFunc(df)：</div><div class="line">    p = df[<span class="string">"p"</span>].<span class="built_in">values</span></div><div class="line">    a = df[<span class="string">"a"</span>].<span class="built_in">values</span> </div><div class="line">    # 返回两个值的话要用Series来返回</div><div class="line">    <span class="built_in">return</span> pd.Series(&#123;<span class="string">"sum"</span>: a.<span class="built_in">sum</span>(), <span class="string">"rmsle"</span>: <span class="built_in">np</span>.<span class="built_in">sqrt</span>(<span class="built_in">np</span>.squre(<span class="built_in">np</span>.<span class="built_in">log</span>(p+<span class="number">1</span>)-<span class="built_in">np</span>.<span class="built_in">log</span>(a+<span class="number">1</span>)).<span class="built_in">mean</span>())&#125;)</div><div class="line"></div><div class="line">dfGroupby.<span class="built_in">apply</span>(myFunc)</div></pre></td></tr></table></figure>
+<h3 id="2-把字符串表示的时间进行加减-得到新字符串"><a class="header-anchor" href="#2-把字符串表示的时间进行加减-得到新字符串">¶</a>2. 把字符串表示的时间进行加减，得到新字符串</h3>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from pandas.tslib <span class="built_in">import</span> Timestamp</div><div class="line">from pandas.tseries.offsets <span class="built_in">import</span> *</div><div class="line"><span class="attr">eventsDate</span> = “<span class="number">2013</span>-<span class="number">10</span>-<span class="number">22</span>”</div><div class="line"><span class="attr">eventsDate</span> = Timestamp(eventsDate)</div><div class="line"><span class="attr">dayBackward</span> = str((eventsDate - DateOffset(<span class="attr">days=1)).date())</span></div><div class="line"><span class="attr">dayForward</span> = str((eventsDate + DateOffset(<span class="attr">days=1)).date())</span></div></pre></td></tr></table></figure>
+<h3 id="3-python中的异常处理简介"><a class="header-anchor" href="#3-python中的异常处理简介">¶</a>3. python中的异常处理简介</h3>
+<p>有时候网络有点崩，比如要从某网页抓取数据，经常由于网络原因中就error，这个时候真是痛心疾首，加入异常处理的逻辑可以使得程序放心运行。:）</p>
+<p>异常处理的基本流程如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">    Normal execution block</div><div class="line"><span class="keyword">except</span> A:</div><div class="line">    Exception A handle</div><div class="line"><span class="keyword">except</span> B:</div><div class="line">    Exception B handle</div><div class="line"><span class="keyword">except</span>:</div><div class="line">    Other exception handle</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="keyword">if</span> no exception,get here</div><div class="line"><span class="keyword">finally</span>:</div><div class="line">    print(<span class="string">"finally"</span>)</div></pre></td></tr></table></figure>
+<p>其中A, B这样的异常名称不清楚的话，可以先看一下<a href="http://www.runoob.com/python/python-exceptions.html" target="_blank" rel="external">python中的基本异常类型</a>。</p>
+<p>还是不知道Error的类型的话，可以暂时先写</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">except Exception <span class="keyword">as</span> <span class="keyword">ex</span>：</div><div class="line">    <span class="keyword">print</span>(<span class="keyword">type</span>(<span class="keyword">ex</span>))</div><div class="line">    <span class="keyword">print</span>(<span class="keyword">ex</span>.<span class="keyword">args</span>)</div></pre></td></tr></table></figure>
+<p>这样一般可以得到Error的名称。</p>
+<h3 id="4-由字典建立一行的dataframe"><a class="header-anchor" href="#4-由字典建立一行的dataframe">¶</a>4. 由字典建立一行的DataFrame</h3>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">firstLine</span> = pd.DataFrame([&#123;<span class="string">"rent_count"</span>: <span class="number">0</span>, <span class="string">"netid"</span>: netid&#125;], index=[startTime])</div></pre></td></tr></table></figure>
+<p>需要注意的是，内容和index都要记得以list的形式传输</p>
+<h3 id="5-填充缺失值-fillna"><a class="header-anchor" href="#5-填充缺失值-fillna">¶</a>5. 填充缺失值 fillna</h3>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">r[<span class="string">'Wind SpeedMPH'</span>].fillna(<span class="number">0</span>, inplace=<span class="keyword">True</span>)</div><div class="line">r[<span class="string">'VisibilityMPH'</span>].fillna(<span class="function"><span class="keyword">method</span>='<span class="title">ffill</span>', <span class="title">inplace</span>=<span class="title">True</span>)</span></div><div class="line"><span class="title">r</span>['<span class="title">Humidity</span>'].<span class="title">fillna</span><span class="params">(<span class="keyword">method</span>=<span class="string">'bfill'</span>, inplace=<span class="keyword">True</span>)</span></div></pre></td></tr></table></figure>
+<h3 id="6-求出假期的方法"><a class="header-anchor" href="#6-求出假期的方法">¶</a>6. 求出假期的方法</h3>
+<p>目前找到了两种方法，我们以美国2013年的法定节假日为例写一下示例代码：</p>
+<ul>
+<li>第一种是Pandas中的Holiday模块提供的功能：</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from datetime import * </div><div class="line">from pandas.tseries.holiday import USFederalHolidayCalendar</div><div class="line">cal = USFederalHolidayCalendar()</div><div class="line">cal.holidays(datetime(<span class="number">2013</span>, <span class="number">1</span>, <span class="number">1</span>), datetime(<span class="number">2013</span>, <span class="number">12</span>, <span class="number">31</span>))</div></pre></td></tr></table></figure>
+<p>输出的格式是：</p>
+<p><img src="http://7xsoqo.com2.z0.glb.clouddn.com/python/tips/holidayUSA2013.png" alt="holidayUSA2013"></p>
+<ul>
+<li>后一种应用范围更广，可以支持很多国家，对于US来说甚至细到州的假期，所以还是比较好用的。需要install workalendar这个库，代码如下：</li>
+</ul>
+<figure class="highlight capnproto"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> date</div><div class="line"><span class="keyword">from</span> workalendar.usa <span class="keyword">import</span> NewYork</div><div class="line">cal = NewYork()</div><div class="line">cal.holidays(<span class="number">2013</span>)</div></pre></td></tr></table></figure>
+<p>得到的结果是：</p>
+<p><img src="http://7xsoqo.com2.z0.glb.clouddn.com/python/tips/holidayNYC2013.png" alt="holidayNYC2013"></p>
+<h3 id="7-去掉列表中重复元素的方法"><a class="header-anchor" href="#7-去掉列表中重复元素的方法">¶</a>7. 去掉列表中重复元素的方法</h3>
+<ul>
+<li>一维的list可以利用集合的方法,但会改变元素的顺序：</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">l1 = [<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'a'</span>,<span class="string">'a'</span>]</div><div class="line">l2 = list(set(l1))</div><div class="line"><span class="function"><span class="title">print</span><span class="params">(l2)</span></span></div></pre></td></tr></table></figure>
+<p>要想不改变顺序可以用</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">l1 = [<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'a'</span>,<span class="string">'a'</span>]</div><div class="line">l2 = sorted(<span class="built_in">set</span>(l1),<span class="built_in">key</span>=l1.index)</div><div class="line"><span class="built_in">print</span>(l2)</div></pre></td></tr></table></figure>
+<ul>
+<li>如果不是一维的list可以用以下方法，或者遍历，原理是一样的。</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">a</span> = [<span class="selector-tag">a</span>[i] <span class="keyword">for</span> <span class="selector-tag">i</span> <span class="keyword">in</span> range(len(a)) <span class="keyword">if</span> <span class="selector-tag">a</span>[i] not <span class="keyword">in</span> <span class="selector-tag">a</span>[:i]]</div></pre></td></tr></table></figure>
+<h3 id="8-统计嵌套列表里面各个list出现的次数"><a class="header-anchor" href="#8-统计嵌套列表里面各个list出现的次数">¶</a>8. 统计嵌套列表里面各个list出现的次数</h3>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">import pandas as pd</div><div class="line"></div><div class="line">allList = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]]</div><div class="line">mDict = &#123;<span class="string">'list'</span>:[],<span class="string">'num'</span>:[]&#125;</div><div class="line">print(mDict)</div><div class="line"></div><div class="line">def calOccurrence(mList):</div><div class="line">    if mList in mDict[<span class="string">'list'</span>]:</div><div class="line">        loc = mDict[<span class="string">'list'</span>].index(mList)</div><div class="line">        mDict[<span class="string">'num'</span>][loc] = mDict[<span class="string">'num'</span>][loc] + <span class="number">1</span></div><div class="line">    else:</div><div class="line">        mDict[<span class="string">'list'</span>].append(mList)</div><div class="line">        mDict[<span class="string">'num'</span>].append(<span class="number">1</span>)</div><div class="line"></div><div class="line">for mList in allList:</div><div class="line">    calOccurrence(mList)</div><div class="line"></div><div class="line">print(pd.<span class="symbol">DataFrame</span>(mDict))</div></pre></td></tr></table></figure>
+<p>输出结果是</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">        <span class="type">list</span>  num</div><div class="line"><span class="number">0</span>  [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]    <span class="number">3</span></div><div class="line"><span class="number">1</span>  [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]    <span class="number">1</span></div></pre></td></tr></table></figure>
+<p>本来想利用pandas的groupby+count来做，但是groupby是求by的对象的hash值进行group，list对象不能求hash值也就不能groupby，所以还是用循环来维护一个字典，统计出各个list的出现次数。</p>
+<h3 id="9-python函数定义"><a class="header-anchor" href="#9-python函数定义">¶</a>9. Python函数定义<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></h3>
+<ul>
+<li>引入一个形如 **name 的参数时，它接收一个字典</li>
+<li>引入一个形如 *name 的参数时，它接收一个元祖</li>
+</ul>
+<p>对于如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">cheeseshop</span><span class="params">(kind, *arguments, **keywords)</span>:</span></div><div class="line">    print(<span class="string">"-- Do you have any"</span>, kind, <span class="string">"?"</span>)</div><div class="line">    print(<span class="string">"-- I'm sorry, we're all out of"</span>, kind)</div><div class="line">    <span class="keyword">for</span> arg <span class="keyword">in</span> arguments:</div><div class="line">        print(arg)</div><div class="line">    print(<span class="string">"-"</span> * <span class="number">40</span>)</div><div class="line">    keys = sorted(keywords.keys())</div><div class="line">    <span class="keyword">for</span> kw <span class="keyword">in</span> keys:</div><div class="line">        print(kw, <span class="string">":"</span>, keywords[kw])</div></pre></td></tr></table></figure>
+<p>它可以像这样调用：</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cheeseshop(<span class="string">"Limburger"</span>, <span class="string">"It's very runny, sir."</span>,</div><div class="line">           <span class="string">"It's really very, VERY runny, sir."</span>,</div><div class="line">           shopkeeper=<span class="string">"Michael Palin"</span>,</div><div class="line">           <span class="keyword">client</span>=<span class="string">"John Cleese"</span>,</div><div class="line">           sketch=<span class="string">"Cheese Shop Sketch"</span>)</div></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="bullet">-- </span>Do you have any Limburger ?</div><div class="line"><span class="bullet">-- </span>I'm sorry, we're all out of Limburger</div><div class="line">It's very runny, sir.</div><div class="line"><span class="section">It's really very, VERY runny, sir.</span></div><div class="line">----------------------------------------</div><div class="line">client : John Cleese</div><div class="line">shopkeeper : Michael Palin</div><div class="line">sketch : Cheese Shop Sketch</div></pre></td></tr></table></figure>
+<h3 id="10-python装饰器简单解析"><a class="header-anchor" href="#10-python装饰器简单解析">¶</a>10. python装饰器简单解析<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></h3>
+<p>装饰器提供了一种方法，在函数和类定义的末尾插入自动运行的代码，相当于对函数进行一种扩展。</p>
+<p>下面是一个简单地把日志输出到界面的例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">logger</span><span class="params">(func)</span>:</span></div><div class="line">    print(<span class="string">"in decorator"</span>)</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">        print(<span class="string">"Arguments were: %s, %s"</span> % (args, kwargs))</div><div class="line">        <span class="keyword">return</span> func(*args, **kwargs)</div><div class="line">    <span class="keyword">return</span> inner</div></pre></td></tr></table></figure>
+<p>请注意我们的函数inner，它能够接受任意数量和类型的参数并把它们传递给被包装的方法，这让我们能够用这个装饰器来装饰任何方法，例如：装饰下面的foo1函数。</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@logger</span></div><div class="line">def foo1(x, y=<span class="number">1</span>):</div><div class="line">     <span class="keyword">return</span> x * y</div><div class="line">print(foo1(5, 4))</div><div class="line">orint(foo1(1))</div></pre></td></tr></table></figure>
+<p>输出结果如下：</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">in</span> decorator</div><div class="line"><span class="keyword">Arguments</span> were: (<span class="number">5</span>, <span class="number">4</span>), &#123;&#125;</div><div class="line"><span class="number">20</span></div><div class="line"><span class="keyword">Arguments</span> were: (<span class="number">1</span>,), &#123;&#125;</div><div class="line"><span class="number">1</span></div></pre></td></tr></table></figure>
+<p>值得注意的是，第一次调用<code>foo1(5,4)</code>时，相当于</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">fo<span class="meta">o1</span> = logger<span class="comment">(foo1)</span></div><div class="line">fo<span class="meta">o1</span><span class="comment">(5,4)</span></div></pre></td></tr></table></figure>
+<p>第二次调用<code>foo1(1)</code>时，foo1已经是logger(foo1)的返回值了。</p>
+<p>所以只有第一次调用时输出了<code>in decorator</code></p>
+<p>在python的functools模块中，跟装饰器相关的有三个主要函数partial()，update_wrapper()和wraps()<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p><strong>partial()<strong>主要功能我感觉就是</strong>把需要输入参数减少了</strong>，例如本来把输入的数字转化为二进制的话需要<code>int('11',base=2)</code>，但是利用partial新建一个函数<code>int2 = partial(int, base=2)</code>之后，就可以直接调用<code>int2('11')</code></p>
+<p>**update_wrapper()**的功能是把被封装的函数的module，name，doc和dict复制到封装的函数中去。</p>
+<p>其源码涉及到以下两个函数：</p>
+<p>setattr()
+: setattr()表示你可以通过该方法，给对象添加或者修改指定属性，setattr()接受三个参数：setattr(对象，属性，属性的值)</p>
+<p>getattr()
+: getattr用于返回一个对象属性，或者方法</p>
+<p>**wraps()**函数相当于是用partial()把update_wrapper()又封装了一下，其实现如下。</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">def wraps(wrapped, <span class="attr">assigned</span> = WPAPPER_ASSIGNMENTS, <span class="attr">updated</span> = WRAPPER_UPDATES):</div><div class="line">    return partial(update_wrapper, <span class="attr">wrapped</span> = wrapped, <span class="attr">assigned</span> = assigned, <span class="attr">updated</span> = updated)</div></pre></td></tr></table></figure>
+<p>利用这三个函数可以方便地实现装饰器，参考下面的代码，和一般装饰器类似，都是定义了一个自己的装饰器函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span><span class="params">(f)</span>:</span></div><div class="line"><span class="meta">     @wraps(f)</span></div><div class="line">     <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwds)</span>:</span></div><div class="line">         print(<span class="string">'Calling decorated function'</span>)</div><div class="line">         <span class="keyword">return</span> f(*args, **kwds)</div><div class="line">     <span class="keyword">return</span> wrapper</div><div class="line"></div><div class="line"><span class="meta">@my_decorator</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">example</span><span class="params">()</span>:</span></div><div class="line">    <span class="string">'''这里是文档注释'''</span></div><div class="line">    print(<span class="string">'Called example function'</span>)</div><div class="line"></div><div class="line">example()</div><div class="line">print(example.__name__) <span class="comment"># 'example'</span></div><div class="line">print(example.__doc__) <span class="comment"># '这里是文档注释'</span></div></pre></td></tr></table></figure>
+<p>其输出为</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Calling decorated <span class="keyword">function</span></div><div class="line"><span class="title">Called</span> example <span class="keyword">function</span></div><div class="line"><span class="title">example</span></div><div class="line">这里是文档注释</div></pre></td></tr></table></figure>
+<p>值得注意的是@wraps(f)一句，它把被装饰的函数的name，doc等参数复制到装饰器内部的wrapper函数中去，所以最后两句print的输出是</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">example</span></div><div class="line">这里是文档注释</div></pre></td></tr></table></figure>
+<p>否则输出为</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">wrapper</span></div><div class="line">None</div></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="http://www.pythondoc.com/pythontutorial3/controlflow.html#tut-defining" target="_blank" rel="external">http://www.pythondoc.com/pythontutorial3/controlflow.html#tut-defining</a> <a href="#fnref1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="http://python.jobbole.com/81683/" target="_blank" rel="external">http://python.jobbole.com/81683/</a> <a href="#fnref2" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a href="http://blog.jkey.lu/2013/03/15/python-decorator-and-functools-module/" target="_blank" rel="external">http://blog.jkey.lu/2013/03/15/python-decorator-and-functools-module/</a> <a href="#fnref3" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/06/Win10上利用github+hexo建立博客的方法/" rel="next" title="Win10上利用github+hexo建立博客的方法">
+                <i class="fa fa-chevron-left"></i> Win10上利用github+hexo建立博客的方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/07/利用Mapbox和OSRM进行轨迹数据可视化教程/" rel="prev" title="利用Mapbox和OSRM进行轨迹数据可视化教程">
+                利用Mapbox和OSRM进行轨迹数据可视化教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/13/Tips on data analysis by python (advanced)/"
+           data-title="Tips on data analysis by python (advanced)" data-url="http://hujichn.github.io/2016/05/13/Tips on data analysis by python (advanced)/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/cat.jpg"
+               alt="Ji Hu" />
+          <p class="site-author-name" itemprop="name">Ji Hu</p>
+           
+              <p class="site-description motion-element" itemprop="description">fight！</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-对于groupby的结果分别apply函数进行计算-类似reduce的感觉"><span class="nav-number">1.</span> <span class="nav-text">¶1. 对于groupby的结果分别apply函数进行计算，类似reduce的感觉</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-把字符串表示的时间进行加减-得到新字符串"><span class="nav-number">2.</span> <span class="nav-text">¶2. 把字符串表示的时间进行加减，得到新字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-python中的异常处理简介"><span class="nav-number">3.</span> <span class="nav-text">¶3. python中的异常处理简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-由字典建立一行的dataframe"><span class="nav-number">4.</span> <span class="nav-text">¶4. 由字典建立一行的DataFrame</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-填充缺失值-fillna"><span class="nav-number">5.</span> <span class="nav-text">¶5. 填充缺失值 fillna</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-求出假期的方法"><span class="nav-number">6.</span> <span class="nav-text">¶6. 求出假期的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-去掉列表中重复元素的方法"><span class="nav-number">7.</span> <span class="nav-text">¶7. 去掉列表中重复元素的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-统计嵌套列表里面各个list出现的次数"><span class="nav-number">8.</span> <span class="nav-text">¶8. 统计嵌套列表里面各个list出现的次数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-python函数定义"><span class="nav-number">9.</span> <span class="nav-text">¶9. Python函数定义[1]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-python装饰器简单解析"><span class="nav-number">10.</span> <span class="nav-text">¶10. python装饰器简单解析[2]</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ji Hu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hujichn"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("cf1BkMNWywyAuHWUVSESYmwt-gzGzoHsz", "F2VRDQsk2yv2sP8CPtdm9C2U");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
