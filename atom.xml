@@ -4,9 +4,9 @@
   <subtitle>偶尔写点东西~</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://hujichn.github.io/"/>
+  <link href="https://hujichn.github.io/"/>
   <updated>2017-03-14T07:13:35.057Z</updated>
-  <id>http://hujichn.github.io/</id>
+  <id>https://hujichn.github.io/</id>
   
   <author>
     <name>Ji Hu</name>
@@ -17,8 +17,8 @@
   
   <entry>
     <title>熵值法确定权重的步骤及适用范围</title>
-    <link href="http://hujichn.github.io/2016/08/10/%E7%86%B5%E5%80%BC%E6%B3%95%E7%A1%AE%E5%AE%9A%E6%9D%83%E9%87%8D%E7%9A%84%E6%AD%A5%E9%AA%A4%E5%8F%8A%E9%80%82%E7%94%A8%E8%8C%83%E5%9B%B4/"/>
-    <id>http://hujichn.github.io/2016/08/10/熵值法确定权重的步骤及适用范围/</id>
+    <link href="https://hujichn.github.io/2016/08/10/%E7%86%B5%E5%80%BC%E6%B3%95%E7%A1%AE%E5%AE%9A%E6%9D%83%E9%87%8D%E7%9A%84%E6%AD%A5%E9%AA%A4%E5%8F%8A%E9%80%82%E7%94%A8%E8%8C%83%E5%9B%B4/"/>
+    <id>https://hujichn.github.io/2016/08/10/熵值法确定权重的步骤及适用范围/</id>
     <published>2016-08-10T14:37:40.000Z</published>
     <updated>2017-03-14T07:13:35.057Z</updated>
     
@@ -260,19 +260,19 @@ $U = \sum_j 100* y_{ij}w_j$</p>
     
     </summary>
     
-      <category term="research" scheme="http://hujichn.github.io/categories/research/"/>
+      <category term="research" scheme="https://hujichn.github.io/categories/research/"/>
     
     
-      <category term="entropy" scheme="http://hujichn.github.io/tags/entropy/"/>
+      <category term="entropy" scheme="https://hujichn.github.io/tags/entropy/"/>
     
-      <category term="weight" scheme="http://hujichn.github.io/tags/weight/"/>
+      <category term="weight" scheme="https://hujichn.github.io/tags/weight/"/>
     
   </entry>
   
   <entry>
     <title>什么是P、NP、NPC、NP-Hard问题</title>
-    <link href="http://hujichn.github.io/2016/07/14/%E4%BB%80%E4%B9%88%E6%98%AFP%E3%80%81NP%E3%80%81NPC%E3%80%81NP-Hard%E9%97%AE%E9%A2%98/"/>
-    <id>http://hujichn.github.io/2016/07/14/什么是P、NP、NPC、NP-Hard问题/</id>
+    <link href="https://hujichn.github.io/2016/07/14/%E4%BB%80%E4%B9%88%E6%98%AFP%E3%80%81NP%E3%80%81NPC%E3%80%81NP-Hard%E9%97%AE%E9%A2%98/"/>
+    <id>https://hujichn.github.io/2016/07/14/什么是P、NP、NPC、NP-Hard问题/</id>
     <published>2016-07-14T12:18:40.000Z</published>
     <updated>2017-03-14T07:13:35.032Z</updated>
     
@@ -321,21 +321,21 @@ $U = \sum_j 100* y_{ij}w_j$</p>
     
     </summary>
     
-      <category term="research" scheme="http://hujichn.github.io/categories/research/"/>
+      <category term="research" scheme="https://hujichn.github.io/categories/research/"/>
     
     
-      <category term="NP" scheme="http://hujichn.github.io/tags/NP/"/>
+      <category term="NP" scheme="https://hujichn.github.io/tags/NP/"/>
     
-      <category term="NPC" scheme="http://hujichn.github.io/tags/NPC/"/>
+      <category term="NPC" scheme="https://hujichn.github.io/tags/NPC/"/>
     
-      <category term="NP-Hard" scheme="http://hujichn.github.io/tags/NP-Hard/"/>
+      <category term="NP-Hard" scheme="https://hujichn.github.io/tags/NP-Hard/"/>
     
   </entry>
   
   <entry>
     <title>Mobility Modeling and Prediction in Bike-Sharing Systems</title>
-    <link href="http://hujichn.github.io/2016/07/07/Mobility%20Modeling%20and%20Prediction%20in%20Bike-Sharing%20Systems/"/>
-    <id>http://hujichn.github.io/2016/07/07/Mobility Modeling and Prediction in Bike-Sharing Systems/</id>
+    <link href="https://hujichn.github.io/2016/07/07/Mobility%20Modeling%20and%20Prediction%20in%20Bike-Sharing%20Systems/"/>
+    <id>https://hujichn.github.io/2016/07/07/Mobility Modeling and Prediction in Bike-Sharing Systems/</id>
     <published>2016-07-07T14:45:05.000Z</published>
     <updated>2017-03-14T07:13:35.008Z</updated>
     
@@ -352,21 +352,21 @@ $U = \sum_j 100* y_{ij}w_j$</p>
     
     </summary>
     
-      <category term="research" scheme="http://hujichn.github.io/categories/research/"/>
+      <category term="research" scheme="https://hujichn.github.io/categories/research/"/>
     
     
-      <category term="bike" scheme="http://hujichn.github.io/tags/bike/"/>
+      <category term="bike" scheme="https://hujichn.github.io/tags/bike/"/>
     
-      <category term="MobiSys" scheme="http://hujichn.github.io/tags/MobiSys/"/>
+      <category term="MobiSys" scheme="https://hujichn.github.io/tags/MobiSys/"/>
     
-      <category term="mobility modeling" scheme="http://hujichn.github.io/tags/mobility-modeling/"/>
+      <category term="mobility modeling" scheme="https://hujichn.github.io/tags/mobility-modeling/"/>
     
   </entry>
   
   <entry>
     <title>利用Mapbox和OSRM进行轨迹数据可视化教程</title>
-    <link href="http://hujichn.github.io/2016/06/07/%E5%88%A9%E7%94%A8Mapbox%E5%92%8COSRM%E8%BF%9B%E8%A1%8C%E8%BD%A8%E8%BF%B9%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E6%95%99%E7%A8%8B/"/>
-    <id>http://hujichn.github.io/2016/06/07/利用Mapbox和OSRM进行轨迹数据可视化教程/</id>
+    <link href="https://hujichn.github.io/2016/06/07/%E5%88%A9%E7%94%A8Mapbox%E5%92%8COSRM%E8%BF%9B%E8%A1%8C%E8%BD%A8%E8%BF%B9%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E6%95%99%E7%A8%8B/"/>
+    <id>https://hujichn.github.io/2016/06/07/利用Mapbox和OSRM进行轨迹数据可视化教程/</id>
     <published>2016-06-07T06:53:02.000Z</published>
     <updated>2017-03-14T07:13:35.051Z</updated>
     
@@ -641,25 +641,25 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
     
     </summary>
     
-      <category term="research" scheme="http://hujichn.github.io/categories/research/"/>
+      <category term="research" scheme="https://hujichn.github.io/categories/research/"/>
     
     
-      <category term="bike" scheme="http://hujichn.github.io/tags/bike/"/>
+      <category term="bike" scheme="https://hujichn.github.io/tags/bike/"/>
     
-      <category term="visualization" scheme="http://hujichn.github.io/tags/visualization/"/>
+      <category term="visualization" scheme="https://hujichn.github.io/tags/visualization/"/>
     
-      <category term="Mapbox" scheme="http://hujichn.github.io/tags/Mapbox/"/>
+      <category term="Mapbox" scheme="https://hujichn.github.io/tags/Mapbox/"/>
     
-      <category term="OSRM" scheme="http://hujichn.github.io/tags/OSRM/"/>
+      <category term="OSRM" scheme="https://hujichn.github.io/tags/OSRM/"/>
     
-      <category term="mysql" scheme="http://hujichn.github.io/tags/mysql/"/>
+      <category term="mysql" scheme="https://hujichn.github.io/tags/mysql/"/>
     
   </entry>
   
   <entry>
     <title>Tips on data analysis by python (advanced)</title>
-    <link href="http://hujichn.github.io/2016/05/13/Tips%20on%20data%20analysis%20by%20python%20(advanced)/"/>
-    <id>http://hujichn.github.io/2016/05/13/Tips on data analysis by python (advanced)/</id>
+    <link href="https://hujichn.github.io/2016/05/13/Tips%20on%20data%20analysis%20by%20python%20(advanced)/"/>
+    <id>https://hujichn.github.io/2016/05/13/Tips on data analysis by python (advanced)/</id>
     <published>2016-05-13T06:19:00.000Z</published>
     <updated>2017-03-14T07:13:35.013Z</updated>
     
@@ -776,17 +776,17 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
     
     </summary>
     
-      <category term="coding" scheme="http://hujichn.github.io/categories/coding/"/>
+      <category term="coding" scheme="https://hujichn.github.io/categories/coding/"/>
     
     
-      <category term="Python" scheme="http://hujichn.github.io/tags/Python/"/>
+      <category term="Python" scheme="https://hujichn.github.io/tags/Python/"/>
     
   </entry>
   
   <entry>
     <title>Win10上利用github+hexo建立博客的方法</title>
-    <link href="http://hujichn.github.io/2016/04/06/Win10%E4%B8%8A%E5%88%A9%E7%94%A8github+hexo%E5%BB%BA%E7%AB%8B%E5%8D%9A%E5%AE%A2%E7%9A%84%E6%96%B9%E6%B3%95/"/>
-    <id>http://hujichn.github.io/2016/04/06/Win10上利用github+hexo建立博客的方法/</id>
+    <link href="https://hujichn.github.io/2016/04/06/Win10%E4%B8%8A%E5%88%A9%E7%94%A8github+hexo%E5%BB%BA%E7%AB%8B%E5%8D%9A%E5%AE%A2%E7%9A%84%E6%96%B9%E6%B3%95/"/>
+    <id>https://hujichn.github.io/2016/04/06/Win10上利用github+hexo建立博客的方法/</id>
     <published>2016-04-06T08:55:47.000Z</published>
     <updated>2017-03-14T08:06:11.348Z</updated>
     
@@ -987,17 +987,17 @@ $$\sum_{i=1}^n a_i=0$$</p>
     
     </summary>
     
-      <category term="other" scheme="http://hujichn.github.io/categories/other/"/>
+      <category term="other" scheme="https://hujichn.github.io/categories/other/"/>
     
     
-      <category term="Blog" scheme="http://hujichn.github.io/tags/Blog/"/>
+      <category term="Blog" scheme="https://hujichn.github.io/tags/Blog/"/>
     
   </entry>
   
   <entry>
     <title>第一章 Spark简介</title>
-    <link href="http://hujichn.github.io/2016/03/10/%E7%AC%AC%E4%B8%80%E7%AB%A0-Spark%E7%AE%80%E4%BB%8B/"/>
-    <id>http://hujichn.github.io/2016/03/10/第一章-Spark简介/</id>
+    <link href="https://hujichn.github.io/2016/03/10/%E7%AC%AC%E4%B8%80%E7%AB%A0-Spark%E7%AE%80%E4%BB%8B/"/>
+    <id>https://hujichn.github.io/2016/03/10/第一章-Spark简介/</id>
     <published>2016-03-10T03:07:41.000Z</published>
     <updated>2017-03-14T07:13:35.058Z</updated>
     
@@ -1056,17 +1056,17 @@ $$\sum_{i=1}^n a_i=0$$</p>
     
     </summary>
     
-      <category term="coding" scheme="http://hujichn.github.io/categories/coding/"/>
+      <category term="coding" scheme="https://hujichn.github.io/categories/coding/"/>
     
     
-      <category term="Spark" scheme="http://hujichn.github.io/tags/Spark/"/>
+      <category term="Spark" scheme="https://hujichn.github.io/tags/Spark/"/>
     
   </entry>
   
   <entry>
     <title>Tips on data analysis by python</title>
-    <link href="http://hujichn.github.io/2016/03/02/Tips%20on%20data%20analysis%20by%20python/"/>
-    <id>http://hujichn.github.io/2016/03/02/Tips on data analysis by python/</id>
+    <link href="https://hujichn.github.io/2016/03/02/Tips%20on%20data%20analysis%20by%20python/"/>
+    <id>https://hujichn.github.io/2016/03/02/Tips on data analysis by python/</id>
     <published>2016-03-02T14:42:00.000Z</published>
     <updated>2017-03-14T07:13:35.014Z</updated>
     
@@ -1130,10 +1130,10 @@ $$\sum_{i=1}^n a_i=0$$</p>
     
     </summary>
     
-      <category term="coding" scheme="http://hujichn.github.io/categories/coding/"/>
+      <category term="coding" scheme="https://hujichn.github.io/categories/coding/"/>
     
     
-      <category term="Python" scheme="http://hujichn.github.io/tags/Python/"/>
+      <category term="Python" scheme="https://hujichn.github.io/tags/Python/"/>
     
   </entry>
   
