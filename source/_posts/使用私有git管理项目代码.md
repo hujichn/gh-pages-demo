@@ -1,6 +1,7 @@
 ---
 title: 使用私有git管理项目代码
 date: 2017-02-26 20:21:13
+categories: other
 tags: Github
 ---
 
@@ -14,9 +15,6 @@ author: [@Huji][1]
 
 
 目前实验室的服务器上搭建了一个私有git采用的是`Gogs - Go Git Service`（其配置可以参考网络的文档[^Gogs]），访问地址是 `http://10.15.198.247:3000`。
-
-我的注册邮箱是hujihchn@gmail.com
-密码/用户名都是jessie
 
 ### 访问服务器并创建账号
 
