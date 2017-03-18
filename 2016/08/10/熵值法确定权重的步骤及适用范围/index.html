@@ -408,8 +408,8 @@
 <p>下面我们就以作者提出的例子利用熵值法进行权重的求解（原贴的求解感觉存在问题），一方面可以学习一下熵值法确定权重的步骤，一方面也体会下熵值法的优缺点。</p>
 <a id="more"></a>
 <p>author: <a href="https://hujichn.github.io/">@Huji</a></p>
-<h2 id="熵值法的原理"><a class="header-anchor" href="#熵值法的原理">¶</a>熵值法的原理</h2>
-<h3 id="什么是信息熵"><a class="header-anchor" href="#什么是信息熵">¶</a>什么是信息熵</h3>
+<h2 id="熵值法的原理">熵值法的原理</h2>
+<h3 id="什么是信息熵">什么是信息熵</h3>
 <p><code>熵</code>是热力学的一个物理概念，是体系混乱度（或无序度）的量度。熵越大说明系统越混乱，携带的信息越少，熵越小说明系统越有序，携带的信息越多。</p>
 <p><code>信息熵</code>则借鉴了热力学中熵的概念 (注意：信息熵的符号与热力学熵应该是相反的<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>)，用于描述平均而言事件信息量大小。所以数学上，信息熵其实是<strong>事件所包含的信息量的期望</strong><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>。</p>
 <blockquote>
@@ -453,10 +453,10 @@
 <p>综上，带入到我们一开始假设的公式中，可以得到信息熵的数学表达式如下：</p>
 <p>$H(U) = -\sum_{i=1}^{n} P_i logP_i$</p>
 <p>这里$H$是熵，$U$可以理解为所有可能事件的集合，有n种取值：$U_1,…,U_i,…,U_n$，对应概率为：$P_1,…,P_i,…,P_n$，对数的底一般取2。</p>
-<h3 id="熵值法"><a class="header-anchor" href="#熵值法">¶</a>熵值法</h3>
+<h3 id="熵值法">熵值法</h3>
 <p>根据信息熵的定义，对于某项指标，我们可以<strong>用熵值来判断某个指标的离散程度</strong>，其熵值越小，指标的离散程度越大，该指标对综合评价的影响(即<strong>权重</strong>)越大。如果某项指标的值全部相等，那么该指标在综合评价中不起作用。</p>
-<h2 id="熵值法的计算步骤"><a class="header-anchor" href="#熵值法的计算步骤">¶</a>熵值法的计算步骤</h2>
-<h3 id="问题描述"><a class="header-anchor" href="#问题描述">¶</a>问题描述</h3>
+<h2 id="熵值法的计算步骤">熵值法的计算步骤</h2>
+<h3 id="问题描述">问题描述</h3>
 <p>作者提出的是这样一个问题</p>
 <blockquote>
 <p>题目：这群学生中“最聪明/最优秀”的学生是谁？</p>
@@ -552,7 +552,7 @@
 </tbody>
 </table>
 </blockquote>
-<h3 id="计算步骤"><a class="header-anchor" href="#计算步骤">¶</a>计算步骤</h3>
+<h3 id="计算步骤">计算步骤</h3>
 <p><strong>注意：相关xlsx文件可以在此处【<a href="http://pan.baidu.com/s/1geCN3Yr" target="_blank" rel="external">下载</a>】</strong></p>
 <ol>
 <li><strong>确定指标体系</strong>
@@ -608,20 +608,20 @@ $U = \sum_j 100* y_{ij}w_j$</p>
 <p>$U$为综合评价值，$w_j$为第j个指标的权重。</p>
 <p>计算出的总分从高到低排序如下图所示：</p>
 <p><img src="http://static.zybuluo.com/huji/lgdqsk3nh1g413fssf82mote/image_1apqaaqgo1gefia1ta01td7m031a.png" alt="image_1apqaaqgo1gefia1ta01td7m031a.png-19kB"></p>
-<h2 id="熵值法的优缺点及适用范围"><a class="header-anchor" href="#熵值法的优缺点及适用范围">¶</a>熵值法的优缺点及适用范围</h2>
-<h3 id="优点"><a class="header-anchor" href="#优点">¶</a>优点</h3>
+<h2 id="熵值法的优缺点及适用范围">熵值法的优缺点及适用范围</h2>
+<h3 id="优点">优点</h3>
 <ul>
 <li>熵值法能深刻反映出指标的区分能力，进而确定权重</li>
 <li>是一种客观赋权法，有理论依据，相对主观赋权具有较高的可信度和精确度</li>
 <li>算法简单，实践起来比较方便，不需要借助其他分析软件</li>
 </ul>
-<h3 id="缺点"><a class="header-anchor" href="#缺点">¶</a>缺点</h3>
+<h3 id="缺点">缺点</h3>
 <ul>
 <li>智能程度不够高。和多元回归和主成分等统计方法不同，它不能考虑指标与指标之间横向的影响（如：相关性）</li>
 <li>若无业务经验的指导，权重可能失真</li>
 <li>对样本的依赖性比较大，随着建模样本变化，权重会有一定的波动</li>
 </ul>
-<h3 id="适用范围"><a class="header-anchor" href="#适用范围">¶</a>适用范围</h3>
+<h3 id="适用范围">适用范围</h3>
 <p>结合上面的实例，我们看到：体育成绩离散程度更大，导致其最后权重也更大，但是从通常评判的角度看，聪明程度往往与数学成绩关系更为密切。这就说明单单使用熵值法权重失真是经常发生的，要结合一定专家打分法才能发挥熵值法的优势，像<strong>确定指标体系</strong>中的示意图那样，构建两级评价体系，上层可能需要结合专家经验来构建，而<strong>底层的指标分的比较细，权重比较难确定，这种情况下采用熵值法比较合适</strong>。</p>
 <p>另外，确定权重前需要确定指标对目标得分的影响方向，对非线性的指标要进行预处理或者剔除。还要注意处理好极值。</p>
 <hr class="footnotes-sep">
@@ -686,6 +686,10 @@ $U = \sum_j 100* y_{ij}w_j$</p>
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/20/度问题求解文献总结/" rel="prev" title="调度问题求解文献总结">
+                调度问题求解文献总结 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -761,7 +765,7 @@ $U = \sum_j 100* y_{ij}w_j$</p>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -783,7 +787,7 @@ $U = \sum_j 100* y_{ij}w_j$</p>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -825,7 +829,7 @@ $U = \sum_j 100* y_{ij}w_j$</p>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#熵值法的原理"><span class="nav-number">1.</span> <span class="nav-text">¶熵值法的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是信息熵"><span class="nav-number">1.1.</span> <span class="nav-text">¶什么是信息熵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#熵值法"><span class="nav-number">1.2.</span> <span class="nav-text">¶熵值法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#熵值法的计算步骤"><span class="nav-number">2.</span> <span class="nav-text">¶熵值法的计算步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">2.1.</span> <span class="nav-text">¶问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算步骤"><span class="nav-number">2.2.</span> <span class="nav-text">¶计算步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#熵值法的优缺点及适用范围"><span class="nav-number">3.</span> <span class="nav-text">¶熵值法的优缺点及适用范围</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">3.1.</span> <span class="nav-text">¶优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点"><span class="nav-number">3.2.</span> <span class="nav-text">¶缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#适用范围"><span class="nav-number">3.3.</span> <span class="nav-text">¶适用范围</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#熵值法的原理"><span class="nav-number">1.</span> <span class="nav-text">熵值法的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是信息熵"><span class="nav-number">1.1.</span> <span class="nav-text">什么是信息熵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#熵值法"><span class="nav-number">1.2.</span> <span class="nav-text">熵值法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#熵值法的计算步骤"><span class="nav-number">2.</span> <span class="nav-text">熵值法的计算步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">2.1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算步骤"><span class="nav-number">2.2.</span> <span class="nav-text">计算步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#熵值法的优缺点及适用范围"><span class="nav-number">3.</span> <span class="nav-text">熵值法的优缺点及适用范围</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">3.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点"><span class="nav-number">3.2.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#适用范围"><span class="nav-number">3.3.</span> <span class="nav-text">适用范围</span></a></li></ol></li></ol></div>
             
 
           </div>

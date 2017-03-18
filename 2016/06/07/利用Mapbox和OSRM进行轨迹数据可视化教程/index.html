@@ -424,21 +424,21 @@
 <a id="more"></a>
 <p>author: <a href="https://hujichn.github.io/">@Huji</a></p>
 <p><em>版权归作者所有，任何形式转载请联系作者。</em></p>
-<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<h2 id="前言">前言</h2>
 <p>最近在做自行车调度方面的项目，希望能够呈现现有的调度轨迹，用可视化的方法让我们能够对现有的调度有一个直观的感受。选择<code>Mapbox</code>这一平台主要是看到了一家叫做urbica的可视化公司做的一个<a href="http://urbica.co/citibike/" target="_blank" rel="external">自行车trip的可视化系统</a>，这个系统的实现参考了一篇国外的硕士论文Rebalancing Citi Bike——A geospatial analysis of bike share redistribution in New York City，论文内容倒是比较简单，关键还是在实现，下面先放两张图仰慕一下效果。</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/1.gif" alt="mode 1"></p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/2.gif" alt="mode 2"></p>
 <p>其实现主要利用了<code>Mapbox</code>和<code>OSRM</code>，P.S. 另外还采用了<a href="http://d3js.org/" target="_blank" rel="external">D3.js</a> 来绘制一些滑动条啊、图表啊之类的，这个暂时还没研究，恩，列入to do list。</p>
-<h3 id="mapbox"><a class="header-anchor" href="#mapbox">¶</a>Mapbox</h3>
+<h3 id="mapbox">Mapbox</h3>
 <p>Mapbox国内13年就有报道过了，感兴趣的同学可以点下面的链接。
 <a href="http://www.pingwest.com/demo/mapbox/" target="_blank" rel="external">创立3年没要投资人一分钱，没销售人员——个性定制地图网站Mapbox是如何服务900家付费客户，并养活30号员工的</a></p>
 <p>也可以直接点<a href="https://www.mapbox.com/" target="_blank" rel="external">这里</a>前往<code>Mapbox</code>的官方网站，可以看到很多很漂亮的应用。</p>
 <p><code>Mapbox</code>实际上是一个平台，提供免费创建并定制个性化地图的服务，可以根据用户需要定制不同风格的地图，在上面加载你的数据图层等等。而上面的这个项目实际使用了<a href="https://www.mapbox.com/mapbox-gl-js/api/" target="_blank" rel="external">Mapbox GL JS</a> API来进行地图方面的可视化。注意，<a href="https://www.mapbox.com/mapbox-gl-js/api/" target="_blank" rel="external">Mapbox GL JS</a>是Mapbox提供的一个库，让用户可以方便地将生成的地图嵌入到自己的web应用中。当然，也支持导入到其他地图方案，如ios和android。</p>
-<h3 id="osrm"><a class="header-anchor" href="#osrm">¶</a>OSRM</h3>
+<h3 id="osrm">OSRM</h3>
 <p>可以看到第一张图里面显示了一些自行车和调度车的轨迹，然而原始数据中只有轨迹的起止点，也就是从哪个站点出发，哪个站点还车。</p>
 <p><strong>那么，如何将这样的数据匹配到路网上呢？</strong></p>
 <p>这就需要用到<a href="http://project-osrm.org/" target="_blank" rel="external">Open Source Routing Machine (OSRM) </a>。这是一个开源的路线生成引擎，给定起止点后，能够在路网中生成一条两点之间的最短路径，其基于的路网数据来自于<a href="https://www.openstreetmap.org/#map=5/51.500/-0.100" target="_blank" rel="external">OpenStreetMap</a>。</p>
-<h2 id="利用osrm生成轨迹数据"><a class="header-anchor" href="#利用osrm生成轨迹数据">¶</a>利用OSRM生成轨迹数据</h2>
+<h2 id="利用osrm生成轨迹数据">利用OSRM生成轨迹数据</h2>
 <p>这一段我们具体来介绍怎么利用OSRM生成轨迹数据。</p>
 <p>ORSM开放的api<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>如下</p>
 <figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="link">http://&#123;server&#125;/&#123;service&#125;/&#123;version&#125;/&#123;profile&#125;/&#123;coordinates&#125;</span>[<span class="string">.&#123;format&#125;</span>]?option=value&amp;option=value</div></pre></td></tr></table></figure>
@@ -568,26 +568,26 @@
 </ul>
 <p>因为我们api中没有设置返回多条路径，所以默认返回一条，但是要取出这条路径要访问<code>data[&quot;routes&quot;][0]</code>。</p>
 <p>路径包含的信息参见上面的输出结果，包含了路径的长度，耗时，和各个节点的信息。</p>
-<h2 id="将轨迹数据-路径-存入mysql数据库"><a class="header-anchor" href="#将轨迹数据-路径-存入mysql数据库">¶</a>将轨迹数据（路径）存入mysql数据库</h2>
+<h2 id="将轨迹数据-路径-存入mysql数据库">将轨迹数据（路径）存入mysql数据库</h2>
 <p>轨迹数据生成好之后，就需要进行存储，否则每次都要重新再算太麻烦了。
 mysql遵守OGC的OpenGIS Geometry Model，支持Point、LineString等多种数据对象，我们这里用到的是LineString。</p>
-<h3 id="创建可以存储轨迹这类空间数据的表"><a class="header-anchor" href="#创建可以存储轨迹这类空间数据的表">¶</a>创建可以存储轨迹这类空间数据的表</h3>
+<h3 id="创建可以存储轨迹这类空间数据的表">创建可以存储轨迹这类空间数据的表</h3>
 <p>当前只有MyISAM引擎的数据表支持地理空间数据的存储，所以在创建数据表的时候必须进行声明。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> driving_routes(</div><div class="line">  stationA <span class="built_in">VARCHAR</span>(<span class="number">16</span>),</div><div class="line">  stationB <span class="built_in">VARCHAR</span>(<span class="number">16</span>),</div><div class="line">  <span class="keyword">duration</span> <span class="built_in">VARCHAR</span>(<span class="number">32</span>),</div><div class="line">  distance <span class="built_in">VARCHAR</span>(<span class="number">32</span>),</div><div class="line">  routes LINESTRING</div><div class="line">)<span class="keyword">ENGINE</span>=MyISAM;</div></pre></td></tr></table></figure>
 <p>创建后的表结果如下图</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/create_table.png" alt="create_table"></p>
-<h3 id="插入一条数据"><a class="header-anchor" href="#插入一条数据">¶</a>插入一条数据</h3>
+<h3 id="插入一条数据">插入一条数据</h3>
 <p>插入数据要用到ST_GeomFromText的函数，将数据转化为数据库内部的几何格式。</p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">INSERT INTO `driving_routes` VALUES(</div><div class="line">'<span class="number">3942</span>',</div><div class="line">'<span class="number">3218</span>',</div><div class="line">'<span class="number">239.3</span>',</div><div class="line">'<span class="number">3295.2</span>',</div><div class="line">ST_GeomFromText('LINESTRING(<span class="number">120.7205165</span> <span class="number">27.98760837</span>, <span class="number">120.719859</span> <span class="number">27.987895</span>, <span class="number">120.73371</span> <span class="number">27.987744</span>)')</div><div class="line">);</div></pre></td></tr></table></figure>
-<h3 id="提取数据"><a class="header-anchor" href="#提取数据">¶</a>提取数据</h3>
+<h3 id="提取数据">提取数据</h3>
 <p>提取数据则相反，</p>
 <figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> ST_AsText(routes) <span class="keyword">from</span> <span class="symbol">`driving_routes`</span>;</div></pre></td></tr></table></figure>
 <p>其实存为linestring类型之后还可以在sql中进行一些其他操作</p>
 <p>例如需要查找一辆车在某一段时间内是否在一段区域内经过，用点来说明的话，就是一个空间坐标点在一个特定时间段内是否包含在一个特定的矩形区域内。<code>MBRWithin(g1,g2)</code>函数应该能达到这个功能:</p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT AsText(pnt) FROM `gis` WHERE MBRWithin(pnt,GeomFromText('Polygon(<span class="number">1</span> <span class="number">1</span>,<span class="number">0</span> <span class="number">30</span>,<span class="number">30</span> <span class="number">30</span>,<span class="number">30</span> <span class="number">0</span>，<span class="number">1</span> )'))</div></pre></td></tr></table></figure>
-<h2 id="利用mapbox进行可视化"><a class="header-anchor" href="#利用mapbox进行可视化">¶</a>利用Mapbox进行可视化</h2>
+<h2 id="利用mapbox进行可视化">利用Mapbox进行可视化</h2>
 <p><strong>请将鼠标移动到图片上并点击可看到大图！！！！</strong></p>
-<h3 id="注册并进入studio"><a class="header-anchor" href="#注册并进入studio">¶</a>注册并进入studio</h3>
+<h3 id="注册并进入studio">注册并进入studio</h3>
 <p>首先当然是注册一个mapbox的账号，点击<a href="https://www.mapbox.com/studio/signup/" target="_blank" rel="external">注册链接</a>，在这个页面输入用户名、邮箱、密码进行注册。</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/sign_up.png" alt="sign_up"></p>
 <p>完成注册后登陆mapbox，就会进入到studio的界面，如下图所示。</p>
@@ -602,7 +602,7 @@ mysql遵守OGC的OpenGIS Geometry Model，支持Point、LineString等多种数�
 <li>Status: 在这里可以看到我们账户的一些统计信息，例如地图的访问次数(map views)等等。我们注册的一般是免费账户，如果访问次数，流量等等到达一定限制的话是需要收费的，收费情况如下图所示，免费账户有50,000次访问，如果只是科研上用下其实一般用不掉的啦</li>
 </ul>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/price.png" alt="price"></p>
-<h3 id="创建一个style"><a class="header-anchor" href="#创建一个style">¶</a>创建一个style</h3>
+<h3 id="创建一个style">创建一个style</h3>
 <p>进入studio之后，下面就可以创建一个style。</p>
 <p>首先，在home页面下，点击<code>Go to styles</code>的按钮或者直接单击左侧的<code>Styles</code>选卡。</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/go_to_styles.png" alt="go_to_styles"></p>
@@ -624,7 +624,7 @@ mysql遵守OGC的OpenGIS Geometry Model，支持Point、LineString等多种数�
 <blockquote>
 <p><strong>因此，pulish等于说是手动保存的意思！！没事的话不需要publish，确定修改已经完成，并且没有问题的时候才点击编辑界面的左栏右上角的publish按钮进行发布！</strong></p>
 </blockquote>
-<h3 id="上传自己的数据"><a class="header-anchor" href="#上传自己的数据">¶</a>上传自己的数据</h3>
+<h3 id="上传自己的数据">上传自己的数据</h3>
 <p>基本的调整熟悉了之后，下一步就可以上传数据啦！</p>
 <p>Mapbox支持多种格式的数据，如GeoJson或者CSV等等，这里我们采用GeoJson为例。把刚才得到的轨迹数据处理成GeoJson的格式<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>。下面给出一个比较短的GeoJson的文件示例，其中包含两条轨迹数据，属于LineString的类型：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"features"</span>: [</div><div class="line">    &#123;</div><div class="line">      <span class="attr">"properties"</span>: &#123;</div><div class="line">        <span class="attr">"prop0"</span>: <span class="string">"value0"</span></div><div class="line">      &#125;,</div><div class="line">      <span class="attr">"id"</span>: <span class="string">"&#123;feature_id&#125;"</span>,</div><div class="line">      <span class="attr">"geometry"</span>: &#123;</div><div class="line">        <span class="attr">"coordinates"</span>: [</div><div class="line">          [</div><div class="line">            <span class="number">120.382304</span>,</div><div class="line">            <span class="number">30.288768</span></div><div class="line">          ],</div><div class="line">          [</div><div class="line">            <span class="number">120.379259</span>,</div><div class="line">            <span class="number">30.289752</span></div><div class="line">          ],</div><div class="line">          [</div><div class="line">            <span class="number">120.377224</span>,</div><div class="line">            <span class="number">30.289839</span></div><div class="line">          ],</div><div class="line">          [</div><div class="line">            <span class="number">120.377248</span>,</div><div class="line">            <span class="number">30.30479</span></div><div class="line">          ]</div><div class="line">        ],</div><div class="line">        <span class="attr">"type"</span>: <span class="string">"LineString"</span></div><div class="line">      &#125;,</div><div class="line">      <span class="attr">"type"</span>: <span class="string">"Feature"</span></div><div class="line">    &#125;,</div><div class="line">    &#123;</div><div class="line">      <span class="attr">"properties"</span>: &#123;</div><div class="line">        <span class="attr">"prop0"</span>: <span class="string">"value0"</span></div><div class="line">      &#125;,</div><div class="line">      <span class="attr">"id"</span>: <span class="string">"&#123;feature_id&#125;"</span>,</div><div class="line">      <span class="attr">"geometry"</span>: &#123;</div><div class="line">        <span class="attr">"coordinates"</span>: [</div><div class="line">          [</div><div class="line">            <span class="number">120.344083</span>,</div><div class="line">            <span class="number">30.309248</span></div><div class="line">          ],</div><div class="line">          [</div><div class="line">            <span class="number">120.344496</span>,</div><div class="line">            <span class="number">30.303979</span></div><div class="line">          ],</div><div class="line">          [</div><div class="line">            <span class="number">120.343989</span>,</div><div class="line">            <span class="number">30.303754</span></div><div class="line">          ],</div><div class="line">          [</div><div class="line">            <span class="number">120.333314</span>,</div><div class="line">            <span class="number">30.303028</span></div><div class="line">          ]</div><div class="line">        ],</div><div class="line">        <span class="attr">"type"</span>: <span class="string">"LineString"</span></div><div class="line">      &#125;,</div><div class="line">      <span class="attr">"type"</span>: <span class="string">"Feature"</span></div><div class="line">    &#125;</div><div class="line">  ],</div><div class="line">  <span class="attr">"type"</span>: <span class="string">"FeatureCollection"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -654,7 +654,7 @@ mysql遵守OGC的OpenGIS Geometry Model，支持Point、LineString等多种数�
 Datasets vs Tilesets
 Tilesets are fast light, and easy to style. Datasets are lossless, editable, and can’t be styled. Think of Tilesets as the delivery format for the data in your Datasets.</p>
 </blockquote>
-<h3 id="加载数据-发布style"><a class="header-anchor" href="#加载数据-发布style">¶</a>加载数据，发布style</h3>
+<h3 id="加载数据-发布style">加载数据，发布style</h3>
 <p>数据上传好了，下一步就是加载。</p>
 <p>先回到Style页面，点击<code>Test</code>后面的<code>Edit</code>，回到刚才创建的<code>Test</code> Style里面。</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/style_edit_again.png" alt="style_edit_again"></p>
@@ -663,7 +663,7 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
 <p>创建完毕会出现style编辑的页面，双击地图放大到杭州区域，找到我们绘制的两条轨迹，然后可以改变其颜色，还可以做其他设置。</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/publish.png" alt="publish"></p>
 <p>至此，数据的加载就完成了，单击左上角的<code>publish</code>按钮就即可完成该style的发布。</p>
-<h3 id="创建可视化web端"><a class="header-anchor" href="#创建可视化web端">¶</a>创建可视化web端</h3>
+<h3 id="创建可视化web端">创建可视化web端</h3>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/success.png" alt="success"></p>
 <p>发布完成后的页面如上图所示，点击<code>Preview, develop &amp; use</code>，可以看到使用的相关信息，如下图所示。可以将网页进行分享，可以将生成的style展示到web端，嵌入到Android或者ios的app中等等。其中，我们需要的两条信息是<code>Style URL</code>和<code>Access token</code>。</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/develop.png" alt="develop"></p>
@@ -821,7 +821,7 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -843,7 +843,7 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -885,7 +885,7 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">¶前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mapbox"><span class="nav-number">1.1.</span> <span class="nav-text">¶Mapbox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#osrm"><span class="nav-number">1.2.</span> <span class="nav-text">¶OSRM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用osrm生成轨迹数据"><span class="nav-number">2.</span> <span class="nav-text">¶利用OSRM生成轨迹数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将轨迹数据-路径-存入mysql数据库"><span class="nav-number">3.</span> <span class="nav-text">¶将轨迹数据（路径）存入mysql数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建可以存储轨迹这类空间数据的表"><span class="nav-number">3.1.</span> <span class="nav-text">¶创建可以存储轨迹这类空间数据的表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入一条数据"><span class="nav-number">3.2.</span> <span class="nav-text">¶插入一条数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提取数据"><span class="nav-number">3.3.</span> <span class="nav-text">¶提取数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用mapbox进行可视化"><span class="nav-number">4.</span> <span class="nav-text">¶利用Mapbox进行可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注册并进入studio"><span class="nav-number">4.1.</span> <span class="nav-text">¶注册并进入studio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个style"><span class="nav-number">4.2.</span> <span class="nav-text">¶创建一个style</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传自己的数据"><span class="nav-number">4.3.</span> <span class="nav-text">¶上传自己的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加载数据-发布style"><span class="nav-number">4.4.</span> <span class="nav-text">¶加载数据，发布style</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建可视化web端"><span class="nav-number">4.5.</span> <span class="nav-text">¶创建可视化web端</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mapbox"><span class="nav-number">1.1.</span> <span class="nav-text">Mapbox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#osrm"><span class="nav-number">1.2.</span> <span class="nav-text">OSRM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用osrm生成轨迹数据"><span class="nav-number">2.</span> <span class="nav-text">利用OSRM生成轨迹数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将轨迹数据-路径-存入mysql数据库"><span class="nav-number">3.</span> <span class="nav-text">将轨迹数据（路径）存入mysql数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建可以存储轨迹这类空间数据的表"><span class="nav-number">3.1.</span> <span class="nav-text">创建可以存储轨迹这类空间数据的表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入一条数据"><span class="nav-number">3.2.</span> <span class="nav-text">插入一条数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提取数据"><span class="nav-number">3.3.</span> <span class="nav-text">提取数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用mapbox进行可视化"><span class="nav-number">4.</span> <span class="nav-text">利用Mapbox进行可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注册并进入studio"><span class="nav-number">4.1.</span> <span class="nav-text">注册并进入studio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个style"><span class="nav-number">4.2.</span> <span class="nav-text">创建一个style</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传自己的数据"><span class="nav-number">4.3.</span> <span class="nav-text">上传自己的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加载数据-发布style"><span class="nav-number">4.4.</span> <span class="nav-text">加载数据，发布style</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建可视化web端"><span class="nav-number">4.5.</span> <span class="nav-text">创建可视化web端</span></a></li></ol></li></ol></div>
             
 
           </div>

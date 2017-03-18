@@ -399,19 +399,19 @@
         <p>优化问题在磕盐的时候经常会遇到，其中经常涉及到某某问题是NP的之类的论断，因此花了一点时间整理了一下NP问题的相关知识，在研究过程中看到一篇很好的文章，因此下面的整理主要基于这篇文章《<a href="http://www.matrix67.com/blog/archives/105" target="_blank" rel="external">什么是P问题、NP问题和NPC问题</a>》，有兴趣的同学可以仔细阅读原文，时间紧张的话可以直接看下面我整理的内容。</p>
 <a id="more"></a>
 <p>author: <a href="http://hujichn.github.io">@Huji</a></p>
-<h2 id="预备知识"><a class="header-anchor" href="#预备知识">¶</a>预备知识</h2>
-<h3 id="时间复杂度"><a class="header-anchor" href="#时间复杂度">¶</a>时间复杂度</h3>
+<h2 id="预备知识">预备知识</h2>
+<h3 id="时间复杂度">时间复杂度</h3>
 <p>表明问题规模扩大后，程序需要的时间长度增长得有多快。程序的时间复杂度一般可以分为两种级别：</p>
 <pre><code>- 多项式级的复杂度，如O(1)，O(log(n))、O（n^a）等，
 
 - 非多项式级的，如O(a^n)、O(n!)等。后者的复杂度计算机往往不能承受。
 </code></pre>
-<h3 id="约化-reducibility"><a class="header-anchor" href="#约化-reducibility">¶</a>约化(Reducibility)</h3>
+<h3 id="约化-reducibility">约化(Reducibility)</h3>
 <p>简单的说，一个问题A可以约化为问题B的含义是，可以用问题B的解法解决问题A。（个人感觉也就是说，问题A是B的一种特殊情况。）标准化的定义是，如果能找到一个变化法则，对任意一个A程序的输入，都能按照这个法则变换成B程序的输入，使两程序的输出相同，那么我们说，问题A可以约化为问题B。</p>
 <p>例如求解一元一次方程这个问题可以约化为求解一元二次方程，即可以令对应项系数不变，二次项的系数为0，将A的问题的输入参数带入到B问题的求解程序去求解。</p>
 <p>另外，约化还具有传递性，A可以化约为B，B可以约化为C，那么A也可以约化为C。</p>
 <hr>
-<h2 id="基本概念"><a class="header-anchor" href="#基本概念">¶</a>基本概念</h2>
+<h2 id="基本概念">基本概念</h2>
 <blockquote>
 <ul>
 <li><strong>P Problem</strong>: 对于任意的输入规模n，问题都可以在n的多项式时间内得到解决；</li>
@@ -421,14 +421,14 @@
 </ul>
 </blockquote>
 <hr>
-<h2 id="详解"><a class="header-anchor" href="#详解">¶</a>详解</h2>
-<h3 id="p-problem"><a class="header-anchor" href="#p-problem">¶</a>P Problem</h3>
+<h2 id="详解">详解</h2>
+<h3 id="p-problem">P Problem</h3>
 <p>如果一个问题可以找到一个能在多项式的时间里解决它的算法，那么这个问题就属于P问题，即算法的时间复杂度是多项式级的。比如n个数中间找到最大值，或者n个数排序之类的。</p>
-<h3 id="np-problem"><a class="header-anchor" href="#np-problem">¶</a>NP Problem</h3>
+<h3 id="np-problem">NP Problem</h3>
 <p>NP问题的另一个定义是可以在多项式的时间里猜到一个解的问题，例如求问图中起点到终点是否有一条小于100个单位长度的路线，随便选一条，如果算出来路径小于100，那么就猜到了一个解，也就是说如果你运气足够好的话就可以在多项式时间内解决这个问题。当然猜的前提是问题存在解。</p>
 <p>再比如Hamilton问题，给定一幅图，是否能找到一条经过每个顶点一次且恰好一次最后又走回来的路，每条路都可以在多项式时间内判断这条路是否恰好经过了每个顶点，所以也是NP问题。</p>
 <p>很显然，所有的P类问题都是NP问题，能在多项式时间内解决，必然能多项式地验证一个解。（NP是否等于P这个问题貌似还没有定论？）</p>
-<h2 id="npc-problem："><a class="header-anchor" href="#npc-problem：">¶</a>NPC Problem：</h2>
+<h2 id="npc-problem：">NPC Problem：</h2>
 <p>证明一个问题是NPC问题的步骤，先证明其为NP问题，再证明其中一个已知的NPC问题能够约化到它。（由约化的传递性，就可以满足定义中的第二条，第一个NPC问题是逻辑电路问题，即给定一个逻辑电路，问是否存在一种输入使输出为True，它显然属于NP问题，并且可以证明所有NP问题都可以约化到它）。</p>
 <p>NPC问题目前没有多项式的有效算法，只能用指数级甚至阶乘级复杂度的搜索。</p>
 <hr>
@@ -567,7 +567,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -589,7 +589,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -631,7 +631,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#预备知识"><span class="nav-number">1.</span> <span class="nav-text">¶预备知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#时间复杂度"><span class="nav-number">1.1.</span> <span class="nav-text">¶时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#约化-reducibility"><span class="nav-number">1.2.</span> <span class="nav-text">¶约化(Reducibility)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">2.</span> <span class="nav-text">¶基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#详解"><span class="nav-number">3.</span> <span class="nav-text">¶详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#p-problem"><span class="nav-number">3.1.</span> <span class="nav-text">¶P Problem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#np-problem"><span class="nav-number">3.2.</span> <span class="nav-text">¶NP Problem</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#npc-problem："><span class="nav-number">4.</span> <span class="nav-text">¶NPC Problem：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#预备知识"><span class="nav-number">1.</span> <span class="nav-text">预备知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#时间复杂度"><span class="nav-number">1.1.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#约化-reducibility"><span class="nav-number">1.2.</span> <span class="nav-text">约化(Reducibility)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#详解"><span class="nav-number">3.</span> <span class="nav-text">详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#p-problem"><span class="nav-number">3.1.</span> <span class="nav-text">P Problem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#np-problem"><span class="nav-number">3.2.</span> <span class="nav-text">NP Problem</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#npc-problem："><span class="nav-number">4.</span> <span class="nav-text">NPC Problem：</span></a></li></ol></div>
             
 
           </div>

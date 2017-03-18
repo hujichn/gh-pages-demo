@@ -1,0 +1,967 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/mylib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/mylib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spark," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Ji Hu's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="把普通的程序改成并行化放在spark上运行，把其中遇到的简单问题整理了一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把程序改为并行化放在spark运行的注意事项">
+<meta property="og:url" content="https://hujichn.github.io/2017/02/07/把程序改为并行化放在spark运行的注意事项/index.html">
+<meta property="og:site_name" content="Ji Hu's Blog">
+<meta property="og:description" content="把普通的程序改成并行化放在spark上运行，把其中遇到的简单问题整理了一下。">
+<meta property="og:updated_time" content="2017-03-18T13:01:19.837Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="把程序改为并行化放在spark运行的注意事项">
+<meta name="twitter:description" content="把普通的程序改成并行化放在spark上运行，把其中遇到的简单问题整理了一下。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '6270299573625816000',
+      author: 'Root'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hujichn.github.io/2017/02/07/把程序改为并行化放在spark运行的注意事项/"/>
+
+
+
+
+
+  <title> 把程序改为并行化放在spark运行的注意事项 | Ji Hu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?468728c0165ededf9f1a17571c8ac0e4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ji Hu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写点东西~</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hujichn.github.io/2017/02/07/把程序改为并行化放在spark运行的注意事项/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ji Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/cat.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ji Hu's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                把程序改为并行化放在spark运行的注意事项
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-07T19:38:30+08:00">
+                2017-02-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/02/07/把程序改为并行化放在spark运行的注意事项/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/07/把程序改为并行化放在spark运行的注意事项/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/02/07/把程序改为并行化放在spark运行的注意事项/" class="leancloud_visitors" data-flag-title="把程序改为并行化放在spark运行的注意事项">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>把普通的程序改成并行化放在spark上运行，把其中遇到的简单问题整理了一下。</p>
+<a id="more"></a>
+<p>author: <a href="https://hujichn.github.io/">@Huji</a></p>
+<h2 id="读取文件">读取文件</h2>
+<p>读取linux文件系统上的文件地址要写作如下：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">myFile</span> = pd.read_csv(<span class="string">"file:///home/myroot/notebook/huji/advisor/Data/station.csv"</span>)</div></pre></td></tr></table></figure>
+<p><strong>注意</strong>：这里pandas的read_csv不能读取hdfs上面的文件</p>
+<p>sc读取hdfs的时候可以用</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">myFile</span> = sc.textFile(<span class="string">"hj/Data/station.csv"</span>)</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">myFile</span> = sc.textFile(<span class="string">"hdfs://10.15.198.204:8020/user/root/hj/Data/station.csv"</span>)</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="map函数加入参数">map函数加入参数</h2>
+<p>我们都知道map可以把rdd中的每个元素进行一个转换操作，例如</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attr">lines</span> = sc.textFile(<span class="string">"data.txt"</span>)</div><div class="line"><span class="attr">lineLengths</span> = lines.map(lambda s: len(s))</div></pre></td></tr></table></figure>
+<p>但是更多的时候我们还需要加入别的参数，可以有如下的方法予以解决<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：</p>
+<ul>
+<li>通过在flatMap中使用匿名函数来实现</li>
+</ul>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">json_data_rdd.flatMap(lambda </span><span class="keyword">j: </span>processDataLine(<span class="keyword">j, </span>arg1, arg2))</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">f = lambda j: processDataLine(dataline, arg1, arg2)</div><div class="line">json_data_rdd.flatMap(f)</div></pre></td></tr></table></figure>
+<ul>
+<li>还可以用下面这种方法生成processDataLine</li>
+</ul>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">processDataLine</span><span class="params">(arg1, arg2)</span></span>:</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_processDataLine</span><span class="params">(dataline)</span></span>:</div><div class="line">        <span class="keyword">return</span> ... <span class="comment"># Do something with dataline, arg1, arg2</span></div><div class="line">    <span class="keyword">return</span> _processDataLine</div><div class="line"></div><div class="line">json_data_rdd.flatMap(processDataLine(arg1, arg2))</div></pre></td></tr></table></figure>
+<ul>
+<li><code>toolz</code>库还提供了高效的<code>curry</code>装饰器:</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> toolz.functoolz <span class="keyword">import</span> curry</div><div class="line"></div><div class="line"><span class="meta">@curry</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">processDataLine</span><span class="params">(arg1, arg2, dataline)</span>:</span> </div><div class="line">    <span class="keyword">return</span> ... <span class="comment"># Do something with dataline, arg1, arg2</span></div><div class="line"></div><div class="line">json_data_rdd.flatMap(processDataLine(arg1, arg2))</div></pre></td></tr></table></figure>
+<ul>
+<li>采用<code>functools.partial</code>的方法将参数传入函数中</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">(V, element)</span>:</span></div><div class="line">    element *= V.value</div><div class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">SomeMethod</span><span class="params">(sc)</span>:</span></div><div class="line">    someValue = rand()</div><div class="line">    V = sc.broadcast(someValue)</div><div class="line">    A = sc.parallelize().map(partial(worker, V=V))</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="并行化自定义对象">并行化自定义对象</h2>
+<p>我自己是创建一个station的类，然后构建了一个包含数个station对象的list，对其进行parallelize，然后对这一rdd对象做map操作，这时候就会报错说python的damon中没有station这个属性。</p>
+<p>出现这个问题的原因是我定义的station对象只是在driver，但是各个worker并不知道这一个对象的定义，因此我需要单独将其定义在一个文件中，然后确保它能够分布到各个worker上。</p>
+<p>下面是一个简单的例子<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>，这个例子当中，如果并行化的对象是内置的数据类型，如int之类的，是没有任何问题的，但如果涉及到自己定义的node对象，那么map操作（marker2那句）就会报错。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkContext </div><div class="line"></div><div class="line">sc = SparkContext(<span class="string">"local"</span>,<span class="string">"WordCountBySparkKeyword"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x)</span>:</span></div><div class="line">    <span class="keyword">if</span> x==<span class="number">2</span>:</div><div class="line">        <span class="keyword">return</span> [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</div><div class="line">    <span class="keyword">return</span> [<span class="number">1</span>]</div><div class="line"></div><div class="line">rdd = sc.parallelize([<span class="number">2</span>])</div><div class="line">rdd = rdd.flatMap(func) <span class="comment"># rdd.collect() now has [2, 3, 4]</span></div><div class="line">rdd = rdd.flatMap(func) <span class="comment"># rdd.collect() now has [2, 3, 4, 1, 1]</span></div><div class="line"></div><div class="line"><span class="keyword">print</span> rdd.collect() <span class="comment"># gives expected output</span></div><div class="line"></div><div class="line"><span class="comment"># Class I'm defining</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">node</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, value)</span>:</span></div><div class="line">        self.value = value</div><div class="line"></div><div class="line">    <span class="comment"># Representation, for printing node</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.value</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(x)</span>:</span></div><div class="line">    <span class="keyword">if</span> x.value==<span class="number">2</span>:</div><div class="line">        <span class="keyword">return</span> [node(<span class="number">2</span>), node(<span class="number">3</span>), node(<span class="number">4</span>)]</div><div class="line">    <span class="keyword">return</span> [node(<span class="number">1</span>)]</div><div class="line"></div><div class="line">rdd = sc.parallelize([node(<span class="number">2</span>)])</div><div class="line">rdd = rdd.flatMap(foo)  <span class="comment">#marker 2</span></div><div class="line"></div><div class="line"><span class="keyword">print</span> rdd.collect() <span class="comment"># rdd.collect should contain nodes with values [2, 3, 4, 1, 1]</span></div></pre></td></tr></table></figure>
+<p>详细的解决步骤为：
+(1) 首先创建一个单独的模块<code>node.py</code>，其中包含<code>node</code>的定义
+(2) 在主程序文件中引入node类</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">from <span class="keyword">node</span> <span class="title">import</span> <span class="keyword">node</span><span class="title"></span></div></pre></td></tr></table></figure>
+<p>(3) 确保该模块被分布至各个节点（其实这个不写这句话也行，但是在执行程序的命令里面要加上这个文件，后面还会提到）</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">sc</span><span class="selector-class">.addPyFile</span>("<span class="selector-tag">node</span><span class="selector-class">.py</span>")</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="关于print输出的问题">关于print输出的问题</h2>
+<p>原始单机跑Python文件的时候，我经常在函数里面会写一些print之类的输出语句来方便调试，但是在改为并行化的程序之后，只有master上运行的代码段的输出会显示出来，很多并行化的任务会在worker上运行，所以我们并不能看到输出，需要输出的话，可能要对rdd进行take操作，然后取出其中的数值进行输出。</p>
+<hr>
+<h2 id="共享变量的问题">共享变量的问题</h2>
+<p>在map函数中往往会用到一些大的dataframe，那么到底是本地读取还是先读取好之后broadcast出去呢？目前我觉得还是选择broadcast比较好。</p>
+<p>实测如果把文件放到每台机器上，然后在函数中每次读取的话，运行耗时是读取一次然后broadcast的两倍左右。</p>
+<p>使用broadcast的时候，注意通过value取出其内容，如下面的例子：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">stock = pd.read_csv(<span class="string">"file:///advisor/Data/new_stock201301.csv"</span>, dtype=&#123;<span class="string">'netid'</span>:str&#125;)</div><div class="line"><span class="comment"># 将stock变量广播至各节点</span></div><div class="line"><span class="keyword">broadcastedStock </span>= <span class="keyword">sc.broadcast(stock)</span></div><div class="line"><span class="keyword">origRdd </span>= <span class="keyword">origRdd.map(lambda </span>x: myFunc(x, <span class="keyword">broadcastedStock.value))</span></div><div class="line"><span class="keyword">origRdd.collect()</span></div><div class="line"><span class="comment"># 手动释放</span></div><div class="line"><span class="keyword">broadcastedStock.unpersist()</span></div></pre></td></tr></table></figure>
+<h2 id="spark-submit提交任务">spark-submit提交任务</h2>
+<p>可以参考如下语句提交任务</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PYSPARK_PYTHON=python3 spark-submit --master=yarn-client --num-executors=<span class="number">7</span> --executor-cores=<span class="number">6</span> --driver-memory=<span class="number">2</span>g --executor-memory=<span class="number">10</span>g --files bikeUtil<span class="selector-class">.py</span>,weatherHoliday<span class="selector-class">.py</span>,stationFlow<span class="selector-class">.py</span>,predictor<span class="selector-class">.py</span> main.py</div></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="http://stackoverflow.com/questions/26959221/pyspark-broadcast-variables-from-local-functions" target="_blank" rel="external">http://stackoverflow.com/questions/26959221/pyspark-broadcast-variables-from-local-functions</a> <a href="#fnref1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="https://stackoverflow.com/questions/33019420/spark-rdd-mapping-with-extra-arguments/33020269#33020269" target="_blank" rel="external">https://stackoverflow.com/questions/33019420/spark-rdd-mapping-with-extra-arguments/33020269#33020269</a> <a href="#fnref2" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a href="http://stackoverflow.com/questions/32792271/flatmap-over-list-of-custom-objects-in-pyspark" target="_blank" rel="external">http://stackoverflow.com/questions/32792271/flatmap-over-list-of-custom-objects-in-pyspark</a> <a href="#fnref3" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spark/" rel="tag"># Spark</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/20/度问题求解文献总结/" rel="next" title="调度问题求解文献总结">
+                <i class="fa fa-chevron-left"></i> 调度问题求解文献总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/26/使用私有git管理项目代码/" rel="prev" title="使用私有git管理项目代码">
+                使用私有git管理项目代码 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/07/把程序改为并行化放在spark运行的注意事项/"
+           data-title="把程序改为并行化放在spark运行的注意事项" data-url="https://hujichn.github.io/2017/02/07/把程序改为并行化放在spark运行的注意事项/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/cat.jpg"
+               alt="Ji Hu" />
+          <p class="site-author-name" itemprop="name">Ji Hu</p>
+           
+              <p class="site-description motion-element" itemprop="description">fight！</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#读取文件"><span class="nav-number">1.</span> <span class="nav-text">读取文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map函数加入参数"><span class="nav-number">2.</span> <span class="nav-text">map函数加入参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并行化自定义对象"><span class="nav-number">3.</span> <span class="nav-text">并行化自定义对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于print输出的问题"><span class="nav-number">4.</span> <span class="nav-text">关于print输出的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享变量的问题"><span class="nav-number">5.</span> <span class="nav-text">共享变量的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spark-submit提交任务"><span class="nav-number">6.</span> <span class="nav-text">spark-submit提交任务</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ji Hu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/mylib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/mylib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/mylib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/mylib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/mylib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/mylib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hujichn"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/mylib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="/mylib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("cf1BkMNWywyAuHWUVSESYmwt-gzGzoHsz", "F2VRDQsk2yv2sP8CPtdm9C2U");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

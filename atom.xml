@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hujichn.github.io/"/>
-  <updated>2017-03-14T07:13:35.057Z</updated>
+  <updated>2017-03-18T12:54:09.037Z</updated>
   <id>https://hujichn.github.io/</id>
   
   <author>
@@ -14,6 +14,235 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用私有git管理项目代码</title>
+    <link href="https://hujichn.github.io/2017/02/26/%E4%BD%BF%E7%94%A8%E7%A7%81%E6%9C%89git%E7%AE%A1%E7%90%86%E9%A1%B9%E7%9B%AE%E4%BB%A3%E7%A0%81/"/>
+    <id>https://hujichn.github.io/2017/02/26/使用私有git管理项目代码/</id>
+    <published>2017-02-26T12:21:13.000Z</published>
+    <updated>2017-03-18T12:54:09.037Z</updated>
+    
+    <content type="html"><![CDATA[<p>某次电脑的神奇丢失数据后，我觉得用git来管理项目代码是很有必要的！但是实验室的项目代码直接扔到Github上面好像不是很合适，采用私有git就可以解决这一需求了。</p>
+<a id="more"></a>
+<p>author: <a href="https://hujichn.github.io/">@Huji</a></p>
+<p><em>版权归作者所有，任何形式转载请联系作者。</em></p>
+<p>目前实验室的服务器上搭建了一个私有git采用的是<code>Gogs - Go Git Service</code>（其配置可以参考网络的文档<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>），访问地址是 <code>http://10.15.198.247:3000</code>。</p>
+<h3 id="访问服务器并创建账号">访问服务器并创建账号</h3>
+<p>在浏览器输入上面的访问地址，然后点击<code>register</code>，输入用户名，邮箱，密码进行注册。</p>
+<p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/git/register.png" alt="register"></p>
+<p>注册好之后登录进去，在<code>explore</code>模块可以看到其他人最近更新的项目。</p>
+<p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/git/explore.png" alt="explore"></p>
+<h3 id="学习git的使用">学习Git的使用</h3>
+<p>Git可以从<a href="https://pan.baidu.com/s/1kU5OCOB#list/path=/pub/git" target="_blank" rel="external">这里</a>下载。具体的使用强烈推荐花一点时间把<a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="external">廖雪峰的Git教程</a>看一遍。
+看完之后，对下面这幅图<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>能够理解的话，那么基本的入门已经完成了。
+<img src="http://ww4.sinaimg.cn/mw690/81b78497jw1eqnk1bkyaij20e40bpjsm.jpg" alt="git的核心操作"></p>
+<h3 id="常用操作总结">常用操作总结</h3>
+<p>经过上面的学习，在这里再总结下一些最最常用的基础命令，省得自己老是忘记。</p>
+<ul>
+<li><strong>创建一个本地的git仓库</strong></li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>mkdir learngit    <span class="comment"># 新建一个项目文件夹，不新建也行</span></div><div class="line"><span class="variable">$ </span>cd learngit       <span class="comment"># 切换到项目文件夹</span></div><div class="line"><span class="variable">$ </span>pwd               <span class="comment"># 查看当前路径（可有可无的步骤...）</span></div><div class="line"><span class="variable">$ </span>git init          <span class="comment"># 初始化一个Git仓库</span></div></pre></td></tr></table></figure>
+<ul>
+<li><strong>提交文件</strong></li>
+</ul>
+<p>添加文件到Git仓库，分两步：</p>
+<p>第一步，使用命令<code>git add &lt;file&gt;</code>，注意，可反复多次使用，添加多个文件；</p>
+<p>第二步，使用命令<code>git commit -m &quot;本次提交的说明&quot;</code>，完成。</p>
+<ul>
+<li><strong>提交到远程库</strong></li>
+</ul>
+<p>要关联一个远程库，使用命令<code>git remote add origin git@server-name:path/repo-name.git</code>；</p>
+<p>关联后，使用命令<code>git push -u origin master</code>第一次推送master分支的所有内容；</p>
+<p>此后，每次本地提交后，只要有必要，就可以使用命令<code>git push origin master</code>推送最新修改；</p>
+<ul>
+<li><strong>管理修改</strong></li>
+</ul>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git status              <span class="meta">#查看工作区、暂存区的状态</span></div><div class="line">git checkout -- <span class="params">&lt;file&gt;</span>  <span class="meta">#丢弃工作区上某个文件的修改</span></div><div class="line">git reset HEAD <span class="params">&lt;file&gt;</span>   <span class="meta">#丢弃暂存区上某个文件的修改，重新放回工作区</span></div></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://blog.mynook.info/post/host-your-own-git-server-using-gogs" target="_blank" rel="external">https://blog.mynook.info/post/host-your-own-git-server-using-gogs</a> <a href="#fnref1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="http://wuchong.me/blog/2015/03/30/git-useful-skills/" target="_blank" rel="external">http://wuchong.me/blog/2015/03/30/git-useful-skills/</a> <a href="#fnref2" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;某次电脑的神奇丢失数据后，我觉得用git来管理项目代码是很有必要的！但是实验室的项目代码直接扔到Github上面好像不是很合适，采用私有git就可以解决这一需求了。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="other" scheme="https://hujichn.github.io/categories/other/"/>
+    
+    
+      <category term="Github" scheme="https://hujichn.github.io/tags/Github/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>把程序改为并行化放在spark运行的注意事项</title>
+    <link href="https://hujichn.github.io/2017/02/07/%E6%8A%8A%E7%A8%8B%E5%BA%8F%E6%94%B9%E4%B8%BA%E5%B9%B6%E8%A1%8C%E5%8C%96%E6%94%BE%E5%9C%A8spark%E8%BF%90%E8%A1%8C%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/"/>
+    <id>https://hujichn.github.io/2017/02/07/把程序改为并行化放在spark运行的注意事项/</id>
+    <published>2017-02-07T11:38:30.000Z</published>
+    <updated>2017-03-18T13:01:19.837Z</updated>
+    
+    <content type="html"><![CDATA[<p>把普通的程序改成并行化放在spark上运行，把其中遇到的简单问题整理了一下。</p>
+<a id="more"></a>
+<p>author: <a href="https://hujichn.github.io/">@Huji</a></p>
+<h2 id="读取文件">读取文件</h2>
+<p>读取linux文件系统上的文件地址要写作如下：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">myFile</span> = pd.read_csv(<span class="string">"file:///home/myroot/notebook/huji/advisor/Data/station.csv"</span>)</div></pre></td></tr></table></figure>
+<p><strong>注意</strong>：这里pandas的read_csv不能读取hdfs上面的文件</p>
+<p>sc读取hdfs的时候可以用</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">myFile</span> = sc.textFile(<span class="string">"hj/Data/station.csv"</span>)</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">myFile</span> = sc.textFile(<span class="string">"hdfs://10.15.198.204:8020/user/root/hj/Data/station.csv"</span>)</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="map函数加入参数">map函数加入参数</h2>
+<p>我们都知道map可以把rdd中的每个元素进行一个转换操作，例如</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attr">lines</span> = sc.textFile(<span class="string">"data.txt"</span>)</div><div class="line"><span class="attr">lineLengths</span> = lines.map(lambda s: len(s))</div></pre></td></tr></table></figure>
+<p>但是更多的时候我们还需要加入别的参数，可以有如下的方法予以解决<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：</p>
+<ul>
+<li>通过在flatMap中使用匿名函数来实现</li>
+</ul>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">json_data_rdd.flatMap(lambda </span><span class="keyword">j: </span>processDataLine(<span class="keyword">j, </span>arg1, arg2))</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">f = lambda j: processDataLine(dataline, arg1, arg2)</div><div class="line">json_data_rdd.flatMap(f)</div></pre></td></tr></table></figure>
+<ul>
+<li>还可以用下面这种方法生成processDataLine</li>
+</ul>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">processDataLine</span><span class="params">(arg1, arg2)</span></span>:</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_processDataLine</span><span class="params">(dataline)</span></span>:</div><div class="line">        <span class="keyword">return</span> ... <span class="comment"># Do something with dataline, arg1, arg2</span></div><div class="line">    <span class="keyword">return</span> _processDataLine</div><div class="line"></div><div class="line">json_data_rdd.flatMap(processDataLine(arg1, arg2))</div></pre></td></tr></table></figure>
+<ul>
+<li><code>toolz</code>库还提供了高效的<code>curry</code>装饰器:</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> toolz.functoolz <span class="keyword">import</span> curry</div><div class="line"></div><div class="line"><span class="meta">@curry</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">processDataLine</span><span class="params">(arg1, arg2, dataline)</span>:</span> </div><div class="line">    <span class="keyword">return</span> ... <span class="comment"># Do something with dataline, arg1, arg2</span></div><div class="line"></div><div class="line">json_data_rdd.flatMap(processDataLine(arg1, arg2))</div></pre></td></tr></table></figure>
+<ul>
+<li>采用<code>functools.partial</code>的方法将参数传入函数中</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">(V, element)</span>:</span></div><div class="line">    element *= V.value</div><div class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">SomeMethod</span><span class="params">(sc)</span>:</span></div><div class="line">    someValue = rand()</div><div class="line">    V = sc.broadcast(someValue)</div><div class="line">    A = sc.parallelize().map(partial(worker, V=V))</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="并行化自定义对象">并行化自定义对象</h2>
+<p>我自己是创建一个station的类，然后构建了一个包含数个station对象的list，对其进行parallelize，然后对这一rdd对象做map操作，这时候就会报错说python的damon中没有station这个属性。</p>
+<p>出现这个问题的原因是我定义的station对象只是在driver，但是各个worker并不知道这一个对象的定义，因此我需要单独将其定义在一个文件中，然后确保它能够分布到各个worker上。</p>
+<p>下面是一个简单的例子<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>，这个例子当中，如果并行化的对象是内置的数据类型，如int之类的，是没有任何问题的，但如果涉及到自己定义的node对象，那么map操作（marker2那句）就会报错。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkContext </div><div class="line"></div><div class="line">sc = SparkContext(<span class="string">"local"</span>,<span class="string">"WordCountBySparkKeyword"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x)</span>:</span></div><div class="line">    <span class="keyword">if</span> x==<span class="number">2</span>:</div><div class="line">        <span class="keyword">return</span> [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</div><div class="line">    <span class="keyword">return</span> [<span class="number">1</span>]</div><div class="line"></div><div class="line">rdd = sc.parallelize([<span class="number">2</span>])</div><div class="line">rdd = rdd.flatMap(func) <span class="comment"># rdd.collect() now has [2, 3, 4]</span></div><div class="line">rdd = rdd.flatMap(func) <span class="comment"># rdd.collect() now has [2, 3, 4, 1, 1]</span></div><div class="line"></div><div class="line"><span class="keyword">print</span> rdd.collect() <span class="comment"># gives expected output</span></div><div class="line"></div><div class="line"><span class="comment"># Class I'm defining</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">node</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, value)</span>:</span></div><div class="line">        self.value = value</div><div class="line"></div><div class="line">    <span class="comment"># Representation, for printing node</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.value</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(x)</span>:</span></div><div class="line">    <span class="keyword">if</span> x.value==<span class="number">2</span>:</div><div class="line">        <span class="keyword">return</span> [node(<span class="number">2</span>), node(<span class="number">3</span>), node(<span class="number">4</span>)]</div><div class="line">    <span class="keyword">return</span> [node(<span class="number">1</span>)]</div><div class="line"></div><div class="line">rdd = sc.parallelize([node(<span class="number">2</span>)])</div><div class="line">rdd = rdd.flatMap(foo)  <span class="comment">#marker 2</span></div><div class="line"></div><div class="line"><span class="keyword">print</span> rdd.collect() <span class="comment"># rdd.collect should contain nodes with values [2, 3, 4, 1, 1]</span></div></pre></td></tr></table></figure>
+<p>详细的解决步骤为：
+(1) 首先创建一个单独的模块<code>node.py</code>，其中包含<code>node</code>的定义
+(2) 在主程序文件中引入node类</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">from <span class="keyword">node</span> <span class="title">import</span> <span class="keyword">node</span><span class="title"></span></div></pre></td></tr></table></figure>
+<p>(3) 确保该模块被分布至各个节点（其实这个不写这句话也行，但是在执行程序的命令里面要加上这个文件，后面还会提到）</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">sc</span><span class="selector-class">.addPyFile</span>("<span class="selector-tag">node</span><span class="selector-class">.py</span>")</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="关于print输出的问题">关于print输出的问题</h2>
+<p>原始单机跑Python文件的时候，我经常在函数里面会写一些print之类的输出语句来方便调试，但是在改为并行化的程序之后，只有master上运行的代码段的输出会显示出来，很多并行化的任务会在worker上运行，所以我们并不能看到输出，需要输出的话，可能要对rdd进行take操作，然后取出其中的数值进行输出。</p>
+<hr>
+<h2 id="共享变量的问题">共享变量的问题</h2>
+<p>在map函数中往往会用到一些大的dataframe，那么到底是本地读取还是先读取好之后broadcast出去呢？目前我觉得还是选择broadcast比较好。</p>
+<p>实测如果把文件放到每台机器上，然后在函数中每次读取的话，运行耗时是读取一次然后broadcast的两倍左右。</p>
+<p>使用broadcast的时候，注意通过value取出其内容，如下面的例子：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">stock = pd.read_csv(<span class="string">"file:///advisor/Data/new_stock201301.csv"</span>, dtype=&#123;<span class="string">'netid'</span>:str&#125;)</div><div class="line"><span class="comment"># 将stock变量广播至各节点</span></div><div class="line"><span class="keyword">broadcastedStock </span>= <span class="keyword">sc.broadcast(stock)</span></div><div class="line"><span class="keyword">origRdd </span>= <span class="keyword">origRdd.map(lambda </span>x: myFunc(x, <span class="keyword">broadcastedStock.value))</span></div><div class="line"><span class="keyword">origRdd.collect()</span></div><div class="line"><span class="comment"># 手动释放</span></div><div class="line"><span class="keyword">broadcastedStock.unpersist()</span></div></pre></td></tr></table></figure>
+<h2 id="spark-submit提交任务">spark-submit提交任务</h2>
+<p>可以参考如下语句提交任务</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PYSPARK_PYTHON=python3 spark-submit --master=yarn-client --num-executors=<span class="number">7</span> --executor-cores=<span class="number">6</span> --driver-memory=<span class="number">2</span>g --executor-memory=<span class="number">10</span>g --files bikeUtil<span class="selector-class">.py</span>,weatherHoliday<span class="selector-class">.py</span>,stationFlow<span class="selector-class">.py</span>,predictor<span class="selector-class">.py</span> main.py</div></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="http://stackoverflow.com/questions/26959221/pyspark-broadcast-variables-from-local-functions" target="_blank" rel="external">http://stackoverflow.com/questions/26959221/pyspark-broadcast-variables-from-local-functions</a> <a href="#fnref1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="https://stackoverflow.com/questions/33019420/spark-rdd-mapping-with-extra-arguments/33020269#33020269" target="_blank" rel="external">https://stackoverflow.com/questions/33019420/spark-rdd-mapping-with-extra-arguments/33020269#33020269</a> <a href="#fnref2" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a href="http://stackoverflow.com/questions/32792271/flatmap-over-list-of-custom-objects-in-pyspark" target="_blank" rel="external">http://stackoverflow.com/questions/32792271/flatmap-over-list-of-custom-objects-in-pyspark</a> <a href="#fnref3" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;把普通的程序改成并行化放在spark上运行，把其中遇到的简单问题整理了一下。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="coding" scheme="https://hujichn.github.io/categories/coding/"/>
+    
+    
+      <category term="Spark" scheme="https://hujichn.github.io/tags/Spark/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>调度问题求解文献总结</title>
+    <link href="https://hujichn.github.io/2016/09/20/%E5%BA%A6%E9%97%AE%E9%A2%98%E6%B1%82%E8%A7%A3%E6%96%87%E7%8C%AE%E6%80%BB%E7%BB%93/"/>
+    <id>https://hujichn.github.io/2016/09/20/度问题求解文献总结/</id>
+    <published>2016-09-20T07:46:23.000Z</published>
+    <updated>2017-03-18T13:15:29.903Z</updated>
+    
+    <content type="html"><![CDATA[<p>这段时间在研究自行车系统中的调度问题，进行了一些文献总结。</p>
+<a id="more"></a>
+<p>首先介绍下我们要研究的问题：自行车系统中由于用户需求的不平衡，导致站点经常会出现空和满的情况，那么这时候就需要调度车进行调度，在站点间（以及仓库）调运车辆，平衡各个站点的库存。</p>
+<h2 id="问题的简化">问题的简化</h2>
+<p>真实系统中的自行车调度网络，各个节点之间的行驶距离正反并不对称，也不确定能满足三角不等式，据07年的<code>《Comments on: Static pickup and delivery problems: a classification scheme and survey》</code>，General的TSP网络中进行路径规划求解是没法确定bound的，因此我们先简化为一个对称的满足三角不等式的网络进行研究。（<strong>怎么简化好？直接用站点间直线距离？</strong>）</p>
+<p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/rebalancing/symmetric.png" alt="symmetric"></p>
+<h2 id="问题的类别确定">问题的类别确定</h2>
+<p>自行车调度问题和传统的pickup and delivery问题非常类似，因此，我们可以首先根据文献确定我们要研究的问题的类型：</p>
+<p>根据07年的文章《Static pickup and delivery problems: a classification scheme and survey》，根据问题的structure，可以分为<code>many-to-many problems</code>和<code>one-to-many-to-one problems</code>，<code>many-to-many</code>就是说网络中任意节点都可以作为source或者destination，而<code>one-to-many-to-one problems</code>只能从一个存储点拿车，路径上pick up的东西是要带回存储点而不能放下来。由于我们研究的调度问题是可以从车较多的站点拿车去补充车比较少的站点，因此这是一个<code>many-to-many</code>的问题。</p>
+<p>对于<code>many-to-many</code>的问题，大致又可以分为<code>Swapping Problem</code>，<code>One-Commodity Pickup and Delivery Traveling Salesman Problem</code>还有<code>Q-Delivery Traveling Salesman Problem</code>。</p>
+<ul>
+<li>
+<p>第一种<code>Swapping Problem</code>是针对多种货物交换问题，不适合我们的场景；</p>
+</li>
+<li>
+<p><code>1-PDTSP</code>是一辆车、单种货物的问题，然而要求解出的路径是Hamilton回路，而这里我们如果一定要求是Hamilton回路的话，假设一种极端情况，所有站点都是需要车，而且需要的数目大于调运车的容量，那么肯定是无解，因此，为了保证每种情况都有解，我们并不要求路径是Hamilton回路（<code>1-PDTSP</code>问题在2004年的两篇文章《A branck-and-cut algorithm for a traveling salesman problem with pickup and delivery》和《Heuristics for the one-commodity pickup-and-delivery traveling salesman problem》中分别提出了精确解法和启发式解法）；</p>
+</li>
+<li>
+<p><code>Q-DTSP</code>是<code>1-PDTSP</code>的特例，外加了每个点的需求必须是1或-1，仓库的需求设置为0。但是更general一些的是<code>G-Q-DTSP</code>，它就是不要求Hamilton回路的<code>1-PDTSP</code>问题。</p>
+</li>
+</ul>
+<p>综上，我们所研究的自行车调度问题是<code>G-Q-DTSP</code>问题，又称<code>CTSPPD</code>。</p>
+<h2 id="问题的解法">问题的解法</h2>
+<ol>
+<li>
+<p><code>Q-DTSP</code>这个问题研究出现始于1999年的《Approximated capacitated routing and delivery problems》，作者给出了<strong>worst-case bound为9.5的启发式搜索算法</strong>。</p>
+</li>
+<li>
+<p>1999年的《Approximation algorithms for the capacitated traveling salesman problem with pickups and deliveries》当中改进了前者的算法，给出了<strong>worst-case bound为(7-3/k)的启发式搜索算法，k是车的capacity（也是现在正在参考的）</strong>,大致思想是先把每个站点变为需求是1或者-1的许多站点（位置不变），把全部站点分为pickup和delivery两部分（数目相等），先在每个部分单独求解tsp，然后pickup部分走tsp的路径装满一辆车后，选择delivery部分的任一点，过去进行delivery，再回来，重复选择其他的delivery的点进行搜索。</p>
+</li>
+<li>
+<p>普通图中有一篇2002年的paper《Algorithms for capacitated vehicle routing》给出了<strong>5-approximation算法</strong>。但是这个算法生成的路径起点不固定，如果起点和终点固定系数还会增加1，另外作者给出的证明实际也只给到了6.5-approximation，所以这样比99年的那个算法还差，于是决定放弃掉了。</p>
+</li>
+<li>
+<p>另外一部分研究<code>Q-DTSP</code>的问题基本上都是基于line或者tree类型的问题，在2006年的paper《The one-commodity pickup and delivery traveling salesman problem on a path or a tree》中，作者提出了<strong>复杂度为$O(\frac{n^2}{min{Q,n}})$的算法</strong>，不过没给出bound。在文章《The capacitated traveling salesman problem with pickups and deliveries on a tree》中，Tree类型的问题还有<strong>2-approximation算法</strong>，甚至在一篇09年博士论文《Approximation algorithms for the capacitated vehicle routing problem》中号称approximation ratio做到了<strong>5/3</strong>。（但是我们的调度网络能够从一个graph改成tree结构吗？）</p>
+</li>
+<li>
+<p>另外还有一些tabu search之类的启发式算法，这样的基本都是不给出bound的，但是也是目前最普遍的求解方法。</p>
+</li>
+</ol>
+<h2 id="如何评估算法的性能">如何评估算法的性能</h2>
+<p>很多paper提出算法后，将其应用在某个很久之前就已经提出的网络中，网络的各种参数已经给出，最优解也已经给出，所以他们经常列出一个表格，和最优解进行对比，或者同时再和其他人的解进行对比。</p>
+<p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/rebalancing/evaluation.png" alt="evaluation"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这段时间在研究自行车系统中的调度问题，进行了一些文献总结。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="research" scheme="https://hujichn.github.io/categories/research/"/>
+    
+    
+      <category term="bike" scheme="https://hujichn.github.io/tags/bike/"/>
+    
+      <category term="rebalancing" scheme="https://hujichn.github.io/tags/rebalancing/"/>
+    
+      <category term="TSP" scheme="https://hujichn.github.io/tags/TSP/"/>
+    
+      <category term="pickup and delivery" scheme="https://hujichn.github.io/tags/pickup-and-delivery/"/>
+    
+  </entry>
   
   <entry>
     <title>熵值法确定权重的步骤及适用范围</title>
@@ -26,8 +255,8 @@
 <p>下面我们就以作者提出的例子利用熵值法进行权重的求解（原贴的求解感觉存在问题），一方面可以学习一下熵值法确定权重的步骤，一方面也体会下熵值法的优缺点。</p>
 <a id="more"></a>
 <p>author: <a href="https://hujichn.github.io/">@Huji</a></p>
-<h2 id="熵值法的原理"><a class="header-anchor" href="#熵值法的原理">¶</a>熵值法的原理</h2>
-<h3 id="什么是信息熵"><a class="header-anchor" href="#什么是信息熵">¶</a>什么是信息熵</h3>
+<h2 id="熵值法的原理">熵值法的原理</h2>
+<h3 id="什么是信息熵">什么是信息熵</h3>
 <p><code>熵</code>是热力学的一个物理概念，是体系混乱度（或无序度）的量度。熵越大说明系统越混乱，携带的信息越少，熵越小说明系统越有序，携带的信息越多。</p>
 <p><code>信息熵</code>则借鉴了热力学中熵的概念 (注意：信息熵的符号与热力学熵应该是相反的<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>)，用于描述平均而言事件信息量大小。所以数学上，信息熵其实是<strong>事件所包含的信息量的期望</strong><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>。</p>
 <blockquote>
@@ -71,10 +300,10 @@
 <p>综上，带入到我们一开始假设的公式中，可以得到信息熵的数学表达式如下：</p>
 <p>$H(U) = -\sum_{i=1}^{n} P_i logP_i$</p>
 <p>这里$H$是熵，$U$可以理解为所有可能事件的集合，有n种取值：$U_1,…,U_i,…,U_n$，对应概率为：$P_1,…,P_i,…,P_n$，对数的底一般取2。</p>
-<h3 id="熵值法"><a class="header-anchor" href="#熵值法">¶</a>熵值法</h3>
+<h3 id="熵值法">熵值法</h3>
 <p>根据信息熵的定义，对于某项指标，我们可以<strong>用熵值来判断某个指标的离散程度</strong>，其熵值越小，指标的离散程度越大，该指标对综合评价的影响(即<strong>权重</strong>)越大。如果某项指标的值全部相等，那么该指标在综合评价中不起作用。</p>
-<h2 id="熵值法的计算步骤"><a class="header-anchor" href="#熵值法的计算步骤">¶</a>熵值法的计算步骤</h2>
-<h3 id="问题描述"><a class="header-anchor" href="#问题描述">¶</a>问题描述</h3>
+<h2 id="熵值法的计算步骤">熵值法的计算步骤</h2>
+<h3 id="问题描述">问题描述</h3>
 <p>作者提出的是这样一个问题</p>
 <blockquote>
 <p>题目：这群学生中“最聪明/最优秀”的学生是谁？</p>
@@ -170,7 +399,7 @@
 </tbody>
 </table>
 </blockquote>
-<h3 id="计算步骤"><a class="header-anchor" href="#计算步骤">¶</a>计算步骤</h3>
+<h3 id="计算步骤">计算步骤</h3>
 <p><strong>注意：相关xlsx文件可以在此处【<a href="http://pan.baidu.com/s/1geCN3Yr" target="_blank" rel="external">下载</a>】</strong></p>
 <ol>
 <li><strong>确定指标体系</strong>
@@ -226,20 +455,20 @@ $U = \sum_j 100* y_{ij}w_j$</p>
 <p>$U$为综合评价值，$w_j$为第j个指标的权重。</p>
 <p>计算出的总分从高到低排序如下图所示：</p>
 <p><img src="http://static.zybuluo.com/huji/lgdqsk3nh1g413fssf82mote/image_1apqaaqgo1gefia1ta01td7m031a.png" alt="image_1apqaaqgo1gefia1ta01td7m031a.png-19kB"></p>
-<h2 id="熵值法的优缺点及适用范围"><a class="header-anchor" href="#熵值法的优缺点及适用范围">¶</a>熵值法的优缺点及适用范围</h2>
-<h3 id="优点"><a class="header-anchor" href="#优点">¶</a>优点</h3>
+<h2 id="熵值法的优缺点及适用范围">熵值法的优缺点及适用范围</h2>
+<h3 id="优点">优点</h3>
 <ul>
 <li>熵值法能深刻反映出指标的区分能力，进而确定权重</li>
 <li>是一种客观赋权法，有理论依据，相对主观赋权具有较高的可信度和精确度</li>
 <li>算法简单，实践起来比较方便，不需要借助其他分析软件</li>
 </ul>
-<h3 id="缺点"><a class="header-anchor" href="#缺点">¶</a>缺点</h3>
+<h3 id="缺点">缺点</h3>
 <ul>
 <li>智能程度不够高。和多元回归和主成分等统计方法不同，它不能考虑指标与指标之间横向的影响（如：相关性）</li>
 <li>若无业务经验的指导，权重可能失真</li>
 <li>对样本的依赖性比较大，随着建模样本变化，权重会有一定的波动</li>
 </ul>
-<h3 id="适用范围"><a class="header-anchor" href="#适用范围">¶</a>适用范围</h3>
+<h3 id="适用范围">适用范围</h3>
 <p>结合上面的实例，我们看到：体育成绩离散程度更大，导致其最后权重也更大，但是从通常评判的角度看，聪明程度往往与数学成绩关系更为密切。这就说明单单使用熵值法权重失真是经常发生的，要结合一定专家打分法才能发挥熵值法的优势，像<strong>确定指标体系</strong>中的示意图那样，构建两级评价体系，上层可能需要结合专家经验来构建，而<strong>底层的指标分的比较细，权重比较难确定，这种情况下采用熵值法比较合适</strong>。</p>
 <p>另外，确定权重前需要确定指标对目标得分的影响方向，对非线性的指标要进行预处理或者剔除。还要注意处理好极值。</p>
 <hr class="footnotes-sep">
@@ -279,19 +508,19 @@ $U = \sum_j 100* y_{ij}w_j$</p>
     <content type="html"><![CDATA[<p>优化问题在磕盐的时候经常会遇到，其中经常涉及到某某问题是NP的之类的论断，因此花了一点时间整理了一下NP问题的相关知识，在研究过程中看到一篇很好的文章，因此下面的整理主要基于这篇文章《<a href="http://www.matrix67.com/blog/archives/105" target="_blank" rel="external">什么是P问题、NP问题和NPC问题</a>》，有兴趣的同学可以仔细阅读原文，时间紧张的话可以直接看下面我整理的内容。</p>
 <a id="more"></a>
 <p>author: <a href="http://hujichn.github.io">@Huji</a></p>
-<h2 id="预备知识"><a class="header-anchor" href="#预备知识">¶</a>预备知识</h2>
-<h3 id="时间复杂度"><a class="header-anchor" href="#时间复杂度">¶</a>时间复杂度</h3>
+<h2 id="预备知识">预备知识</h2>
+<h3 id="时间复杂度">时间复杂度</h3>
 <p>表明问题规模扩大后，程序需要的时间长度增长得有多快。程序的时间复杂度一般可以分为两种级别：</p>
 <pre><code>- 多项式级的复杂度，如O(1)，O(log(n))、O（n^a）等，
 
 - 非多项式级的，如O(a^n)、O(n!)等。后者的复杂度计算机往往不能承受。
 </code></pre>
-<h3 id="约化-reducibility"><a class="header-anchor" href="#约化-reducibility">¶</a>约化(Reducibility)</h3>
+<h3 id="约化-reducibility">约化(Reducibility)</h3>
 <p>简单的说，一个问题A可以约化为问题B的含义是，可以用问题B的解法解决问题A。（个人感觉也就是说，问题A是B的一种特殊情况。）标准化的定义是，如果能找到一个变化法则，对任意一个A程序的输入，都能按照这个法则变换成B程序的输入，使两程序的输出相同，那么我们说，问题A可以约化为问题B。</p>
 <p>例如求解一元一次方程这个问题可以约化为求解一元二次方程，即可以令对应项系数不变，二次项的系数为0，将A的问题的输入参数带入到B问题的求解程序去求解。</p>
 <p>另外，约化还具有传递性，A可以化约为B，B可以约化为C，那么A也可以约化为C。</p>
 <hr>
-<h2 id="基本概念"><a class="header-anchor" href="#基本概念">¶</a>基本概念</h2>
+<h2 id="基本概念">基本概念</h2>
 <blockquote>
 <ul>
 <li><strong>P Problem</strong>: 对于任意的输入规模n，问题都可以在n的多项式时间内得到解决；</li>
@@ -301,14 +530,14 @@ $U = \sum_j 100* y_{ij}w_j$</p>
 </ul>
 </blockquote>
 <hr>
-<h2 id="详解"><a class="header-anchor" href="#详解">¶</a>详解</h2>
-<h3 id="p-problem"><a class="header-anchor" href="#p-problem">¶</a>P Problem</h3>
+<h2 id="详解">详解</h2>
+<h3 id="p-problem">P Problem</h3>
 <p>如果一个问题可以找到一个能在多项式的时间里解决它的算法，那么这个问题就属于P问题，即算法的时间复杂度是多项式级的。比如n个数中间找到最大值，或者n个数排序之类的。</p>
-<h3 id="np-problem"><a class="header-anchor" href="#np-problem">¶</a>NP Problem</h3>
+<h3 id="np-problem">NP Problem</h3>
 <p>NP问题的另一个定义是可以在多项式的时间里猜到一个解的问题，例如求问图中起点到终点是否有一条小于100个单位长度的路线，随便选一条，如果算出来路径小于100，那么就猜到了一个解，也就是说如果你运气足够好的话就可以在多项式时间内解决这个问题。当然猜的前提是问题存在解。</p>
 <p>再比如Hamilton问题，给定一幅图，是否能找到一条经过每个顶点一次且恰好一次最后又走回来的路，每条路都可以在多项式时间内判断这条路是否恰好经过了每个顶点，所以也是NP问题。</p>
 <p>很显然，所有的P类问题都是NP问题，能在多项式时间内解决，必然能多项式地验证一个解。（NP是否等于P这个问题貌似还没有定论？）</p>
-<h2 id="npc-problem："><a class="header-anchor" href="#npc-problem：">¶</a>NPC Problem：</h2>
+<h2 id="npc-problem：">NPC Problem：</h2>
 <p>证明一个问题是NPC问题的步骤，先证明其为NP问题，再证明其中一个已知的NPC问题能够约化到它。（由约化的传递性，就可以满足定义中的第二条，第一个NPC问题是逻辑电路问题，即给定一个逻辑电路，问是否存在一种输入使输出为True，它显然属于NP问题，并且可以证明所有NP问题都可以约化到它）。</p>
 <p>NPC问题目前没有多项式的有效算法，只能用指数级甚至阶乘级复杂度的搜索。</p>
 <hr>
@@ -374,21 +603,21 @@ $U = \sum_j 100* y_{ij}w_j$</p>
 <a id="more"></a>
 <p>author: <a href="https://hujichn.github.io/">@Huji</a></p>
 <p><em>版权归作者所有，任何形式转载请联系作者。</em></p>
-<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<h2 id="前言">前言</h2>
 <p>最近在做自行车调度方面的项目，希望能够呈现现有的调度轨迹，用可视化的方法让我们能够对现有的调度有一个直观的感受。选择<code>Mapbox</code>这一平台主要是看到了一家叫做urbica的可视化公司做的一个<a href="http://urbica.co/citibike/" target="_blank" rel="external">自行车trip的可视化系统</a>，这个系统的实现参考了一篇国外的硕士论文Rebalancing Citi Bike——A geospatial analysis of bike share redistribution in New York City，论文内容倒是比较简单，关键还是在实现，下面先放两张图仰慕一下效果。</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/1.gif" alt="mode 1"></p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/2.gif" alt="mode 2"></p>
 <p>其实现主要利用了<code>Mapbox</code>和<code>OSRM</code>，P.S. 另外还采用了<a href="http://d3js.org/" target="_blank" rel="external">D3.js</a> 来绘制一些滑动条啊、图表啊之类的，这个暂时还没研究，恩，列入to do list。</p>
-<h3 id="mapbox"><a class="header-anchor" href="#mapbox">¶</a>Mapbox</h3>
+<h3 id="mapbox">Mapbox</h3>
 <p>Mapbox国内13年就有报道过了，感兴趣的同学可以点下面的链接。
 <a href="http://www.pingwest.com/demo/mapbox/" target="_blank" rel="external">创立3年没要投资人一分钱，没销售人员——个性定制地图网站Mapbox是如何服务900家付费客户，并养活30号员工的</a></p>
 <p>也可以直接点<a href="https://www.mapbox.com/" target="_blank" rel="external">这里</a>前往<code>Mapbox</code>的官方网站，可以看到很多很漂亮的应用。</p>
 <p><code>Mapbox</code>实际上是一个平台，提供免费创建并定制个性化地图的服务，可以根据用户需要定制不同风格的地图，在上面加载你的数据图层等等。而上面的这个项目实际使用了<a href="https://www.mapbox.com/mapbox-gl-js/api/" target="_blank" rel="external">Mapbox GL JS</a> API来进行地图方面的可视化。注意，<a href="https://www.mapbox.com/mapbox-gl-js/api/" target="_blank" rel="external">Mapbox GL JS</a>是Mapbox提供的一个库，让用户可以方便地将生成的地图嵌入到自己的web应用中。当然，也支持导入到其他地图方案，如ios和android。</p>
-<h3 id="osrm"><a class="header-anchor" href="#osrm">¶</a>OSRM</h3>
+<h3 id="osrm">OSRM</h3>
 <p>可以看到第一张图里面显示了一些自行车和调度车的轨迹，然而原始数据中只有轨迹的起止点，也就是从哪个站点出发，哪个站点还车。</p>
 <p><strong>那么，如何将这样的数据匹配到路网上呢？</strong></p>
 <p>这就需要用到<a href="http://project-osrm.org/" target="_blank" rel="external">Open Source Routing Machine (OSRM) </a>。这是一个开源的路线生成引擎，给定起止点后，能够在路网中生成一条两点之间的最短路径，其基于的路网数据来自于<a href="https://www.openstreetmap.org/#map=5/51.500/-0.100" target="_blank" rel="external">OpenStreetMap</a>。</p>
-<h2 id="利用osrm生成轨迹数据"><a class="header-anchor" href="#利用osrm生成轨迹数据">¶</a>利用OSRM生成轨迹数据</h2>
+<h2 id="利用osrm生成轨迹数据">利用OSRM生成轨迹数据</h2>
 <p>这一段我们具体来介绍怎么利用OSRM生成轨迹数据。</p>
 <p>ORSM开放的api<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>如下</p>
 <figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="link">http://&#123;server&#125;/&#123;service&#125;/&#123;version&#125;/&#123;profile&#125;/&#123;coordinates&#125;</span>[<span class="string">.&#123;format&#125;</span>]?option=value&amp;option=value</div></pre></td></tr></table></figure>
@@ -518,26 +747,26 @@ $U = \sum_j 100* y_{ij}w_j$</p>
 </ul>
 <p>因为我们api中没有设置返回多条路径，所以默认返回一条，但是要取出这条路径要访问<code>data[&quot;routes&quot;][0]</code>。</p>
 <p>路径包含的信息参见上面的输出结果，包含了路径的长度，耗时，和各个节点的信息。</p>
-<h2 id="将轨迹数据-路径-存入mysql数据库"><a class="header-anchor" href="#将轨迹数据-路径-存入mysql数据库">¶</a>将轨迹数据（路径）存入mysql数据库</h2>
+<h2 id="将轨迹数据-路径-存入mysql数据库">将轨迹数据（路径）存入mysql数据库</h2>
 <p>轨迹数据生成好之后，就需要进行存储，否则每次都要重新再算太麻烦了。
 mysql遵守OGC的OpenGIS Geometry Model，支持Point、LineString等多种数据对象，我们这里用到的是LineString。</p>
-<h3 id="创建可以存储轨迹这类空间数据的表"><a class="header-anchor" href="#创建可以存储轨迹这类空间数据的表">¶</a>创建可以存储轨迹这类空间数据的表</h3>
+<h3 id="创建可以存储轨迹这类空间数据的表">创建可以存储轨迹这类空间数据的表</h3>
 <p>当前只有MyISAM引擎的数据表支持地理空间数据的存储，所以在创建数据表的时候必须进行声明。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> driving_routes(</div><div class="line">  stationA <span class="built_in">VARCHAR</span>(<span class="number">16</span>),</div><div class="line">  stationB <span class="built_in">VARCHAR</span>(<span class="number">16</span>),</div><div class="line">  <span class="keyword">duration</span> <span class="built_in">VARCHAR</span>(<span class="number">32</span>),</div><div class="line">  distance <span class="built_in">VARCHAR</span>(<span class="number">32</span>),</div><div class="line">  routes LINESTRING</div><div class="line">)<span class="keyword">ENGINE</span>=MyISAM;</div></pre></td></tr></table></figure>
 <p>创建后的表结果如下图</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/create_table.png" alt="create_table"></p>
-<h3 id="插入一条数据"><a class="header-anchor" href="#插入一条数据">¶</a>插入一条数据</h3>
+<h3 id="插入一条数据">插入一条数据</h3>
 <p>插入数据要用到ST_GeomFromText的函数，将数据转化为数据库内部的几何格式。</p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">INSERT INTO `driving_routes` VALUES(</div><div class="line">'<span class="number">3942</span>',</div><div class="line">'<span class="number">3218</span>',</div><div class="line">'<span class="number">239.3</span>',</div><div class="line">'<span class="number">3295.2</span>',</div><div class="line">ST_GeomFromText('LINESTRING(<span class="number">120.7205165</span> <span class="number">27.98760837</span>, <span class="number">120.719859</span> <span class="number">27.987895</span>, <span class="number">120.73371</span> <span class="number">27.987744</span>)')</div><div class="line">);</div></pre></td></tr></table></figure>
-<h3 id="提取数据"><a class="header-anchor" href="#提取数据">¶</a>提取数据</h3>
+<h3 id="提取数据">提取数据</h3>
 <p>提取数据则相反，</p>
 <figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> ST_AsText(routes) <span class="keyword">from</span> <span class="symbol">`driving_routes`</span>;</div></pre></td></tr></table></figure>
 <p>其实存为linestring类型之后还可以在sql中进行一些其他操作</p>
 <p>例如需要查找一辆车在某一段时间内是否在一段区域内经过，用点来说明的话，就是一个空间坐标点在一个特定时间段内是否包含在一个特定的矩形区域内。<code>MBRWithin(g1,g2)</code>函数应该能达到这个功能:</p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT AsText(pnt) FROM `gis` WHERE MBRWithin(pnt,GeomFromText('Polygon(<span class="number">1</span> <span class="number">1</span>,<span class="number">0</span> <span class="number">30</span>,<span class="number">30</span> <span class="number">30</span>,<span class="number">30</span> <span class="number">0</span>，<span class="number">1</span> )'))</div></pre></td></tr></table></figure>
-<h2 id="利用mapbox进行可视化"><a class="header-anchor" href="#利用mapbox进行可视化">¶</a>利用Mapbox进行可视化</h2>
+<h2 id="利用mapbox进行可视化">利用Mapbox进行可视化</h2>
 <p><strong>请将鼠标移动到图片上并点击可看到大图！！！！</strong></p>
-<h3 id="注册并进入studio"><a class="header-anchor" href="#注册并进入studio">¶</a>注册并进入studio</h3>
+<h3 id="注册并进入studio">注册并进入studio</h3>
 <p>首先当然是注册一个mapbox的账号，点击<a href="https://www.mapbox.com/studio/signup/" target="_blank" rel="external">注册链接</a>，在这个页面输入用户名、邮箱、密码进行注册。</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/sign_up.png" alt="sign_up"></p>
 <p>完成注册后登陆mapbox，就会进入到studio的界面，如下图所示。</p>
@@ -552,7 +781,7 @@ mysql遵守OGC的OpenGIS Geometry Model，支持Point、LineString等多种数�
 <li>Status: 在这里可以看到我们账户的一些统计信息，例如地图的访问次数(map views)等等。我们注册的一般是免费账户，如果访问次数，流量等等到达一定限制的话是需要收费的，收费情况如下图所示，免费账户有50,000次访问，如果只是科研上用下其实一般用不掉的啦</li>
 </ul>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/price.png" alt="price"></p>
-<h3 id="创建一个style"><a class="header-anchor" href="#创建一个style">¶</a>创建一个style</h3>
+<h3 id="创建一个style">创建一个style</h3>
 <p>进入studio之后，下面就可以创建一个style。</p>
 <p>首先，在home页面下，点击<code>Go to styles</code>的按钮或者直接单击左侧的<code>Styles</code>选卡。</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/go_to_styles.png" alt="go_to_styles"></p>
@@ -574,7 +803,7 @@ mysql遵守OGC的OpenGIS Geometry Model，支持Point、LineString等多种数�
 <blockquote>
 <p><strong>因此，pulish等于说是手动保存的意思！！没事的话不需要publish，确定修改已经完成，并且没有问题的时候才点击编辑界面的左栏右上角的publish按钮进行发布！</strong></p>
 </blockquote>
-<h3 id="上传自己的数据"><a class="header-anchor" href="#上传自己的数据">¶</a>上传自己的数据</h3>
+<h3 id="上传自己的数据">上传自己的数据</h3>
 <p>基本的调整熟悉了之后，下一步就可以上传数据啦！</p>
 <p>Mapbox支持多种格式的数据，如GeoJson或者CSV等等，这里我们采用GeoJson为例。把刚才得到的轨迹数据处理成GeoJson的格式<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>。下面给出一个比较短的GeoJson的文件示例，其中包含两条轨迹数据，属于LineString的类型：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"features"</span>: [</div><div class="line">    &#123;</div><div class="line">      <span class="attr">"properties"</span>: &#123;</div><div class="line">        <span class="attr">"prop0"</span>: <span class="string">"value0"</span></div><div class="line">      &#125;,</div><div class="line">      <span class="attr">"id"</span>: <span class="string">"&#123;feature_id&#125;"</span>,</div><div class="line">      <span class="attr">"geometry"</span>: &#123;</div><div class="line">        <span class="attr">"coordinates"</span>: [</div><div class="line">          [</div><div class="line">            <span class="number">120.382304</span>,</div><div class="line">            <span class="number">30.288768</span></div><div class="line">          ],</div><div class="line">          [</div><div class="line">            <span class="number">120.379259</span>,</div><div class="line">            <span class="number">30.289752</span></div><div class="line">          ],</div><div class="line">          [</div><div class="line">            <span class="number">120.377224</span>,</div><div class="line">            <span class="number">30.289839</span></div><div class="line">          ],</div><div class="line">          [</div><div class="line">            <span class="number">120.377248</span>,</div><div class="line">            <span class="number">30.30479</span></div><div class="line">          ]</div><div class="line">        ],</div><div class="line">        <span class="attr">"type"</span>: <span class="string">"LineString"</span></div><div class="line">      &#125;,</div><div class="line">      <span class="attr">"type"</span>: <span class="string">"Feature"</span></div><div class="line">    &#125;,</div><div class="line">    &#123;</div><div class="line">      <span class="attr">"properties"</span>: &#123;</div><div class="line">        <span class="attr">"prop0"</span>: <span class="string">"value0"</span></div><div class="line">      &#125;,</div><div class="line">      <span class="attr">"id"</span>: <span class="string">"&#123;feature_id&#125;"</span>,</div><div class="line">      <span class="attr">"geometry"</span>: &#123;</div><div class="line">        <span class="attr">"coordinates"</span>: [</div><div class="line">          [</div><div class="line">            <span class="number">120.344083</span>,</div><div class="line">            <span class="number">30.309248</span></div><div class="line">          ],</div><div class="line">          [</div><div class="line">            <span class="number">120.344496</span>,</div><div class="line">            <span class="number">30.303979</span></div><div class="line">          ],</div><div class="line">          [</div><div class="line">            <span class="number">120.343989</span>,</div><div class="line">            <span class="number">30.303754</span></div><div class="line">          ],</div><div class="line">          [</div><div class="line">            <span class="number">120.333314</span>,</div><div class="line">            <span class="number">30.303028</span></div><div class="line">          ]</div><div class="line">        ],</div><div class="line">        <span class="attr">"type"</span>: <span class="string">"LineString"</span></div><div class="line">      &#125;,</div><div class="line">      <span class="attr">"type"</span>: <span class="string">"Feature"</span></div><div class="line">    &#125;</div><div class="line">  ],</div><div class="line">  <span class="attr">"type"</span>: <span class="string">"FeatureCollection"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -604,7 +833,7 @@ mysql遵守OGC的OpenGIS Geometry Model，支持Point、LineString等多种数�
 Datasets vs Tilesets
 Tilesets are fast light, and easy to style. Datasets are lossless, editable, and can’t be styled. Think of Tilesets as the delivery format for the data in your Datasets.</p>
 </blockquote>
-<h3 id="加载数据-发布style"><a class="header-anchor" href="#加载数据-发布style">¶</a>加载数据，发布style</h3>
+<h3 id="加载数据-发布style">加载数据，发布style</h3>
 <p>数据上传好了，下一步就是加载。</p>
 <p>先回到Style页面，点击<code>Test</code>后面的<code>Edit</code>，回到刚才创建的<code>Test</code> Style里面。</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/style_edit_again.png" alt="style_edit_again"></p>
@@ -613,7 +842,7 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
 <p>创建完毕会出现style编辑的页面，双击地图放大到杭州区域，找到我们绘制的两条轨迹，然后可以改变其颜色，还可以做其他设置。</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/publish.png" alt="publish"></p>
 <p>至此，数据的加载就完成了，单击左上角的<code>publish</code>按钮就即可完成该style的发布。</p>
-<h3 id="创建可视化web端"><a class="header-anchor" href="#创建可视化web端">¶</a>创建可视化web端</h3>
+<h3 id="创建可视化web端">创建可视化web端</h3>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/success.png" alt="success"></p>
 <p>发布完成后的页面如上图所示，点击<code>Preview, develop &amp; use</code>，可以看到使用的相关信息，如下图所示。可以将网页进行分享，可以将生成的style展示到web端，嵌入到Android或者ios的app中等等。其中，我们需要的两条信息是<code>Style URL</code>和<code>Access token</code>。</p>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/mapbox/develop.png" alt="develop"></p>
@@ -668,11 +897,11 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
 <a id="more"></a>
 <p>author: <a href="https://hujichn.github.io">@Huji</a></p>
 <p>[toc]</p>
-<h3 id="1-对于groupby的结果分别apply函数进行计算-类似reduce的感觉"><a class="header-anchor" href="#1-对于groupby的结果分别apply函数进行计算-类似reduce的感觉">¶</a>1. 对于groupby的结果分别apply函数进行计算，类似reduce的感觉</h3>
+<h3 id="1-对于groupby的结果分别apply函数进行计算-类似reduce的感觉">1. 对于groupby的结果分别apply函数进行计算，类似reduce的感觉</h3>
 <figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 输入df，也就是其中的每一个group</div><div class="line">def myFunc(df)：</div><div class="line">    p = df[<span class="string">"p"</span>].<span class="built_in">values</span></div><div class="line">    a = df[<span class="string">"a"</span>].<span class="built_in">values</span> </div><div class="line">    # 返回两个值的话要用Series来返回</div><div class="line">    <span class="built_in">return</span> pd.Series(&#123;<span class="string">"sum"</span>: a.<span class="built_in">sum</span>(), <span class="string">"rmsle"</span>: <span class="built_in">np</span>.<span class="built_in">sqrt</span>(<span class="built_in">np</span>.squre(<span class="built_in">np</span>.<span class="built_in">log</span>(p+<span class="number">1</span>)-<span class="built_in">np</span>.<span class="built_in">log</span>(a+<span class="number">1</span>)).<span class="built_in">mean</span>())&#125;)</div><div class="line"></div><div class="line">dfGroupby.<span class="built_in">apply</span>(myFunc)</div></pre></td></tr></table></figure>
-<h3 id="2-把字符串表示的时间进行加减-得到新字符串"><a class="header-anchor" href="#2-把字符串表示的时间进行加减-得到新字符串">¶</a>2. 把字符串表示的时间进行加减，得到新字符串</h3>
+<h3 id="2-把字符串表示的时间进行加减-得到新字符串">2. 把字符串表示的时间进行加减，得到新字符串</h3>
 <figure class="highlight nix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from pandas.tslib <span class="built_in">import</span> Timestamp</div><div class="line">from pandas.tseries.offsets <span class="built_in">import</span> *</div><div class="line"><span class="attr">eventsDate</span> = “<span class="number">2013</span>-<span class="number">10</span>-<span class="number">22</span>”</div><div class="line"><span class="attr">eventsDate</span> = Timestamp(eventsDate)</div><div class="line"><span class="attr">dayBackward</span> = str((eventsDate - DateOffset(<span class="attr">days=1)).date())</span></div><div class="line"><span class="attr">dayForward</span> = str((eventsDate + DateOffset(<span class="attr">days=1)).date())</span></div></pre></td></tr></table></figure>
-<h3 id="3-python中的异常处理简介"><a class="header-anchor" href="#3-python中的异常处理简介">¶</a>3. python中的异常处理简介</h3>
+<h3 id="3-python中的异常处理简介">3. python中的异常处理简介</h3>
 <p>有时候网络有点崩，比如要从某网页抓取数据，经常由于网络原因中就error，这个时候真是痛心疾首，加入异常处理的逻辑可以使得程序放心运行。:）</p>
 <p>异常处理的基本流程如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">    Normal execution block</div><div class="line"><span class="keyword">except</span> A:</div><div class="line">    Exception A handle</div><div class="line"><span class="keyword">except</span> B:</div><div class="line">    Exception B handle</div><div class="line"><span class="keyword">except</span>:</div><div class="line">    Other exception handle</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="keyword">if</span> no exception,get here</div><div class="line"><span class="keyword">finally</span>:</div><div class="line">    print(<span class="string">"finally"</span>)</div></pre></td></tr></table></figure>
@@ -680,12 +909,12 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
 <p>还是不知道Error的类型的话，可以暂时先写</p>
 <figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">except Exception <span class="keyword">as</span> <span class="keyword">ex</span>：</div><div class="line">    <span class="keyword">print</span>(<span class="keyword">type</span>(<span class="keyword">ex</span>))</div><div class="line">    <span class="keyword">print</span>(<span class="keyword">ex</span>.<span class="keyword">args</span>)</div></pre></td></tr></table></figure>
 <p>这样一般可以得到Error的名称。</p>
-<h3 id="4-由字典建立一行的dataframe"><a class="header-anchor" href="#4-由字典建立一行的dataframe">¶</a>4. 由字典建立一行的DataFrame</h3>
+<h3 id="4-由字典建立一行的dataframe">4. 由字典建立一行的DataFrame</h3>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">firstLine</span> = pd.DataFrame([&#123;<span class="string">"rent_count"</span>: <span class="number">0</span>, <span class="string">"netid"</span>: netid&#125;], index=[startTime])</div></pre></td></tr></table></figure>
 <p>需要注意的是，内容和index都要记得以list的形式传输</p>
-<h3 id="5-填充缺失值-fillna"><a class="header-anchor" href="#5-填充缺失值-fillna">¶</a>5. 填充缺失值 fillna</h3>
+<h3 id="5-填充缺失值-fillna">5. 填充缺失值 fillna</h3>
 <figure class="highlight oxygene"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">r[<span class="string">'Wind SpeedMPH'</span>].fillna(<span class="number">0</span>, inplace=<span class="keyword">True</span>)</div><div class="line">r[<span class="string">'VisibilityMPH'</span>].fillna(<span class="function"><span class="keyword">method</span>='<span class="title">ffill</span>', <span class="title">inplace</span>=<span class="title">True</span>)</span></div><div class="line"><span class="title">r</span>['<span class="title">Humidity</span>'].<span class="title">fillna</span><span class="params">(<span class="keyword">method</span>=<span class="string">'bfill'</span>, inplace=<span class="keyword">True</span>)</span></div></pre></td></tr></table></figure>
-<h3 id="6-求出假期的方法"><a class="header-anchor" href="#6-求出假期的方法">¶</a>6. 求出假期的方法</h3>
+<h3 id="6-求出假期的方法">6. 求出假期的方法</h3>
 <p>目前找到了两种方法，我们以美国2013年的法定节假日为例写一下示例代码：</p>
 <ul>
 <li>第一种是Pandas中的Holiday模块提供的功能：</li>
@@ -699,7 +928,7 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
 <figure class="highlight capnproto"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> date</div><div class="line"><span class="keyword">from</span> workalendar.usa <span class="keyword">import</span> NewYork</div><div class="line">cal = NewYork()</div><div class="line">cal.holidays(<span class="number">2013</span>)</div></pre></td></tr></table></figure>
 <p>得到的结果是：</p>
 <p><img src="http://7xsoqo.com2.z0.glb.clouddn.com/python/tips/holidayNYC2013.png" alt="holidayNYC2013"></p>
-<h3 id="7-去掉列表中重复元素的方法"><a class="header-anchor" href="#7-去掉列表中重复元素的方法">¶</a>7. 去掉列表中重复元素的方法</h3>
+<h3 id="7-去掉列表中重复元素的方法">7. 去掉列表中重复元素的方法</h3>
 <ul>
 <li>一维的list可以利用集合的方法,但会改变元素的顺序：</li>
 </ul>
@@ -710,12 +939,12 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
 <li>如果不是一维的list可以用以下方法，或者遍历，原理是一样的。</li>
 </ul>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">a</span> = [<span class="selector-tag">a</span>[i] <span class="keyword">for</span> <span class="selector-tag">i</span> <span class="keyword">in</span> range(len(a)) <span class="keyword">if</span> <span class="selector-tag">a</span>[i] not <span class="keyword">in</span> <span class="selector-tag">a</span>[:i]]</div></pre></td></tr></table></figure>
-<h3 id="8-统计嵌套列表里面各个list出现的次数"><a class="header-anchor" href="#8-统计嵌套列表里面各个list出现的次数">¶</a>8. 统计嵌套列表里面各个list出现的次数</h3>
+<h3 id="8-统计嵌套列表里面各个list出现的次数">8. 统计嵌套列表里面各个list出现的次数</h3>
 <figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">import pandas as pd</div><div class="line"></div><div class="line">allList = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]]</div><div class="line">mDict = &#123;<span class="string">'list'</span>:[],<span class="string">'num'</span>:[]&#125;</div><div class="line">print(mDict)</div><div class="line"></div><div class="line">def calOccurrence(mList):</div><div class="line">    if mList in mDict[<span class="string">'list'</span>]:</div><div class="line">        loc = mDict[<span class="string">'list'</span>].index(mList)</div><div class="line">        mDict[<span class="string">'num'</span>][loc] = mDict[<span class="string">'num'</span>][loc] + <span class="number">1</span></div><div class="line">    else:</div><div class="line">        mDict[<span class="string">'list'</span>].append(mList)</div><div class="line">        mDict[<span class="string">'num'</span>].append(<span class="number">1</span>)</div><div class="line"></div><div class="line">for mList in allList:</div><div class="line">    calOccurrence(mList)</div><div class="line"></div><div class="line">print(pd.<span class="symbol">DataFrame</span>(mDict))</div></pre></td></tr></table></figure>
 <p>输出结果是</p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">        <span class="type">list</span>  num</div><div class="line"><span class="number">0</span>  [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]    <span class="number">3</span></div><div class="line"><span class="number">1</span>  [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]    <span class="number">1</span></div></pre></td></tr></table></figure>
 <p>本来想利用pandas的groupby+count来做，但是groupby是求by的对象的hash值进行group，list对象不能求hash值也就不能groupby，所以还是用循环来维护一个字典，统计出各个list的出现次数。</p>
-<h3 id="9-python函数定义"><a class="header-anchor" href="#9-python函数定义">¶</a>9. Python函数定义<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></h3>
+<h3 id="9-python函数定义">9. Python函数定义<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></h3>
 <ul>
 <li>引入一个形如 **name 的参数时，它接收一个字典</li>
 <li>引入一个形如 *name 的参数时，它接收一个元祖</li>
@@ -726,7 +955,7 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
 <figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cheeseshop(<span class="string">"Limburger"</span>, <span class="string">"It's very runny, sir."</span>,</div><div class="line">           <span class="string">"It's really very, VERY runny, sir."</span>,</div><div class="line">           shopkeeper=<span class="string">"Michael Palin"</span>,</div><div class="line">           <span class="keyword">client</span>=<span class="string">"John Cleese"</span>,</div><div class="line">           sketch=<span class="string">"Cheese Shop Sketch"</span>)</div></pre></td></tr></table></figure>
 <p>输出结果为：</p>
 <figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="bullet">-- </span>Do you have any Limburger ?</div><div class="line"><span class="bullet">-- </span>I'm sorry, we're all out of Limburger</div><div class="line">It's very runny, sir.</div><div class="line"><span class="section">It's really very, VERY runny, sir.</span></div><div class="line">----------------------------------------</div><div class="line">client : John Cleese</div><div class="line">shopkeeper : Michael Palin</div><div class="line">sketch : Cheese Shop Sketch</div></pre></td></tr></table></figure>
-<h3 id="10-python装饰器简单解析"><a class="header-anchor" href="#10-python装饰器简单解析">¶</a>10. python装饰器简单解析<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></h3>
+<h3 id="10-python装饰器简单解析">10. python装饰器简单解析<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></h3>
 <p>装饰器提供了一种方法，在函数和类定义的末尾插入自动运行的代码，相当于对函数进行一种扩展。</p>
 <p>下面是一个简单地把日志输出到界面的例子</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">logger</span><span class="params">(func)</span>:</span></div><div class="line">    print(<span class="string">"in decorator"</span>)</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">        print(<span class="string">"Arguments were: %s, %s"</span> % (args, kwargs))</div><div class="line">        <span class="keyword">return</span> func(*args, **kwargs)</div><div class="line">    <span class="keyword">return</span> inner</div></pre></td></tr></table></figure>
@@ -784,6 +1013,107 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
   </entry>
   
   <entry>
+    <title>在spark平台跑Python程序的基本步骤</title>
+    <link href="https://hujichn.github.io/2016/04/10/%E5%9C%A8spark%E5%B9%B3%E5%8F%B0%E8%B7%91Python%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4/"/>
+    <id>https://hujichn.github.io/2016/04/10/在spark平台跑Python程序的基本步骤/</id>
+    <published>2016-04-10T08:35:09.000Z</published>
+    <updated>2017-03-18T12:56:11.931Z</updated>
+    
+    <content type="html"><![CDATA[<p>实验室的spark平台装好之后，写了一篇简单的使用教程供大家参考，以k-means作为例子。</p>
+<a id="more"></a>
+<p>author: <a href="https://hujichn.github.io">@Huji</a></p>
+<h2 id="前期准备">前期准备</h2>
+<ol>
+<li>下载并安装<a href="https://www.netsarang.com/xshell_download.html" target="_blank" rel="external">Xshell</a></li>
+<li>利用Xshell连接至Master节点:</li>
+</ol>
+<ul>
+<li>
+<p>首先新建连接，输入名称，如Master，输入主机的ip地址,点击确定。
+<img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/xshell-connect.png" alt="xshell-connect"></p>
+</li>
+<li>
+<p>建立好会话后点击连接
+<img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/xshell-connect2.png" alt="xshell-connect2"></p>
+</li>
+<li>
+<p>输入用户名：root，密码：nesciipc@509，连接成功后会看到如下界面。
+<img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/xshell-connected.png" alt="xshell-connected"></p>
+</li>
+</ul>
+<ol start="3">
+<li>登录jupyter，地址为http://10.15.198.204:7777。点击进入你的文件夹或者创建一个新文件夹然后进入，可以点击upload按钮上传你自己的python文件和数据文件。
+<img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/upload-py.png" alt="upload-py"></li>
+</ol>
+<p><a href="http://xn--kmeans-9m7itcxox0enqj23pen0hvyf.py" target="_blank" rel="external">这里我们上传一个kmeans.py</a>，内容为：</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">from pyspark <span class="keyword">import</span> SparkContext</div><div class="line">from pyspark.mllib.clustering <span class="keyword">import</span> KMeans, KMeansModel</div><div class="line">from numpy <span class="keyword">import</span> array</div><div class="line">from math <span class="keyword">import</span> <span class="built_in">sqrt</span></div><div class="line"></div><div class="line">sc = SparkContext(appName=<span class="string">"kmeans"</span>)</div><div class="line"></div><div class="line"># Load and parse the data</div><div class="line">data = sc.textFile(<span class="string">"hj/kmeans_data.txt"</span>)</div><div class="line">parsedData = data.<span class="built_in">map</span>(lambda <span class="built_in">line</span>: array([<span class="built_in">float</span>(x) <span class="keyword">for</span> x in <span class="built_in">line</span>.<span class="built_in">split</span>(<span class="string">' '</span>)]))</div><div class="line"></div><div class="line"># Build the model (cluster the data)</div><div class="line">clusters = KMeans.train(parsedData, <span class="number">2</span>, maxIterations=<span class="number">10</span>,</div><div class="line">        runs=<span class="number">10</span>, initializationMode=<span class="string">"random"</span>)</div><div class="line"></div><div class="line"># Evaluate clustering by computing Within Set Sum of Squared Errors</div><div class="line">def error(<span class="built_in">point</span>):</div><div class="line">    i = clusters.predict(<span class="built_in">point</span>)</div><div class="line">    center = clusters.centers[i]</div><div class="line">    <span class="built_in">print</span>(<span class="string">"("</span> + <span class="built_in">str</span>(<span class="built_in">point</span>[<span class="number">0</span>]) + <span class="string">","</span> + <span class="built_in">str</span>(<span class="built_in">point</span>[<span class="number">1</span>]) + <span class="string">","</span> + <span class="built_in">str</span>(<span class="built_in">point</span>[<span class="number">2</span>]) + <span class="string">")"</span> + <span class="string">"blongs to cluster "</span> + <span class="built_in">str</span>(i+<span class="number">1</span>))</div><div class="line">    # <span class="built_in">print</span>(<span class="string">"Cluster Number:"</span> + <span class="built_in">str</span>(len(clusters.centers)))</div><div class="line">    <span class="keyword">return</span> <span class="built_in">sqrt</span>(sum([x**<span class="number">2</span> <span class="keyword">for</span> x in (<span class="built_in">point</span> - center)]))</div><div class="line"></div><div class="line">WSSSE = parsedData.<span class="built_in">map</span>(lambda <span class="built_in">point</span>: error(<span class="built_in">point</span>)).reduce(lambda x, y: x + y)</div><div class="line"><span class="built_in">print</span>(<span class="string">"Within Set Sum of Squared Error = "</span> + <span class="built_in">str</span>(WSSSE))</div><div class="line"></div><div class="line"><span class="keyword">for</span> mCenter in clusters.centers:</div><div class="line">    <span class="built_in">print</span>(mCenter)</div><div class="line"># Save and load model</div><div class="line"># clusters.<span class="built_in">save</span>(sc, <span class="string">"myModelPath"</span>)</div><div class="line"># sameModel = KMeansModel.load(sc, <span class="string">"myModelPath"</span>)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：直接上传py文件的时候要记得import SparkContext，还要自己创建sc。</p>
+</blockquote>
+<p>再上传一个kmeans_data.txt</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">0<span class="selector-class">.0</span> 0<span class="selector-class">.0</span> 0<span class="selector-class">.0</span></div><div class="line">0<span class="selector-class">.1</span> 0<span class="selector-class">.1</span> 0<span class="selector-class">.1</span></div><div class="line">0<span class="selector-class">.2</span> 0<span class="selector-class">.2</span> 0<span class="selector-class">.2</span></div><div class="line">9<span class="selector-class">.0</span> 9<span class="selector-class">.0</span> 9<span class="selector-class">.0</span></div><div class="line">9<span class="selector-class">.1</span> 9<span class="selector-class">.1</span> 9<span class="selector-class">.1</span></div><div class="line">9<span class="selector-class">.2</span> 9<span class="selector-class">.2</span> 9<span class="selector-class">.2</span></div></pre></td></tr></table></figure>
+<p>我们的<strong>目标</strong>是：</p>
+<p>使用Kmeans的方法进行聚类，被聚类的对象是空间中的点，每个点的参数就是kmeans_data.txt中每一行数值组成的三维坐标。</p>
+<h2 id="程序运行">程序运行</h2>
+<ol>
+<li>将数据文件复制到hdfs上</li>
+</ol>
+<ul>
+<li>第一步输入cd /home/myroot/notebook/huji，这里的huji对应于你在jupyter创建的文件夹名称。</li>
+<li>ls显示这个目录下的文件，可以看到有一个我们上传的数据文件kmeans_data.txt</li>
+<li>下一步在hdfs上创建一个目录，可以随便自己取名，这里取为hj</li>
+<li>将kmeans_data.txt复制到hj文件夹下</li>
+<li>用ls命令看一下hj文件夹下，已经有该数据了。
+<img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/file-prepare.PNG" alt="file-prepare"></li>
+</ul>
+<ol start="2">
+<li>运行python程序，在程序文件所在的文件中，输入下面命令即可。</li>
+</ol>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">PYSPARK_PYTHON</span>=python3 spark-submit kmeans.py</div></pre></td></tr></table></figure>
+<p><strong>注意</strong>：懒得每次运行都输入的话，可以在当前目录下新建一个sh文件，例如<code>start_kmeans.sh</code>，把上面这句命令粘贴进去，以后到这个目录下输入以下命令即可运行代码。</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./start_kmeans.<span class="keyword">sh</span></div></pre></td></tr></table></figure>
+<p>我们的程序文件<code>kmeans.py</code>放在huji文件夹中，所以在这个目录下直接输入就好。</p>
+<blockquote>
+<p>注意：如果上面第一步复制数据文件完毕以后，不慎退出了shell，那么下次再打开需要点击左上角<code>文件</code>-<code>打开</code>，选择上次建立的连接，如<code>Master</code>，再次连接，连上之后再次输入<code>cd /home/myroot/notebook/huji</code>进入程序文件所在目录。</p>
+</blockquote>
+<h2 id="输出结果">输出结果</h2>
+<p>得到的结果如下图所示，其中三个点被聚到了cluster2，三个点被聚到了cluster1，两个cluster的中心点分别是[0.1,0.1,0.1]和[9.1,9.1,9.1]。</p>
+<p><img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/output.png" alt="输出结果"></p>
+<h2 id="其他">其他</h2>
+<ol>
+<li>程序修改：
+这个工作可以在jupyter里面完成，点击传上去的py文件，就能够打开文件内容的页面，直接编辑，然后<code>ctrl+s</code>保存即可。</li>
+</ol>
+<p><img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/code-edit.png" alt="code-edit"></p>
+<ol start="2">
+<li>
+<p>查找文件：
+linux下查找开头为@的文件的命令是</p>
+ <figure class="highlight sqf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">find</span> / -maxdepth <span class="number">1</span> -<span class="built_in">name</span> <span class="string">"@*"</span></div></pre></td></tr></table></figure>
+<p>要是查找当前目录就把斜杠改为点</p>
+</li>
+</ol>
+<ol start="3">
+<li>要删除hdfs上的数据等hadoop操作可以看<a href="http://blog.csdn.net/bell2008/article/details/9639833" target="_blank" rel="external">hadoop常用命令</a></li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;实验室的spark平台装好之后，写了一篇简单的使用教程供大家参考，以k-means作为例子。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="coding" scheme="https://hujichn.github.io/categories/coding/"/>
+    
+    
+      <category term="Python" scheme="https://hujichn.github.io/tags/Python/"/>
+    
+      <category term="Spark" scheme="https://hujichn.github.io/tags/Spark/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Win10上利用github+hexo建立博客的方法</title>
     <link href="https://hujichn.github.io/2016/04/06/Win10%E4%B8%8A%E5%88%A9%E7%94%A8github+hexo%E5%BB%BA%E7%AB%8B%E5%8D%9A%E5%AE%A2%E7%9A%84%E6%96%B9%E6%B3%95/"/>
     <id>https://hujichn.github.io/2016/04/06/Win10上利用github+hexo建立博客的方法/</id>
@@ -793,10 +1123,10 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
     <content type="html"><![CDATA[<p>这几天心血来潮在Github上建了个博客，纠结了半天才倒腾好，希望以后自己能多总结下学的知识，先从建立博客开始咯~</p>
 <a id="more"></a>
 <p>author: <a href="https://hujichn.github.io/">@Huji</a></p>
-<h2 id="1-安装环境"><a class="header-anchor" href="#1-安装环境">¶</a>1. 安装环境</h2>
+<h2 id="1-安装环境">1. 安装环境</h2>
 <p>Windows 10 64位系统</p>
 <hr>
-<h2 id="2-创建自己的github-pages"><a class="header-anchor" href="#2-创建自己的github-pages">¶</a>2. 创建自己的GitHub Pages</h2>
+<h2 id="2-创建自己的github-pages">2. 创建自己的GitHub Pages</h2>
 <ul>
 <li>
 <p>首先注册<a href="https://github.com/" target="_blank" rel="external">GitHub</a>账号，用户名如hujichn</p>
@@ -819,7 +1149,7 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
 </ul>
 <p><img src="http://static.zybuluo.com/huji/4v6i1chihhfmsg3kfzwqd3uy/githubwindows.png" alt="githubwindows.png-31.7kB"></p>
 <hr>
-<h2 id="3-安装hexo"><a class="header-anchor" href="#3-安装hexo">¶</a>3. 安装Hexo</h2>
+<h2 id="3-安装hexo">3. 安装Hexo</h2>
 <ul>
 <li>第一步是安装<a href="https://nodejs.org/en/" target="_blank" rel="external">Node.js</a>，根据自己的电脑选择合适的版本下载即可安装。 安装完成后添加Path环境变量，使npm命令生效。</li>
 </ul>
@@ -843,7 +1173,7 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
 <p>安装完成后，输入以下命令后，在浏览器中打开<code>localhost:4000</code>即可看到博客在本地的效果。在测试主题的一些效果的时候可以用这个命令在本地查看，等效果满意了再deploy到GitHub。</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">hexo s -g</span></div></pre></td></tr></table></figure>
 <hr>
-<h2 id="4-利用hexo写博客并将hexo产生的静态网页部署到github"><a class="header-anchor" href="#4-利用hexo写博客并将hexo产生的静态网页部署到github">¶</a>4. 利用Hexo写博客并将Hexo产生的静态网页部署到GitHub</h2>
+<h2 id="4-利用hexo写博客并将hexo产生的静态网页部署到github">4. 利用Hexo写博客并将Hexo产生的静态网页部署到GitHub</h2>
 <ul>
 <li>更改博客的设置信息，在hexo文件夹下，打开<code>_config.yml</code>文件，输入以下代码 <sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>，并进行相应修改。</li>
 </ul>
@@ -867,7 +1197,7 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">hexo g</span></div><div class="line">hexo s</div></pre></td></tr></table></figure>
 <p>在浏览器输入localhost:4000就可以看到本地生成的网页了，这样万一有问题可以改好了再提交到github上。</p>
 <hr>
-<h2 id="5-更换主题-使用第三方插件增加评论-阅读次数统计等功能"><a class="header-anchor" href="#5-更换主题-使用第三方插件增加评论-阅读次数统计等功能">¶</a>5. 更换主题，使用第三方插件增加评论，阅读次数统计等功能。</h2>
+<h2 id="5-更换主题-使用第三方插件增加评论-阅读次数统计等功能">5. 更换主题，使用第三方插件增加评论，阅读次数统计等功能。</h2>
 <p>主题有很多好看的，这里选择了一个比较简单大方的Next主题。参考<a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="external">教程</a>即可完成配置。</p>
 <p><strong>注意的地方</strong>：</p>
 <ul>
@@ -893,7 +1223,7 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
 </ul>
 <p><img src="http://static.zybuluo.com/huji/dgjg98df8rcrj3vo58f7dr9x/comment.png" alt="comment.png-17.9kB"></p>
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*UA Start*/</span></div><div class="line"><span class="selector-tag">span</span><span class="selector-class">.this_ua</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#ccc</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">4px</span>;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">5px</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">margin</span>: <span class="number">0</span> <span class="number">1px</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#BBB</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#fff</span>;</div><div class="line"></div><div class="line">    <span class="comment">/*text-transform: Capitalize!important;</span></div><div class="line">    float: right!important;</div><div class="line">    line-height: 18px!important;*/</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.platform</span><span class="selector-class">.Windows</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#39b3d7</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#46b8da</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.platform</span><span class="selector-class">.Linux</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#3A3A3A</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#1F1F1F</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.platform</span><span class="selector-class">.Ubuntu</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#DD4814</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#DD4814</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.platform</span><span class="selector-class">.Mac</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#666666</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#666666</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.platform</span><span class="selector-class">.Android</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#98C13D</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#98C13D</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.platform</span><span class="selector-class">.iOS</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#666666</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#666666</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Chrome</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#EE6252</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#EE6252</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Chromium</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#EE6252</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#EE6252</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Firefox</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#f0ad4e</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#eea236</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.IE</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#428bca</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#357ebd</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Edge</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#428bca</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#357ebd</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Opera</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#d9534f</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#d43f3a</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Maxthon</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#7373B9</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#7373B9</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.browser</span><span class="selector-class">.Safari</span>&#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#666666</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#666666</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.this_ua</span><span class="selector-class">.sskadmin</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#00a67c</span><span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#00a67c</span><span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">/*UA End*/</span></div><div class="line"><span class="comment">/*Head Start*/</span></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">ul</span><span class="selector-class">.ds-comments-tabs</span> <span class="selector-tag">li</span><span class="selector-class">.ds-tab</span> <span class="selector-tag">a</span><span class="selector-class">.ds-current</span> &#123;</div><div class="line">    <span class="attribute">border</span>: <span class="number">0px</span>;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#6D6D6B</span>;</div><div class="line">    <span class="attribute">text-shadow</span>: none;</div><div class="line">    <span class="attribute">background</span>: <span class="number">#F3F3F3</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-highlight</span> &#123;</div><div class="line">    <span class="attribute">font-family</span>: Microsoft YaHei, <span class="string">"Helvetica Neue"</span>, Helvetica, Arial, Sans-serif;</div><div class="line">    ;<span class="attribute">font-size</span>: <span class="number">100%</span>;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#6D6D6B</span> <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">ul</span><span class="selector-class">.ds-comments-tabs</span> <span class="selector-tag">li</span><span class="selector-class">.ds-tab</span> <span class="selector-tag">a</span><span class="selector-class">.ds-current</span>:hover &#123;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#696a52</span>;</div><div class="line">    <span class="attribute">background</span>: <span class="number">#F2F2F2</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">a</span><span class="selector-class">.ds-highlight</span>:hover &#123;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#696a52</span> <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> &#123;</div><div class="line">    <span class="attribute">padding-left</span>: <span class="number">15px</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">li</span><span class="selector-class">.ds-post</span>,<span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-id">#ds-hot-posts</span> &#123;</div><div class="line">    <span class="attribute">overflow</span>: visible;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-post-self</span> &#123;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">10px</span> <span class="number">0</span> <span class="number">10px</span> <span class="number">10px</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">li</span><span class="selector-class">.ds-post</span>,<span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-post-self</span> &#123;</div><div class="line">    <span class="attribute">border</span>: <span class="number">0</span> <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-avatar</span>, <span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">ul</span><span class="selector-class">.ds-children</span> <span class="selector-class">.ds-avatar</span> &#123;</div><div class="line">    <span class="attribute">top</span>: <span class="number">15px</span>;</div><div class="line">    <span class="attribute">left</span>: -<span class="number">20px</span>;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">5px</span>;</div><div class="line">    <span class="attribute">width</span>: <span class="number">36px</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">36px</span>;</div><div class="line">    <span class="attribute">box-shadow</span>: -<span class="number">1px</span> <span class="number">0</span> <span class="number">1px</span> rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,.<span class="number">15</span>) inset;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">46px</span>;</div><div class="line">    <span class="attribute">background</span>: <span class="number">#FAFAFA</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-class">.ds-avatar</span> <span class="selector-tag">a</span> &#123;</div><div class="line">    <span class="attribute">display</span>: inline-block;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">1px</span>;</div><div class="line">    <span class="attribute">width</span>: <span class="number">32px</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">32px</span>;</div><div class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#b9baa6</span>;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">50%</span>;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#fff</span> <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-class">.ds-avatar</span> <span class="selector-tag">a</span>:hover &#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-class">.ds-avatar</span> &gt; <span class="selector-tag">img</span> &#123;</div><div class="line">    <span class="attribute">margin</span>: <span class="number">2px</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2px</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-replybox</span> &#123;</div><div class="line">    <span class="attribute">box-shadow</span>: none;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">ul</span><span class="selector-class">.ds-children</span> <span class="selector-class">.ds-replybox</span><span class="selector-class">.ds-inline-replybox</span> <span class="selector-tag">a</span><span class="selector-class">.ds-avatar</span>,</div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-replybox</span><span class="selector-class">.ds-inline-replybox</span> <span class="selector-tag">a</span><span class="selector-class">.ds-avatar</span> &#123;</div><div class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">width</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">background</span>: none;</div><div class="line">    <span class="attribute">box-shadow</span>: none;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-replybox</span><span class="selector-class">.ds-inline-replybox</span> <span class="selector-tag">a</span><span class="selector-class">.ds-avatar</span> <span class="selector-tag">img</span> &#123;</div><div class="line">    <span class="attribute">width</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">50%</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-replybox</span> <span class="selector-tag">a</span><span class="selector-class">.ds-avatar</span>,</div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-replybox</span> <span class="selector-class">.ds-avatar</span> <span class="selector-tag">img</span> &#123;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">width</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">5px</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-avatar</span> <span class="selector-tag">img</span> &#123;</div><div class="line">    <span class="attribute">width</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">32px</span> <span class="meta">!important</span>;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">32px</span>;</div><div class="line">    <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">1px</span> <span class="number">3px</span> rgba(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.22</span>);</div><div class="line">    -webkit-<span class="attribute">transition</span>: .<span class="number">8s</span> all ease-in-out;</div><div class="line">    -moz-<span class="attribute">transition</span>: .<span class="number">4s</span> all ease-in-out;</div><div class="line">    -o-<span class="attribute">transition</span>: .<span class="number">4s</span> all ease-in-out;</div><div class="line">    -ms-<span class="attribute">transition</span>: .<span class="number">4s</span> all ease-in-out;</div><div class="line">    <span class="attribute">transition</span>: .<span class="number">4s</span> all ease-in-out;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.ds-post-self</span>:hover <span class="selector-class">.ds-avatar</span> <span class="selector-tag">img</span> &#123;</div><div class="line">    -webkit-<span class="attribute">transform</span>: rotateX(<span class="number">360deg</span>);</div><div class="line">    -moz-<span class="attribute">transform</span>: rotate(<span class="number">360deg</span>);</div><div class="line">    -o-<span class="attribute">transform</span>: rotate(<span class="number">360deg</span>);</div><div class="line">    -ms-<span class="attribute">transform</span>: rotate(<span class="number">360deg</span>);</div><div class="line">    <span class="attribute">transform</span>: rotate(<span class="number">360deg</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-comment-body</span> &#123;</div><div class="line">    -webkit-<span class="attribute">transition-delay</span>: initial;</div><div class="line">    -webkit-<span class="attribute">transition-duration</span>: <span class="number">0.4s</span>;</div><div class="line">    -webkit-<span class="attribute">transition-property</span>: all;</div><div class="line">    -webkit-<span class="attribute">transition-timing-function</span>: initial;</div><div class="line">    <span class="attribute">background</span>: <span class="number">#F7F7F7</span>;</div><div class="line">    <span class="attribute">padding</span>: <span class="number">15px</span> <span class="number">15px</span> <span class="number">15px</span> <span class="number">47px</span>;</div><div class="line">    <span class="attribute">border-radius</span>: <span class="number">5px</span>;</div><div class="line">    <span class="attribute">box-shadow</span>: <span class="number">#B8B9B9</span> <span class="number">0</span> <span class="number">1px</span> <span class="number">3px</span>;</div><div class="line">    <span class="attribute">border</span>: white <span class="number">1px</span> solid;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-tag">ul</span><span class="selector-class">.ds-children</span> <span class="selector-class">.ds-comment-body</span> &#123;</div><div class="line">    <span class="attribute">padding-left</span>: <span class="number">15px</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-comment-body</span> <span class="selector-tag">p</span> &#123;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#787968</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-comments</span> &#123;</div><div class="line">    <span class="attribute">border-bottom</span>: <span class="number">0px</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-powered-by</span> &#123;</div><div class="line">    <span class="attribute">display</span>: none;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-comments</span> <span class="selector-tag">a</span><span class="selector-class">.ds-user-name</span> &#123;</div><div class="line">    <span class="attribute">font-weight</span>: normal;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#3D3D3D</span> <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-comments</span> <span class="selector-tag">a</span><span class="selector-class">.ds-user-name</span>:hover &#123;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#D32</span> <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-id">#ds-bubble</span> &#123;</div><div class="line">    <span class="attribute">display</span>: none <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-id">#ds-hot-posts</span> &#123;</div><div class="line">    <span class="attribute">border</span>: <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-reset</span> <span class="selector-id">#ds-hot-posts</span> <span class="selector-class">.ds-gradient-bg</span> &#123;</div><div class="line">    <span class="attribute">background</span>: none;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#ds-thread</span> <span class="selector-id">#ds-reset</span> <span class="selector-class">.ds-comment-body</span>:hover &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#F1F1F1</span>;</div><div class="line">    -webkit-<span class="attribute">transition-delay</span>: initial;</div><div class="line">    -webkit-<span class="attribute">transition-duration</span>: <span class="number">0.4s</span>;</div><div class="line">    -webkit-<span class="attribute">transition-property</span>: all;</div><div class="line">    -webkit-<span class="attribute">transition-timing-function</span>: initial;</div><div class="line">&#125;</div><div class="line"><span class="comment">/*Head End*/</span></div></pre></td></tr></table></figure>
-<h2 id="6-新建about-categories页面以及插入外链图片或者视频"><a class="header-anchor" href="#6-新建about-categories页面以及插入外链图片或者视频">¶</a>6. 新建about，categories页面以及插入外链图片或者视频</h2>
+<h2 id="6-新建about-categories页面以及插入外链图片或者视频">6. 新建about，categories页面以及插入外链图片或者视频</h2>
 <ul>
 <li>新建about, categories页面，在Git Shell中切换到hexo目录输入以下命令：</li>
 </ul>
@@ -915,7 +1245,7 @@ Tilesets are fast light, and easy to style. Datasets are lossless, editable, and
 <li>插入视频通常是在视频网站选择嵌入，复制其提供的html代码，直接粘贴进博客的md文件中即可，因为markdown是支持html语法的~</li>
 </ul>
 <p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/hexo%2Finsert_vedio.png" alt="insert_vedio"></p>
-<h2 id="7-更新的相关操作"><a class="header-anchor" href="#7-更新的相关操作">¶</a>7. 更新的相关操作</h2>
+<h2 id="7-更新的相关操作">7. 更新的相关操作</h2>
 <ul>
 <li>更新hexo：</li>
 </ul>
@@ -929,7 +1259,7 @@ cd 到主题文件夹，执行命令：</li>
 <li>更新插件：</li>
 </ul>
 <figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">npm</span> update</div></pre></td></tr></table></figure>
-<h2 id="8-增加脚注功能footnotes"><a class="header-anchor" href="#8-增加脚注功能footnotes">¶</a>8. 增加脚注功能footnotes</h2>
+<h2 id="8-增加脚注功能footnotes">8. 增加脚注功能footnotes</h2>
 <p>在Cmd Markdown里面写东西的时候是支持脚注的，但是Hexo默认的markdown渲染插件好像不支持，所以只好换了一个，步骤如下：</p>
 <ul>
 <li>在hexo目录下输入</li>
@@ -943,7 +1273,7 @@ cd 到主题文件夹，执行命令：</li>
 <li>装好之后编辑Hexo的配置文件<code>_config.yml</code>，插入以下句子即可。</li>
 </ul>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="attr">markdown:</span></div><div class="line"><span class="attr">  render:</span></div><div class="line"><span class="attr">    html:</span> <span class="literal">true</span></div><div class="line"><span class="attr">    xhtmlOut:</span> <span class="literal">false</span></div><div class="line"><span class="attr">    breaks:</span> <span class="literal">false</span></div><div class="line"><span class="attr">    linkify:</span> <span class="literal">true</span></div><div class="line"><span class="attr">    typographer:</span> <span class="literal">true</span></div><div class="line"><span class="attr">    quotes:</span> <span class="string">'“”‘’'</span></div><div class="line"><span class="attr">  plugins:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">markdown-it-footnote</span></div><div class="line"><span class="bullet">    -</span> <span class="string">markdown-it-sup</span></div><div class="line"><span class="bullet">    -</span> <span class="string">markdown-it-sub</span></div><div class="line"><span class="bullet">    -</span> <span class="string">markdown-it-abbr</span></div><div class="line"><span class="bullet">    -</span> <span class="string">markdown-it-emoji</span></div><div class="line"><span class="attr">  anchors:</span></div><div class="line"><span class="attr">    level:</span> <span class="number">2</span></div><div class="line"><span class="attr">    collisionSuffix:</span> <span class="string">'v'</span></div><div class="line"><span class="attr">    permalink:</span> <span class="literal">true</span></div><div class="line"><span class="attr">    permalinkClass:</span> <span class="string">header-anchor</span></div><div class="line"><span class="attr">    permalinkSymbol:</span> <span class="string">¶</span></div></pre></td></tr></table></figure>
-<h2 id="9-数学公式后面有竖线的问题解决"><a class="header-anchor" href="#9-数学公式后面有竖线的问题解决">¶</a>9. 数学公式后面有竖线的问题解决</h2>
+<h2 id="9-数学公式后面有竖线的问题解决">9. 数学公式后面有竖线的问题解决</h2>
 <p>这个问题在<a href="https://github.com/iissnan/hexo-theme-next/issues/752" target="_blank" rel="external">Issues</a>里已经有人提出来，作者给出了解决方案，为了方便也在这里记录下：</p>
 <ul>
 <li>首先，编辑next的主题配置文件<code>_config.yml</code>，在里面找到mathjax的部分，替换为以下内容：</li>
@@ -955,7 +1285,7 @@ cd 到主题文件夹，执行命令：</li>
 <figure class="highlight django"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="xml"></span><span class="template-tag">&#123;% <span class="name"><span class="name">if</span></span> theme.mathjax.enable %&#125;</span><span class="xml"></span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/x-mathjax-config"</span>&gt;</span><span class="actionscript"></span></div><div class="line">    MathJax.Hub.Config(&#123;</div><div class="line">      tex2jax: &#123;</div><div class="line">        inlineMath: [ [<span class="string">'$'</span>,<span class="string">'$'</span>], [<span class="string">"\\("</span>,<span class="string">"\\)"</span>]  ],</div><div class="line">        processEscapes: <span class="literal">true</span>,</div><div class="line">        skipTags: [<span class="string">'script'</span>, <span class="string">'noscript'</span>, <span class="string">'style'</span>, <span class="string">'textarea'</span>, <span class="string">'pre'</span>, <span class="string">'code'</span>]</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/x-mathjax-config"</span>&gt;</span><span class="actionscript"></span></div><div class="line">    MathJax.Hub.Queue(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">var</span> all = MathJax.Hub.getAllJax(), i;</div><div class="line">      <span class="keyword">for</span> (i=<span class="number">0</span>; i &lt; all.length; i += <span class="number">1</span>) &#123;</div><div class="line">        all[i].SourceElement().parentNode.className += <span class="string">' has-jax'</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"</span></span><span class="template-variable">&#123;&#123; theme.mathjax.cdn &#125;&#125;</span><span class="xml"><span class="tag"><span class="string">"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></div><div class="line"><span class="template-tag">&#123;% <span class="name"><span class="name">endif</span></span> %&#125;</span><span class="xml"></span></div></pre></td></tr></table></figure>
 <p>测试一下，应该可以啦~
 $$\sum_{i=1}^n a_i=0$$</p>
-<h3 id="10-迁移博客"><a class="header-anchor" href="#10-迁移博客">¶</a>10. 迁移博客</h3>
+<h3 id="10-迁移博客">10. 迁移博客</h3>
 <p>最近换了电脑，需要迁移博客，把流程记录一下
 我把源文件存在了github.xxx.io.git的hexo分支上，所以要先从这里clone 源文件</p>
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="keyword">clone</span> <span class="title">-b</span> hexo https://github.com/xxx/xxx.github.io.git</div></pre></td></tr></table></figure>
@@ -1002,7 +1332,7 @@ $$\sum_{i=1}^n a_i=0$$</p>
     <updated>2017-03-14T07:13:35.058Z</updated>
     
     <content type="html"><![CDATA[<p>author: <a href="https://hujichn.github.io/">@Huji</a></p>
-<h2 id="1-1-spark的技术背景"><a class="header-anchor" href="#1-1-spark的技术背景">¶</a>1.1 Spark的技术背景</h2>
+<h2 id="1-1-spark的技术背景">1.1 Spark的技术背景</h2>
 <p>大多数现有的集群计算系统都是基于非循环的数据流模型。</p>
 <ul>
 <li>
@@ -1020,7 +1350,7 @@ $$\sum_{i=1}^n a_i=0$$</p>
 </li>
 </ul>
 <p>Spark实现了一种分布式的内存抽象，称为<strong>弹性分布式数据集</strong>（Resilient Distributed Dataset，RDD）。RDD允许用户在执行多个查询时显示地将工作缓存在内在中，后续的查询能够重用工作集。</p>
-<h2 id="1-2-spark的优点"><a class="header-anchor" href="#1-2-spark的优点">¶</a>1.2 Spark的优点</h2>
+<h2 id="1-2-spark的优点">1.2 Spark的优点</h2>
 <ul>
 <li>速度：和MapReduce相比，基于内存的运算快100倍以上，基于硬盘的运算快10倍以上。</li>
 <li>易用：支持Java，Python和Scala的API，用户可以快速构建不同应用</li>
@@ -1028,7 +1358,7 @@ $$\sum_{i=1}^n a_i=0$$</p>
 <img src="http://static.zybuluo.com/huji/ap7dsrlwipub9co1iclun9w0/20140612205604453.png" alt="20140612205604453.png-18.9kB"></li>
 <li>可融合性：可以和其他开源产品进行融合，可以使用Hadoop的YARN和Apache Mesos作为资源管理和调度器，并且可以支持所有Hadoop支持的数据，包括HDFS、HBase和Cassandra等，不需要做数据迁移。</li>
 </ul>
-<h2 id="1-3-spark架构综述"><a class="header-anchor" href="#1-3-spark架构综述">¶</a>1.3 Spark架构综述</h2>
+<h2 id="1-3-spark架构综述">1.3 Spark架构综述</h2>
 <p><img src="http://static.zybuluo.com/huji/p4ug5nlo0r7a651u84imfsry/QQ%E6%88%AA%E5%9B%BE20160310114355.png" alt="QQ截图20160310114355.png-87.8kB">
 用户程序提交到最终计算执行的步骤：</p>
 <ul>
@@ -1038,21 +1368,23 @@ $$\sum_{i=1}^n a_i=0$$</p>
 <li>Driver根据收到的信息处理不同的状态更新。Task又分为Shuffle Map Task和Result Task</li>
 <li>Driver不断调用Task直到所有Task都正确执行或超过执行次数限制时停止</li>
 </ul>
-<h2 id="1-4-核心组件介绍"><a class="header-anchor" href="#1-4-核心组件介绍">¶</a>1.4 核心组件介绍</h2>
+<h2 id="1-4-核心组件介绍">1.4 核心组件介绍</h2>
 <ul>
 <li>Spark Streaming: 将流式计算分解成一系列短小的批处理作业</li>
 <li>MLlib：可以做一些分类，回归，聚类，协同过滤，降维等</li>
 <li>Spark SQL：不管数据源的来源如何，用户都能够通过Spark支持的所有语言来操作这些数据。</li>
 <li>GraphX：关于图和图并行计算的API</li>
 </ul>
-<h2 id="1-5-spark的整体代码结构规模"><a class="header-anchor" href="#1-5-spark的整体代码结构规模">¶</a>1.5 Spark的整体代码结构规模</h2>
+<h2 id="1-5-spark的整体代码结构规模">1.5 Spark的整体代码结构规模</h2>
 <p>Spark Core是Spark的核心，上面提到的核心组件都是基于Spark Core的实现和衍生。</p>
 ]]></content>
     
     <summary type="html">
     
       &lt;p&gt;author: &lt;a href=&quot;https://hujichn.github.io/&quot;&gt;@Huji&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;1-1-spark的技术背景&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#1-1-spark的技术背景&quot;&gt;¶&lt;/a&gt;1
+&lt;h2 id=&quot;1-1-spark的技术背景&quot;&gt;1.1 Spark的技术背景&lt;/h2&gt;
+&lt;p&gt;大多数现有的集群计算系统都是基于非循环的数据流模型。&lt;/p&gt;
+
     
     </summary>
     
@@ -1074,53 +1406,53 @@ $$\sum_{i=1}^n a_i=0$$</p>
 <a id="more"></a>
 <p>author: <a href="https://hujichn.github.io">@Huji</a></p>
 <p>[toc]</p>
-<h3 id="1-建立一个元素全部为0的长度为10的list"><a class="header-anchor" href="#1-建立一个元素全部为0的长度为10的list">¶</a>1. 建立一个元素全部为0的长度为10的list</h3>
+<h3 id="1-建立一个元素全部为0的长度为10的list">1. 建立一个元素全部为0的长度为10的list</h3>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">mylist</span> = [<span class="number">0</span>] * <span class="number">10</span></div></pre></td></tr></table></figure>
 <p>类似地还有输出一条分割线</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">"-"</span> * <span class="number">40</span>)</span></span></div></pre></td></tr></table></figure>
-<h3 id="2-判断list当中不为nan的元素-统计其数值"><a class="header-anchor" href="#2-判断list当中不为nan的元素-统计其数值">¶</a>2. 判断list当中不为nan的元素，统计其数值</h3>
+<h3 id="2-判断list当中不为nan的元素-统计其数值">2. 判断list当中不为nan的元素，统计其数值</h3>
 <figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">count</span> = <span class="keyword">sum</span>([<span class="keyword">str</span>(x) != <span class="string">'nan'</span> <span class="keyword">for</span> x in mylist])</div></pre></td></tr></table></figure>
-<h3 id="3-快速得到dataframe的长度"><a class="header-anchor" href="#3-快速得到dataframe的长度">¶</a>3. 快速得到DataFrame的长度</h3>
+<h3 id="3-快速得到dataframe的长度">3. 快速得到DataFrame的长度</h3>
 <figure class="highlight glsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">length</span> = len(df.<span class="keyword">index</span>)</div></pre></td></tr></table></figure>
-<h3 id="4-把datetime格式的日期转化成字符串"><a class="header-anchor" href="#4-把datetime格式的日期转化成字符串">¶</a>4. 把Datetime格式的日期转化成字符串</h3>
+<h3 id="4-把datetime格式的日期转化成字符串">4. 把Datetime格式的日期转化成字符串</h3>
 <figure class="highlight cos"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dt.strftime('<span class="built_in">%Y</span><span class="built_in">%m</span><span class="built_in">%d</span>')</div></pre></td></tr></table></figure>
-<h3 id="5-把dataframe的某一列转化为datetime格式"><a class="header-anchor" href="#5-把dataframe的某一列转化为datetime格式">¶</a>5. 把DataFrame的某一列转化为datetime格式</h3>
+<h3 id="5-把dataframe的某一列转化为datetime格式">5. 把DataFrame的某一列转化为datetime格式</h3>
 <figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df[<span class="string">'datetime'</span>] = pd.to_datetime(df[<span class="string">'datetime'</span>])</div></pre></td></tr></table></figure>
-<h3 id="6-把dataframe中某一列str数据转换为int"><a class="header-anchor" href="#6-把dataframe中某一列str数据转换为int">¶</a>6. 把DataFrame中某一列str数据转换为int</h3>
+<h3 id="6-把dataframe中某一列str数据转换为int">6. 把DataFrame中某一列str数据转换为int</h3>
 <figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df[<span class="string">'column_name'</span>] = df[<span class="string">'column_name'</span>].astype(<span class="string">'int'</span>)</div></pre></td></tr></table></figure>
-<h3 id="7-把dataframe中混合了nan和str的数据转换为整数-int"><a class="header-anchor" href="#7-把dataframe中混合了nan和str的数据转换为整数-int">¶</a>7. 把DataFrame中混合了nan和str的数据转换为整数（int）</h3>
+<h3 id="7-把dataframe中混合了nan和str的数据转换为整数-int">7. 把DataFrame中混合了nan和str的数据转换为整数（int）</h3>
 <figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df[<span class="string">'column_name'</span>] = pd.to_numeric(df[<span class="string">'column_name'</span>])</div></pre></td></tr></table></figure>
-<h3 id="8-读取csv的时候指定index-列名-以及某一列的数据类型"><a class="header-anchor" href="#8-读取csv的时候指定index-列名-以及某一列的数据类型">¶</a>8. 读取csv的时候指定index，列名，以及某一列的数据类型</h3>
+<h3 id="8-读取csv的时候指定index-列名-以及某一列的数据类型">8. 读取csv的时候指定index，列名，以及某一列的数据类型</h3>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">df</span> = pd.read_csv(<span class="string">'df.csv'</span>, index_col = <span class="string">'a'</span>, header=<span class="number">0</span>, usecols=[<span class="number">0</span>,<span class="number">1</span>], names = &#123;<span class="string">'a'</span>,<span class="string">'b'</span>&#125;，dtype=&#123;<span class="string">'NET_ID'</span>:int&#125;)</div></pre></td></tr></table></figure>
-<h3 id="9-找出某一列中出现次数最多的数值"><a class="header-anchor" href="#9-找出某一列中出现次数最多的数值">¶</a>9. 找出某一列中出现次数最多的数值</h3>
+<h3 id="9-找出某一列中出现次数最多的数值">9. 找出某一列中出现次数最多的数值</h3>
 <p>（mode()函数的说明：Empty if nothing occurs at least 2 times. Always returns Series even if only one value.）</p>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">value</span> = mSeries.mode().loc[<span class="number">0</span>]</div></pre></td></tr></table></figure>
-<h3 id="10-判断loc后的结果是series还是dataframe"><a class="header-anchor" href="#10-判断loc后的结果是series还是dataframe">¶</a>10. 判断loc后的结果是Series还是DataFrame</h3>
+<h3 id="10-判断loc后的结果是series还是dataframe">10. 判断loc后的结果是Series还是DataFrame</h3>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">isinstance</span><span class="params">(mReturnValue, pd.Series)</span></span></div><div class="line"><span class="function"><span class="title">isinstance</span><span class="params">(mReturnValue, pd.DataFrame)</span></span></div></pre></td></tr></table></figure>
-<h3 id="11-从series建立只有一行的dataframe"><a class="header-anchor" href="#11-从series建立只有一行的dataframe">¶</a>11. 从Series建立只有一行的DataFrame</h3>
+<h3 id="11-从series建立只有一行的dataframe">11. 从Series建立只有一行的DataFrame</h3>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">df</span> = pd.DataFrame([mSeries])</div></pre></td></tr></table></figure>
-<h3 id="12-得到df当中a列值小于5的部分"><a class="header-anchor" href="#12-得到df当中a列值小于5的部分">¶</a>12. 得到df当中a列值小于5的部分</h3>
+<h3 id="12-得到df当中a列值小于5的部分">12. 得到df当中a列值小于5的部分</h3>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">result</span> = df[df.a &lt; <span class="number">5</span>]</div></pre></td></tr></table></figure>
-<h3 id="13-写入csv文件-不覆盖之前的内容"><a class="header-anchor" href="#13-写入csv文件-不覆盖之前的内容">¶</a>13. 写入csv文件，不覆盖之前的内容</h3>
+<h3 id="13-写入csv文件-不覆盖之前的内容">13. 写入csv文件，不覆盖之前的内容</h3>
 <figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df.to_csv(<span class="string">'a.csv'</span>, mode = <span class="string">'a'</span>, <span class="keyword">header</span> = <span class="literal">False</span>)</div></pre></td></tr></table></figure>
-<h3 id="14-写入sql的参数设置"><a class="header-anchor" href="#14-写入sql的参数设置">¶</a>14. 写入sql的参数设置</h3>
+<h3 id="14-写入sql的参数设置">14. 写入sql的参数设置</h3>
 <figure class="highlight ceylon"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df.to<span class="number">_</span>sql(<span class="string">'tableName'</span>, engine, <span class="keyword">if</span><span class="number">_</span><span class="keyword">exists</span> = <span class="string">'append'</span>, index = True, index<span class="number">_</span>label = <span class="string">'indexName'</span>)</div></pre></td></tr></table></figure>
 <p>if_exists也可以设置为<code>replace</code></p>
-<h3 id="15-找出符合某些条件的区域-赋给一定的数值"><a class="header-anchor" href="#15-找出符合某些条件的区域-赋给一定的数值">¶</a>15. 找出符合某些条件的区域，赋给一定的数值</h3>
+<h3 id="15-找出符合某些条件的区域-赋给一定的数值">15. 找出符合某些条件的区域，赋给一定的数值</h3>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df<span class="selector-class">.ix</span>[df<span class="selector-class">.stock</span> &lt; <span class="number">0</span>, <span class="string">'stock'</span>] = <span class="number">0</span></div></pre></td></tr></table></figure>
-<h3 id="16-重采样"><a class="header-anchor" href="#16-重采样">¶</a>16. 重采样</h3>
+<h3 id="16-重采样">16. 重采样</h3>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df = df.resample(<span class="string">"30min"</span>, closed = <span class="string">'right'</span>, <span class="keyword">label</span><span class="bash">=<span class="string">'right'</span>, how=<span class="string">'last'</span>, fill_method = <span class="string">'ffill'</span>)</span></div></pre></td></tr></table></figure>
-<h3 id="17-apply某一函数"><a class="header-anchor" href="#17-apply某一函数">¶</a>17. apply某一函数</h3>
+<h3 id="17-apply某一函数">17. apply某一函数</h3>
 <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df[<span class="string">"column_name"</span>] = df[<span class="string">'column_name'</span>].apply(lambda x: 2*<span class="keyword">int</span>(x)-3)</div></pre></td></tr></table></figure>
-<h3 id="18-append和concat"><a class="header-anchor" href="#18-append和concat">¶</a>18. append和concat</h3>
+<h3 id="18-append和concat">18. append和concat</h3>
 <p>功能类似，好像concat在连接空DataFrame的时候效率会很低</p>
-<h3 id="19-浮点数取整"><a class="header-anchor" href="#19-浮点数取整">¶</a>19. 浮点数取整</h3>
+<h3 id="19-浮点数取整">19. 浮点数取整</h3>
 <ul>
 <li>类型工厂函数,int()，效果：浮点数取整，如int(3.5)就返回3；数字的字符形式转换成数字，如int(“35”)就返回35</li>
 <li>内置函数的round(),四舍五入，第二个参数是保留小数点后多少位，默认是0，如round(3.5)返回4.0，round(3.5,1)就返回3.5，不能取整</li>
 <li>math模块的floor(),取小于等于的整数,如floor(3.5)返回3.0,floor(-1.5)返回-2.0，也不能取整</li>
 </ul>
-<h3 id="20-提取出dataframe当中等于某些数值的行"><a class="header-anchor" href="#20-提取出dataframe当中等于某些数值的行">¶</a>20. 提取出DataFrame当中等于某些数值的行</h3>
+<h3 id="20-提取出dataframe当中等于某些数值的行">20. 提取出DataFrame当中等于某些数值的行</h3>
 <figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">df = pd.<span class="symbol">DataFrame</span>(&#123;<span class="string">'vals'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], <span class="string">'ids'</span>: [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'f'</span>, <span class="string">'n'</span>], <span class="string">'ids2'</span>: [<span class="string">'a'</span>, <span class="string">'n'</span>, <span class="string">'c'</span>, <span class="string">'n'</span>]&#125;)</div><div class="line">                  </div><div class="line"># 对于，dataframe，这里的values还可以写成字典，values = &#123;<span class="string">"ids"</span>:[<span class="string">'a'</span>, <span class="string">'b'</span>], <span class="string">"vals"</span>: [<span class="number">1</span>, <span class="number">2</span>]&#125;，对于series，list就够了</div><div class="line"></div><div class="line">values = [<span class="string">'a'</span>, <span class="string">'b'</span>]</div><div class="line"></div><div class="line"># 对于字典的话，找出同时满足条件的行，则要在后面加个.all(<span class="number">1</span>)</div><div class="line">row_mask = df[<span class="string">'ids'</span>].isin(values)</div><div class="line">df[row_mask]</div></pre></td></tr></table></figure>
 ]]></content>
     

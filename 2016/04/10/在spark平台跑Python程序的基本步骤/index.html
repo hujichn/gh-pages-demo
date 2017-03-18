@@ -1,0 +1,985 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/mylib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/mylib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,Spark," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Ji Hu's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="实验室的spark平台装好之后，写了一篇简单的使用教程供大家参考，以k-means作为例子。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在spark平台跑Python程序的基本步骤">
+<meta property="og:url" content="https://hujichn.github.io/2016/04/10/在spark平台跑Python程序的基本步骤/index.html">
+<meta property="og:site_name" content="Ji Hu's Blog">
+<meta property="og:description" content="实验室的spark平台装好之后，写了一篇简单的使用教程供大家参考，以k-means作为例子。">
+<meta property="og:image" content="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/xshell-connect.png">
+<meta property="og:image" content="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/xshell-connect2.png">
+<meta property="og:image" content="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/xshell-connected.png">
+<meta property="og:image" content="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/upload-py.png">
+<meta property="og:image" content="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/file-prepare.PNG">
+<meta property="og:image" content="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/output.png">
+<meta property="og:image" content="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/code-edit.png">
+<meta property="og:updated_time" content="2017-03-18T12:56:11.931Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在spark平台跑Python程序的基本步骤">
+<meta name="twitter:description" content="实验室的spark平台装好之后，写了一篇简单的使用教程供大家参考，以k-means作为例子。">
+<meta name="twitter:image" content="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/xshell-connect.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '6270299573625816000',
+      author: 'Root'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hujichn.github.io/2016/04/10/在spark平台跑Python程序的基本步骤/"/>
+
+
+
+
+
+  <title> 在spark平台跑Python程序的基本步骤 | Ji Hu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?468728c0165ededf9f1a17571c8ac0e4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ji Hu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写点东西~</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://hujichn.github.io/2016/04/10/在spark平台跑Python程序的基本步骤/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ji Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/cat.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ji Hu's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                在spark平台跑Python程序的基本步骤
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-10T16:35:09+08:00">
+                2016-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/04/10/在spark平台跑Python程序的基本步骤/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/10/在spark平台跑Python程序的基本步骤/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2016/04/10/在spark平台跑Python程序的基本步骤/" class="leancloud_visitors" data-flag-title="在spark平台跑Python程序的基本步骤">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>实验室的spark平台装好之后，写了一篇简单的使用教程供大家参考，以k-means作为例子。</p>
+<a id="more"></a>
+<p>author: <a href="https://hujichn.github.io">@Huji</a></p>
+<h2 id="前期准备">前期准备</h2>
+<ol>
+<li>下载并安装<a href="https://www.netsarang.com/xshell_download.html" target="_blank" rel="external">Xshell</a></li>
+<li>利用Xshell连接至Master节点:</li>
+</ol>
+<ul>
+<li>
+<p>首先新建连接，输入名称，如Master，输入主机的ip地址,点击确定。
+<img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/xshell-connect.png" alt="xshell-connect"></p>
+</li>
+<li>
+<p>建立好会话后点击连接
+<img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/xshell-connect2.png" alt="xshell-connect2"></p>
+</li>
+<li>
+<p>输入用户名：root，密码：nesciipc@509，连接成功后会看到如下界面。
+<img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/xshell-connected.png" alt="xshell-connected"></p>
+</li>
+</ul>
+<ol start="3">
+<li>登录jupyter，地址为http://10.15.198.204:7777。点击进入你的文件夹或者创建一个新文件夹然后进入，可以点击upload按钮上传你自己的python文件和数据文件。
+<img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/upload-py.png" alt="upload-py"></li>
+</ol>
+<p><a href="http://xn--kmeans-9m7itcxox0enqj23pen0hvyf.py" target="_blank" rel="external">这里我们上传一个kmeans.py</a>，内容为：</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">from pyspark <span class="keyword">import</span> SparkContext</div><div class="line">from pyspark.mllib.clustering <span class="keyword">import</span> KMeans, KMeansModel</div><div class="line">from numpy <span class="keyword">import</span> array</div><div class="line">from math <span class="keyword">import</span> <span class="built_in">sqrt</span></div><div class="line"></div><div class="line">sc = SparkContext(appName=<span class="string">"kmeans"</span>)</div><div class="line"></div><div class="line"># Load and parse the data</div><div class="line">data = sc.textFile(<span class="string">"hj/kmeans_data.txt"</span>)</div><div class="line">parsedData = data.<span class="built_in">map</span>(lambda <span class="built_in">line</span>: array([<span class="built_in">float</span>(x) <span class="keyword">for</span> x in <span class="built_in">line</span>.<span class="built_in">split</span>(<span class="string">' '</span>)]))</div><div class="line"></div><div class="line"># Build the model (cluster the data)</div><div class="line">clusters = KMeans.train(parsedData, <span class="number">2</span>, maxIterations=<span class="number">10</span>,</div><div class="line">        runs=<span class="number">10</span>, initializationMode=<span class="string">"random"</span>)</div><div class="line"></div><div class="line"># Evaluate clustering by computing Within Set Sum of Squared Errors</div><div class="line">def error(<span class="built_in">point</span>):</div><div class="line">    i = clusters.predict(<span class="built_in">point</span>)</div><div class="line">    center = clusters.centers[i]</div><div class="line">    <span class="built_in">print</span>(<span class="string">"("</span> + <span class="built_in">str</span>(<span class="built_in">point</span>[<span class="number">0</span>]) + <span class="string">","</span> + <span class="built_in">str</span>(<span class="built_in">point</span>[<span class="number">1</span>]) + <span class="string">","</span> + <span class="built_in">str</span>(<span class="built_in">point</span>[<span class="number">2</span>]) + <span class="string">")"</span> + <span class="string">"blongs to cluster "</span> + <span class="built_in">str</span>(i+<span class="number">1</span>))</div><div class="line">    # <span class="built_in">print</span>(<span class="string">"Cluster Number:"</span> + <span class="built_in">str</span>(len(clusters.centers)))</div><div class="line">    <span class="keyword">return</span> <span class="built_in">sqrt</span>(sum([x**<span class="number">2</span> <span class="keyword">for</span> x in (<span class="built_in">point</span> - center)]))</div><div class="line"></div><div class="line">WSSSE = parsedData.<span class="built_in">map</span>(lambda <span class="built_in">point</span>: error(<span class="built_in">point</span>)).reduce(lambda x, y: x + y)</div><div class="line"><span class="built_in">print</span>(<span class="string">"Within Set Sum of Squared Error = "</span> + <span class="built_in">str</span>(WSSSE))</div><div class="line"></div><div class="line"><span class="keyword">for</span> mCenter in clusters.centers:</div><div class="line">    <span class="built_in">print</span>(mCenter)</div><div class="line"># Save and load model</div><div class="line"># clusters.<span class="built_in">save</span>(sc, <span class="string">"myModelPath"</span>)</div><div class="line"># sameModel = KMeansModel.load(sc, <span class="string">"myModelPath"</span>)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：直接上传py文件的时候要记得import SparkContext，还要自己创建sc。</p>
+</blockquote>
+<p>再上传一个kmeans_data.txt</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">0<span class="selector-class">.0</span> 0<span class="selector-class">.0</span> 0<span class="selector-class">.0</span></div><div class="line">0<span class="selector-class">.1</span> 0<span class="selector-class">.1</span> 0<span class="selector-class">.1</span></div><div class="line">0<span class="selector-class">.2</span> 0<span class="selector-class">.2</span> 0<span class="selector-class">.2</span></div><div class="line">9<span class="selector-class">.0</span> 9<span class="selector-class">.0</span> 9<span class="selector-class">.0</span></div><div class="line">9<span class="selector-class">.1</span> 9<span class="selector-class">.1</span> 9<span class="selector-class">.1</span></div><div class="line">9<span class="selector-class">.2</span> 9<span class="selector-class">.2</span> 9<span class="selector-class">.2</span></div></pre></td></tr></table></figure>
+<p>我们的<strong>目标</strong>是：</p>
+<p>使用Kmeans的方法进行聚类，被聚类的对象是空间中的点，每个点的参数就是kmeans_data.txt中每一行数值组成的三维坐标。</p>
+<h2 id="程序运行">程序运行</h2>
+<ol>
+<li>将数据文件复制到hdfs上</li>
+</ol>
+<ul>
+<li>第一步输入cd /home/myroot/notebook/huji，这里的huji对应于你在jupyter创建的文件夹名称。</li>
+<li>ls显示这个目录下的文件，可以看到有一个我们上传的数据文件kmeans_data.txt</li>
+<li>下一步在hdfs上创建一个目录，可以随便自己取名，这里取为hj</li>
+<li>将kmeans_data.txt复制到hj文件夹下</li>
+<li>用ls命令看一下hj文件夹下，已经有该数据了。
+<img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/file-prepare.PNG" alt="file-prepare"></li>
+</ul>
+<ol start="2">
+<li>运行python程序，在程序文件所在的文件中，输入下面命令即可。</li>
+</ol>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">PYSPARK_PYTHON</span>=python3 spark-submit kmeans.py</div></pre></td></tr></table></figure>
+<p><strong>注意</strong>：懒得每次运行都输入的话，可以在当前目录下新建一个sh文件，例如<code>start_kmeans.sh</code>，把上面这句命令粘贴进去，以后到这个目录下输入以下命令即可运行代码。</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./start_kmeans.<span class="keyword">sh</span></div></pre></td></tr></table></figure>
+<p>我们的程序文件<code>kmeans.py</code>放在huji文件夹中，所以在这个目录下直接输入就好。</p>
+<blockquote>
+<p>注意：如果上面第一步复制数据文件完毕以后，不慎退出了shell，那么下次再打开需要点击左上角<code>文件</code>-<code>打开</code>，选择上次建立的连接，如<code>Master</code>，再次连接，连上之后再次输入<code>cd /home/myroot/notebook/huji</code>进入程序文件所在目录。</p>
+</blockquote>
+<h2 id="输出结果">输出结果</h2>
+<p>得到的结果如下图所示，其中三个点被聚到了cluster2，三个点被聚到了cluster1，两个cluster的中心点分别是[0.1,0.1,0.1]和[9.1,9.1,9.1]。</p>
+<p><img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/output.png" alt="输出结果"></p>
+<h2 id="其他">其他</h2>
+<ol>
+<li>程序修改：
+这个工作可以在jupyter里面完成，点击传上去的py文件，就能够打开文件内容的页面，直接编辑，然后<code>ctrl+s</code>保存即可。</li>
+</ol>
+<p><img src="http://7xsoqo.com2.z0.glb.clouddn.com/spark/pic/tutorial/code-edit.png" alt="code-edit"></p>
+<ol start="2">
+<li>
+<p>查找文件：
+linux下查找开头为@的文件的命令是</p>
+ <figure class="highlight sqf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">find</span> / -maxdepth <span class="number">1</span> -<span class="built_in">name</span> <span class="string">"@*"</span></div></pre></td></tr></table></figure>
+<p>要是查找当前目录就把斜杠改为点</p>
+</li>
+</ol>
+<ol start="3">
+<li>要删除hdfs上的数据等hadoop操作可以看<a href="http://blog.csdn.net/bell2008/article/details/9639833" target="_blank" rel="external">hadoop常用命令</a></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/Spark/" rel="tag"># Spark</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/06/Win10上利用github+hexo建立博客的方法/" rel="next" title="Win10上利用github+hexo建立博客的方法">
+                <i class="fa fa-chevron-left"></i> Win10上利用github+hexo建立博客的方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/13/Tips on data analysis by python (advanced)/" rel="prev" title="Tips on data analysis by python (advanced)">
+                Tips on data analysis by python (advanced) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/10/在spark平台跑Python程序的基本步骤/"
+           data-title="在spark平台跑Python程序的基本步骤" data-url="https://hujichn.github.io/2016/04/10/在spark平台跑Python程序的基本步骤/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/cat.jpg"
+               alt="Ji Hu" />
+          <p class="site-author-name" itemprop="name">Ji Hu</p>
+           
+              <p class="site-description motion-element" itemprop="description">fight！</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前期准备"><span class="nav-number">1.</span> <span class="nav-text">前期准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序运行"><span class="nav-number">2.</span> <span class="nav-text">程序运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出结果"><span class="nav-number">3.</span> <span class="nav-text">输出结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ji Hu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/mylib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/mylib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/mylib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/mylib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/mylib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/mylib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hujichn"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/mylib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="/mylib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("cf1BkMNWywyAuHWUVSESYmwt-gzGzoHsz", "F2VRDQsk2yv2sP8CPtdm9C2U");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

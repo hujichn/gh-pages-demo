@@ -407,11 +407,11 @@
 <a id="more"></a>
 <p>author: <a href="https://hujichn.github.io">@Huji</a></p>
 <p>[toc]</p>
-<h3 id="1-对于groupby的结果分别apply函数进行计算-类似reduce的感觉"><a class="header-anchor" href="#1-对于groupby的结果分别apply函数进行计算-类似reduce的感觉">¶</a>1. 对于groupby的结果分别apply函数进行计算，类似reduce的感觉</h3>
+<h3 id="1-对于groupby的结果分别apply函数进行计算-类似reduce的感觉">1. 对于groupby的结果分别apply函数进行计算，类似reduce的感觉</h3>
 <figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 输入df，也就是其中的每一个group</div><div class="line">def myFunc(df)：</div><div class="line">    p = df[<span class="string">"p"</span>].<span class="built_in">values</span></div><div class="line">    a = df[<span class="string">"a"</span>].<span class="built_in">values</span> </div><div class="line">    # 返回两个值的话要用Series来返回</div><div class="line">    <span class="built_in">return</span> pd.Series(&#123;<span class="string">"sum"</span>: a.<span class="built_in">sum</span>(), <span class="string">"rmsle"</span>: <span class="built_in">np</span>.<span class="built_in">sqrt</span>(<span class="built_in">np</span>.squre(<span class="built_in">np</span>.<span class="built_in">log</span>(p+<span class="number">1</span>)-<span class="built_in">np</span>.<span class="built_in">log</span>(a+<span class="number">1</span>)).<span class="built_in">mean</span>())&#125;)</div><div class="line"></div><div class="line">dfGroupby.<span class="built_in">apply</span>(myFunc)</div></pre></td></tr></table></figure>
-<h3 id="2-把字符串表示的时间进行加减-得到新字符串"><a class="header-anchor" href="#2-把字符串表示的时间进行加减-得到新字符串">¶</a>2. 把字符串表示的时间进行加减，得到新字符串</h3>
+<h3 id="2-把字符串表示的时间进行加减-得到新字符串">2. 把字符串表示的时间进行加减，得到新字符串</h3>
 <figure class="highlight nix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from pandas.tslib <span class="built_in">import</span> Timestamp</div><div class="line">from pandas.tseries.offsets <span class="built_in">import</span> *</div><div class="line"><span class="attr">eventsDate</span> = “<span class="number">2013</span>-<span class="number">10</span>-<span class="number">22</span>”</div><div class="line"><span class="attr">eventsDate</span> = Timestamp(eventsDate)</div><div class="line"><span class="attr">dayBackward</span> = str((eventsDate - DateOffset(<span class="attr">days=1)).date())</span></div><div class="line"><span class="attr">dayForward</span> = str((eventsDate + DateOffset(<span class="attr">days=1)).date())</span></div></pre></td></tr></table></figure>
-<h3 id="3-python中的异常处理简介"><a class="header-anchor" href="#3-python中的异常处理简介">¶</a>3. python中的异常处理简介</h3>
+<h3 id="3-python中的异常处理简介">3. python中的异常处理简介</h3>
 <p>有时候网络有点崩，比如要从某网页抓取数据，经常由于网络原因中就error，这个时候真是痛心疾首，加入异常处理的逻辑可以使得程序放心运行。:）</p>
 <p>异常处理的基本流程如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">    Normal execution block</div><div class="line"><span class="keyword">except</span> A:</div><div class="line">    Exception A handle</div><div class="line"><span class="keyword">except</span> B:</div><div class="line">    Exception B handle</div><div class="line"><span class="keyword">except</span>:</div><div class="line">    Other exception handle</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="keyword">if</span> no exception,get here</div><div class="line"><span class="keyword">finally</span>:</div><div class="line">    print(<span class="string">"finally"</span>)</div></pre></td></tr></table></figure>
@@ -419,12 +419,12 @@
 <p>还是不知道Error的类型的话，可以暂时先写</p>
 <figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">except Exception <span class="keyword">as</span> <span class="keyword">ex</span>：</div><div class="line">    <span class="keyword">print</span>(<span class="keyword">type</span>(<span class="keyword">ex</span>))</div><div class="line">    <span class="keyword">print</span>(<span class="keyword">ex</span>.<span class="keyword">args</span>)</div></pre></td></tr></table></figure>
 <p>这样一般可以得到Error的名称。</p>
-<h3 id="4-由字典建立一行的dataframe"><a class="header-anchor" href="#4-由字典建立一行的dataframe">¶</a>4. 由字典建立一行的DataFrame</h3>
+<h3 id="4-由字典建立一行的dataframe">4. 由字典建立一行的DataFrame</h3>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">firstLine</span> = pd.DataFrame([&#123;<span class="string">"rent_count"</span>: <span class="number">0</span>, <span class="string">"netid"</span>: netid&#125;], index=[startTime])</div></pre></td></tr></table></figure>
 <p>需要注意的是，内容和index都要记得以list的形式传输</p>
-<h3 id="5-填充缺失值-fillna"><a class="header-anchor" href="#5-填充缺失值-fillna">¶</a>5. 填充缺失值 fillna</h3>
+<h3 id="5-填充缺失值-fillna">5. 填充缺失值 fillna</h3>
 <figure class="highlight oxygene"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">r[<span class="string">'Wind SpeedMPH'</span>].fillna(<span class="number">0</span>, inplace=<span class="keyword">True</span>)</div><div class="line">r[<span class="string">'VisibilityMPH'</span>].fillna(<span class="function"><span class="keyword">method</span>='<span class="title">ffill</span>', <span class="title">inplace</span>=<span class="title">True</span>)</span></div><div class="line"><span class="title">r</span>['<span class="title">Humidity</span>'].<span class="title">fillna</span><span class="params">(<span class="keyword">method</span>=<span class="string">'bfill'</span>, inplace=<span class="keyword">True</span>)</span></div></pre></td></tr></table></figure>
-<h3 id="6-求出假期的方法"><a class="header-anchor" href="#6-求出假期的方法">¶</a>6. 求出假期的方法</h3>
+<h3 id="6-求出假期的方法">6. 求出假期的方法</h3>
 <p>目前找到了两种方法，我们以美国2013年的法定节假日为例写一下示例代码：</p>
 <ul>
 <li>第一种是Pandas中的Holiday模块提供的功能：</li>
@@ -438,7 +438,7 @@
 <figure class="highlight capnproto"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> date</div><div class="line"><span class="keyword">from</span> workalendar.usa <span class="keyword">import</span> NewYork</div><div class="line">cal = NewYork()</div><div class="line">cal.holidays(<span class="number">2013</span>)</div></pre></td></tr></table></figure>
 <p>得到的结果是：</p>
 <p><img src="http://7xsoqo.com2.z0.glb.clouddn.com/python/tips/holidayNYC2013.png" alt="holidayNYC2013"></p>
-<h3 id="7-去掉列表中重复元素的方法"><a class="header-anchor" href="#7-去掉列表中重复元素的方法">¶</a>7. 去掉列表中重复元素的方法</h3>
+<h3 id="7-去掉列表中重复元素的方法">7. 去掉列表中重复元素的方法</h3>
 <ul>
 <li>一维的list可以利用集合的方法,但会改变元素的顺序：</li>
 </ul>
@@ -449,12 +449,12 @@
 <li>如果不是一维的list可以用以下方法，或者遍历，原理是一样的。</li>
 </ul>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">a</span> = [<span class="selector-tag">a</span>[i] <span class="keyword">for</span> <span class="selector-tag">i</span> <span class="keyword">in</span> range(len(a)) <span class="keyword">if</span> <span class="selector-tag">a</span>[i] not <span class="keyword">in</span> <span class="selector-tag">a</span>[:i]]</div></pre></td></tr></table></figure>
-<h3 id="8-统计嵌套列表里面各个list出现的次数"><a class="header-anchor" href="#8-统计嵌套列表里面各个list出现的次数">¶</a>8. 统计嵌套列表里面各个list出现的次数</h3>
+<h3 id="8-统计嵌套列表里面各个list出现的次数">8. 统计嵌套列表里面各个list出现的次数</h3>
 <figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">import pandas as pd</div><div class="line"></div><div class="line">allList = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]]</div><div class="line">mDict = &#123;<span class="string">'list'</span>:[],<span class="string">'num'</span>:[]&#125;</div><div class="line">print(mDict)</div><div class="line"></div><div class="line">def calOccurrence(mList):</div><div class="line">    if mList in mDict[<span class="string">'list'</span>]:</div><div class="line">        loc = mDict[<span class="string">'list'</span>].index(mList)</div><div class="line">        mDict[<span class="string">'num'</span>][loc] = mDict[<span class="string">'num'</span>][loc] + <span class="number">1</span></div><div class="line">    else:</div><div class="line">        mDict[<span class="string">'list'</span>].append(mList)</div><div class="line">        mDict[<span class="string">'num'</span>].append(<span class="number">1</span>)</div><div class="line"></div><div class="line">for mList in allList:</div><div class="line">    calOccurrence(mList)</div><div class="line"></div><div class="line">print(pd.<span class="symbol">DataFrame</span>(mDict))</div></pre></td></tr></table></figure>
 <p>输出结果是</p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">        <span class="type">list</span>  num</div><div class="line"><span class="number">0</span>  [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]    <span class="number">3</span></div><div class="line"><span class="number">1</span>  [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]    <span class="number">1</span></div></pre></td></tr></table></figure>
 <p>本来想利用pandas的groupby+count来做，但是groupby是求by的对象的hash值进行group，list对象不能求hash值也就不能groupby，所以还是用循环来维护一个字典，统计出各个list的出现次数。</p>
-<h3 id="9-python函数定义"><a class="header-anchor" href="#9-python函数定义">¶</a>9. Python函数定义<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></h3>
+<h3 id="9-python函数定义">9. Python函数定义<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></h3>
 <ul>
 <li>引入一个形如 **name 的参数时，它接收一个字典</li>
 <li>引入一个形如 *name 的参数时，它接收一个元祖</li>
@@ -465,7 +465,7 @@
 <figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cheeseshop(<span class="string">"Limburger"</span>, <span class="string">"It's very runny, sir."</span>,</div><div class="line">           <span class="string">"It's really very, VERY runny, sir."</span>,</div><div class="line">           shopkeeper=<span class="string">"Michael Palin"</span>,</div><div class="line">           <span class="keyword">client</span>=<span class="string">"John Cleese"</span>,</div><div class="line">           sketch=<span class="string">"Cheese Shop Sketch"</span>)</div></pre></td></tr></table></figure>
 <p>输出结果为：</p>
 <figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="bullet">-- </span>Do you have any Limburger ?</div><div class="line"><span class="bullet">-- </span>I'm sorry, we're all out of Limburger</div><div class="line">It's very runny, sir.</div><div class="line"><span class="section">It's really very, VERY runny, sir.</span></div><div class="line">----------------------------------------</div><div class="line">client : John Cleese</div><div class="line">shopkeeper : Michael Palin</div><div class="line">sketch : Cheese Shop Sketch</div></pre></td></tr></table></figure>
-<h3 id="10-python装饰器简单解析"><a class="header-anchor" href="#10-python装饰器简单解析">¶</a>10. python装饰器简单解析<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></h3>
+<h3 id="10-python装饰器简单解析">10. python装饰器简单解析<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></h3>
 <p>装饰器提供了一种方法，在函数和类定义的末尾插入自动运行的代码，相当于对函数进行一种扩展。</p>
 <p>下面是一个简单地把日志输出到界面的例子</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">logger</span><span class="params">(func)</span>:</span></div><div class="line">    print(<span class="string">"in decorator"</span>)</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">        print(<span class="string">"Arguments were: %s, %s"</span> % (args, kwargs))</div><div class="line">        <span class="keyword">return</span> func(*args, **kwargs)</div><div class="line">    <span class="keyword">return</span> inner</div></pre></td></tr></table></figure>
@@ -548,8 +548,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/04/06/Win10上利用github+hexo建立博客的方法/" rel="next" title="Win10上利用github+hexo建立博客的方法">
-                <i class="fa fa-chevron-left"></i> Win10上利用github+hexo建立博客的方法
+              <a href="/2016/04/10/在spark平台跑Python程序的基本步骤/" rel="next" title="在spark平台跑Python程序的基本步骤">
+                <i class="fa fa-chevron-left"></i> 在spark平台跑Python程序的基本步骤
               </a>
             
           </div>
@@ -636,7 +636,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -658,7 +658,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -700,7 +700,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-对于groupby的结果分别apply函数进行计算-类似reduce的感觉"><span class="nav-number">1.</span> <span class="nav-text">¶1. 对于groupby的结果分别apply函数进行计算，类似reduce的感觉</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-把字符串表示的时间进行加减-得到新字符串"><span class="nav-number">2.</span> <span class="nav-text">¶2. 把字符串表示的时间进行加减，得到新字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-python中的异常处理简介"><span class="nav-number">3.</span> <span class="nav-text">¶3. python中的异常处理简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-由字典建立一行的dataframe"><span class="nav-number">4.</span> <span class="nav-text">¶4. 由字典建立一行的DataFrame</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-填充缺失值-fillna"><span class="nav-number">5.</span> <span class="nav-text">¶5. 填充缺失值 fillna</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-求出假期的方法"><span class="nav-number">6.</span> <span class="nav-text">¶6. 求出假期的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-去掉列表中重复元素的方法"><span class="nav-number">7.</span> <span class="nav-text">¶7. 去掉列表中重复元素的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-统计嵌套列表里面各个list出现的次数"><span class="nav-number">8.</span> <span class="nav-text">¶8. 统计嵌套列表里面各个list出现的次数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-python函数定义"><span class="nav-number">9.</span> <span class="nav-text">¶9. Python函数定义[1]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-python装饰器简单解析"><span class="nav-number">10.</span> <span class="nav-text">¶10. python装饰器简单解析[2]</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-对于groupby的结果分别apply函数进行计算-类似reduce的感觉"><span class="nav-number">1.</span> <span class="nav-text">1. 对于groupby的结果分别apply函数进行计算，类似reduce的感觉</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-把字符串表示的时间进行加减-得到新字符串"><span class="nav-number">2.</span> <span class="nav-text">2. 把字符串表示的时间进行加减，得到新字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-python中的异常处理简介"><span class="nav-number">3.</span> <span class="nav-text">3. python中的异常处理简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-由字典建立一行的dataframe"><span class="nav-number">4.</span> <span class="nav-text">4. 由字典建立一行的DataFrame</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-填充缺失值-fillna"><span class="nav-number">5.</span> <span class="nav-text">5. 填充缺失值 fillna</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-求出假期的方法"><span class="nav-number">6.</span> <span class="nav-text">6. 求出假期的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-去掉列表中重复元素的方法"><span class="nav-number">7.</span> <span class="nav-text">7. 去掉列表中重复元素的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-统计嵌套列表里面各个list出现的次数"><span class="nav-number">8.</span> <span class="nav-text">8. 统计嵌套列表里面各个list出现的次数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-python函数定义"><span class="nav-number">9.</span> <span class="nav-text">9. Python函数定义[1]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-python装饰器简单解析"><span class="nav-number">10.</span> <span class="nav-text">10. python装饰器简单解析[2]</span></a></li></ol></div>
             
 
           </div>
