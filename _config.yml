@@ -81,5 +81,5 @@ markdown:
   anchors:
     level: 2
     collisionSuffix: 'v'
-    permalink: true
+    permalink: false
     permalinkClass: header-anchor
