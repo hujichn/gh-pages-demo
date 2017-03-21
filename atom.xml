@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hujichn.github.io/"/>
-  <updated>2017-03-18T12:54:09.037Z</updated>
+  <updated>2017-03-21T03:21:42.768Z</updated>
   <id>https://hujichn.github.io/</id>
   
   <author>
@@ -14,6 +14,153 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>排序算法的总结 (c++实现)</title>
+    <link href="https://hujichn.github.io/2017/03/20/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%BB%E7%BB%93%20(c++%E5%AE%9E%E7%8E%B0)/"/>
+    <id>https://hujichn.github.io/2017/03/20/排序算法的总结 (c++实现)/</id>
+    <published>2017-03-20T03:16:27.000Z</published>
+    <updated>2017-03-21T03:21:42.768Z</updated>
+    
+    <content type="html"><![CDATA[<p>周末复习了数据结构中排序的知识，用c++实现了一遍（完整的项目代码见文末Github链接），总结如下。</p>
+<a id="more"></a>
+<p>author: <a href="https://hujichn.github.io/">@Huji</a></p>
+<h2 id="冒泡排序-bubblesort">冒泡排序 BubbleSort</h2>
+<p>【<strong>原理</strong>】</p>
+<p>遍历要排序的序列，比较两个相邻的元素，如果顺序错误就进行交换，直到序列有序。</p>
+<p>【<strong>步骤</strong>】</p>
+<ul>
+<li>比较相邻的元素。如果第一个比第二个大，就交换他们两个。</li>
+<li>对第0个到第n-1个数据做同样的工作。这时，最大的数就“浮”到了数组最后的位置上。</li>
+<li>针对所有的元素重复以上的步骤，除了最后一个。</li>
+<li>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。</li>
+</ul>
+<p>【<strong>代码实现</strong>】</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; bubble_sort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; arr)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> n = arr.size();</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; ++i)&#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>; j&lt;(n-i);++j)&#123;</div><div class="line">            <span class="keyword">if</span>(arr[j<span class="number">-1</span>] &gt; arr[j])&#123;</div><div class="line">                swap(arr[j<span class="number">-1</span>], arr[j]);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> arr;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述代码可以进行优化。</p>
+<ul>
+<li>优化1：如果某一次遍历没有数据交换了，那么就做一个标记，跳出循环。</li>
+<li>优化2：记录某次遍历的时候最后发生数据交换的位置，后面的数据已经排好序，那么循环的范围就可以缩小了。</li>
+</ul>
+<p>详细的优化方案1和2的代码见文末。</p>
+<h2 id="选择排序-selectionsort">选择排序 SelectionSort</h2>
+<p>【<strong>原理</strong>】</p>
+<p>每次手动选择最小的元素放到已排序序列的末尾。（和冒泡相比少了两两比较交换的过程）</p>
+<p>【<strong>步骤</strong>】</p>
+<ul>
+<li>在未排序序列中找到最小（大）元素，存放到排序序列的起始位置。</li>
+<li>再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。</li>
+<li>以此类推，直到所有元素均排序完毕。</li>
+</ul>
+<p>【<strong>代码实现</strong>】</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; selection_sort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; arr)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> n = arr.size();</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; ++i)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">int</span> minPos = i;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=i+<span class="number">1</span>;j&lt;n;++j)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span>(arr[j]&lt;arr[minPos])</div><div class="line">                minPos = j;</div><div class="line">        &#125;</div><div class="line">        swap(arr[i], arr[minPos]);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> arr;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="插入排序-insertionsort">插入排序 InsertionSort</h2>
+<p>【<strong>原理</strong>】</p>
+<p>对每一个未排序元素，从后往前扫描已排序序列，插入到合适的位置。</p>
+<p>【<strong>步骤</strong>】</p>
+<ul>
+<li>从第一个元素开始，该元素可以认为已经被排序</li>
+<li>取出下一个元素，在已经排序的元素序列中从后向前扫描</li>
+<li>如果被扫描的元素（已排序）大于新元素，将该元素后移一位</li>
+<li>重复步骤3，直到找到已排序的元素小于或者等于新元素的位置</li>
+<li>将新元素插入到该位置后</li>
+<li>重复步骤2~5</li>
+</ul>
+<p>【<strong>代码实现</strong>】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">vector&lt;int&gt; <span class="keyword">insertion_sort(vector&lt;int&gt; </span>arr)</div><div class="line">&#123;</div><div class="line">    int n = arr.size()<span class="comment">;</span></div><div class="line">    int i,<span class="keyword">j,tmp;</span></div><div class="line"></div><div class="line">    for(i=<span class="number">1</span><span class="comment">; i&lt;n; ++i)</span></div><div class="line">    &#123;</div><div class="line">        if(arr[i]&lt;arr[i-1])</div><div class="line">        &#123;</div><div class="line">            tmp = arr[i]<span class="comment">;</span></div><div class="line">            for(<span class="keyword">j=i; </span>arr[<span class="keyword">j-1]&gt;tmp </span>&amp;&amp; <span class="keyword">j&gt;0; </span>--<span class="keyword">j)</span></div><div class="line">            &#123;</div><div class="line">                arr[<span class="keyword">j] </span>= arr[<span class="keyword">j-1];</span></div><div class="line">            &#125;</div><div class="line">            arr[<span class="keyword">j] </span>= tmp<span class="comment">;</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return arr<span class="comment">;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="希尔排序-shellsort">希尔排序 ShellSort</h2>
+<p>【<strong>原理</strong>】</p>
+<p>实际上是分组的插入排序。把记录按步长分组，对每组记录采用直接插入排序方法进行排序。随着步长逐渐减小，所分成的组包含的记录越来越多，当步长的值减小到 1 时，整个数据合成为一组，构成一组有序记录，则完成排序。</p>
+<p>【<strong>步骤</strong>】</p>
+<p>例如，假设有这样一组数[ 13 14 94 33 82 25 59 94 65 23 45 27 73 25 39 10 ]，如果我们以步长为5开始进行排序，我们可以通过将这列表放在有5列的表中来更好地描述算法，这样他们就应该看起来是这样：</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">13 </span><span class="number">14</span> <span class="number">94</span> <span class="number">33</span> <span class="number">82</span></div><div class="line"><span class="symbol">25 </span><span class="number">59</span> <span class="number">94</span> <span class="number">65</span> <span class="number">23</span></div><div class="line"><span class="symbol">45 </span><span class="number">27</span> <span class="number">73</span> <span class="number">25</span> <span class="number">39</span></div><div class="line"><span class="number">10</span></div></pre></td></tr></table></figure>
+<p>然后我们对每列进行排序：</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">10 </span><span class="number">14</span> <span class="number">73</span> <span class="number">25</span> <span class="number">23</span></div><div class="line"><span class="symbol">13 </span><span class="number">27</span> <span class="number">94</span> <span class="number">33</span> <span class="number">39</span></div><div class="line"><span class="symbol">25 </span><span class="number">59</span> <span class="number">94</span> <span class="number">65</span> <span class="number">82</span></div><div class="line"><span class="number">45</span></div></pre></td></tr></table></figure>
+<p>将上述四行数字，依序接在一起时我们得到：[ 10 14 73 25 23 13 27 94 33 39 25 59 94 65 82 45 ]。这时10已经移至正确位置了，然后再以3为步长进行排序：</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">10 </span><span class="number">14</span> <span class="number">73</span></div><div class="line"><span class="symbol">25 </span><span class="number">23</span> <span class="number">13</span></div><div class="line"><span class="symbol">27 </span><span class="number">94</span> <span class="number">33</span></div><div class="line"><span class="symbol">39 </span><span class="number">25</span> <span class="number">59</span></div><div class="line"><span class="symbol">94 </span><span class="number">65</span> <span class="number">82</span></div><div class="line"><span class="number">45</span></div></pre></td></tr></table></figure>
+<p>排序之后变为：</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">10 </span><span class="number">14</span> <span class="number">13</span></div><div class="line"><span class="symbol">25 </span><span class="number">23</span> <span class="number">33</span></div><div class="line"><span class="symbol">27 </span><span class="number">25</span> <span class="number">59</span></div><div class="line"><span class="symbol">39 </span><span class="number">65</span> <span class="number">73</span></div><div class="line"><span class="symbol">45 </span><span class="number">94</span> <span class="number">82</span></div><div class="line"><span class="number">94</span></div></pre></td></tr></table></figure>
+<p>最后以1步长进行排序（此时就是简单的插入排序了）。</p>
+<p>【<strong>代码实现</strong>】</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">vector&lt;<span class="type">int</span>&gt; shell_sort(vector&lt;<span class="type">int</span>&gt; arr)</div><div class="line">&#123;</div><div class="line">    <span class="type">int</span> n = arr.size();</div><div class="line">    <span class="type">int</span> i,j,tmp;</div><div class="line">    <span class="type">int</span> <span class="built_in">step</span> = <span class="built_in">round</span>(n/<span class="number">2</span>);</div><div class="line">    <span class="keyword">while</span>(<span class="built_in">step</span> &gt; <span class="number">0</span>)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">for</span>(i=<span class="built_in">step</span>; i&lt;n; ++i)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span>(arr[i] &lt; arr[i-<span class="built_in">step</span>])</div><div class="line">            &#123;</div><div class="line">                tmp = arr[i];</div><div class="line">                <span class="keyword">for</span>(j=i; arr[j-<span class="built_in">step</span>]&gt;tmp &amp;&amp; j&gt;=<span class="built_in">step</span>; j=j-<span class="built_in">step</span>)&#123;</div><div class="line">                    arr[j] = arr[j-<span class="built_in">step</span>];</div><div class="line">                &#125;</div><div class="line">                arr[j] = tmp;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">step</span> = <span class="built_in">round</span>(<span class="built_in">step</span>/<span class="number">2</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> arr;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="归并排序-mergesort">归并排序 MergeSort</h2>
+<p>【<strong>思想</strong>】</p>
+<p>归并排序就是不断地划分待排序的序列，直到序列长度为1就是有序序列，然后再逐步将两个已经排序的序列合并成一个序列。</p>
+<p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/sort/Merge-sort.gif" alt="mergesort"></p>
+<p>【<strong>步骤</strong>】</p>
+<ul>
+<li>
+<p>Divide: 把长度为n的输入序列分成两个长度为n/2的子序列。</p>
+</li>
+<li>
+<p>Conquer: 对这两个子序列分别采用归并排序。</p>
+</li>
+<li>
+<p>Combine: 将两个排序好的子序列合并成一个最终的排序序列。</p>
+</li>
+</ul>
+<p>【<strong>代码实现</strong>】</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge_array</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;arr, <span class="keyword">int</span> b, <span class="keyword">int</span> m, <span class="keyword">int</span> e)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> i=b, j=m+<span class="number">1</span>, k=b;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; tmp = arr;</div><div class="line">    <span class="keyword">while</span>(i&lt;=m &amp;&amp; j&lt;=e) arr[k++] = tmp[i]&lt;tmp[j]? tmp[i++]:tmp[j++];</div><div class="line">    <span class="keyword">while</span>(i&lt;=m) arr[k++] = tmp[i++];</div><div class="line">    <span class="keyword">while</span>(j&lt;=e) arr[k++] = tmp[j++];</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergesort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;arr, <span class="keyword">int</span> b, <span class="keyword">int</span> e)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span>(b&lt;e)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">int</span> m = (b+e)/<span class="number">2</span>;</div><div class="line">        mergesort(arr, b, m);</div><div class="line">        mergesort(arr, m+<span class="number">1</span>, e);</div><div class="line">        merge_array(arr, b, m, e);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; merge_sort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; arr)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> n = arr.size();</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result = arr;</div><div class="line">    mergesort(result, <span class="number">0</span>, n<span class="number">-1</span>);</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="快速排序-quicksort">快速排序 QuickSort</h2>
+<p>【<strong>原理</strong><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>】</p>
+<p>通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
+<p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/sort/Quicksort.gif" alt="quicksort"></p>
+<p>【<strong>步骤</strong>】</p>
+<ul>
+<li>在数据集之中，选择一个元素作为”基准”（pivot）。</li>
+<li>所有小于”基准”的元素，都移到”基准”的左边；所有大于”基准”的元素，都移到”基准”的右边。这个操作称为分区 (partition) 操作，分区操作结束后，基准元素所处的位置就是最终排序后它的位置。</li>
+<li>对”基准”左边和右边的两个子集，不断重复第一步和第二步，直到所有子集只剩下一个元素为止。</li>
+</ul>
+<p>【<strong>代码实现</strong>】</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; quick_sort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; arr)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> n = arr.size();</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result = arr;</div><div class="line">    quicksort(result, <span class="number">0</span>, n<span class="number">-1</span>);</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">quicksort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> pivot;</div><div class="line">    <span class="keyword">if</span>(low&lt;high)</div><div class="line">    &#123;</div><div class="line">        pivot = Partition(arr, low, high);</div><div class="line">        quicksort(arr, low, pivot<span class="number">-1</span>);</div><div class="line">        quicksort(arr, pivot+<span class="number">1</span>, high);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Partition</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;arr,<span class="keyword">int</span> low,<span class="keyword">int</span> high)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> pivotKey;</div><div class="line">    pivotKey = arr[low];</div><div class="line">    <span class="keyword">while</span>(low&lt;high)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">while</span>(low&lt;high&amp;&amp;arr[high]&gt;=pivotKey)</div><div class="line">        &#123;</div><div class="line">            high--;</div><div class="line">        &#125;</div><div class="line">        swap(arr[low],arr[high]);</div><div class="line">        <span class="keyword">while</span>(low&lt;high&amp;&amp;arr[low]&lt;=pivotKey)</div><div class="line">        &#123;</div><div class="line">            low++;</div><div class="line">        &#125;</div><div class="line">        swap(arr[low],arr[high]);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> low;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="堆排序-heapsort"><a href="http://blog.csdn.net/morewindows/article/details/6709644" target="_blank" rel="external">堆排序 HeapSort</a></h2>
+<p>【<strong>原理</strong><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>】</p>
+<p>堆排序就是把最大堆堆顶的最大数取出，将剩余的堆继续调整为最大堆，再次将堆顶的最大数取出，这个过程持续到剩余数只有一个时结束。</p>
+<p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/sort/Heapsort.gif" alt="heapsort"></p>
+<p>【<strong>步骤</strong>】</p>
+<ul>
+<li>
+<p>构造最大堆（Build_Max_Heap）：若数组下标范围为0~n，考虑到单独一个元素是大根堆，则从下标n/2开始的元素均为大根堆。于是只要从n/2-1开始，向前依次构造大根堆，这样就能保证，构造到某个节点时，它的左右子树都已经是大根堆。</p>
+</li>
+<li>
+<p>堆排序（HeapSort）：由于堆是用数组模拟的。得到一个大根堆后，数组内部并不是有序的。因此需要将堆化数组有序化。思想是移除根节点，并做最大堆调整的递归运算。第一次将heap[0]与heap[n-1]交换，再对heap[0…n-2]做最大堆调整。第二次将heap[0]与heap[n-2]交换，再对heap[0…n-3]做最大堆调整。重复该操作直至heap[0]和heap<a href="https://hujichn.github.io/">1</a>交换。由于每次都是将最大的数并入到后面的有序区间，故操作完后整个数组就是有序的了。</p>
+</li>
+<li>
+<p>最大堆调整（Max_Heapify）：该方法是提供给上述两个过程调用的。目的是将堆的末端子节点作调整，使得子节点永远小于父节点 。</p>
+</li>
+</ul>
+<p>【<strong>代码实现</strong>】</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">Heap_Adjust</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;arr,<span class="keyword">int</span> s,<span class="keyword">int</span> m)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> temp = arr[s];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">2</span>*s+<span class="number">1</span>;j&lt;=m;j = <span class="number">2</span>*j+<span class="number">1</span>)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span>(arr[j]&lt;arr[j+<span class="number">1</span>]&amp;&amp;j&lt;m)</div><div class="line">        &#123;</div><div class="line">            j++;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(temp&gt;arr[j])</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        arr[s] = arr[j];</div><div class="line">        s = j;</div><div class="line">    &#125;</div><div class="line">    arr[s] = temp;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//堆排序</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">heapsort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;arr, <span class="keyword">int</span> n)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">//创建一个大顶堆</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> s = n/<span class="number">2</span><span class="number">-1</span>;s&gt;=<span class="number">0</span>;s--)</div><div class="line">    &#123;</div><div class="line">        Heap_Adjust(arr,s,n<span class="number">-1</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//排序</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = n<span class="number">-1</span>;i &gt;= <span class="number">1</span>;i--)</div><div class="line">    &#123;</div><div class="line">        swap(arr[<span class="number">0</span>],arr[i]);</div><div class="line">        Heap_Adjust(arr,<span class="number">0</span>,i<span class="number">-1</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; heap_sort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; arr)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> n = arr.size();</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result = arr;</div><div class="line">    heapsort(result, n);</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="排序算法的对比">排序算法的对比</h2>
+<p>对比如下表所示</p>
+<p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/sort/compare.jpg" alt="compare"></p>
+<p><strong>项目的源代码见<a href="https://github.com/hujichn/sort" target="_blank" rel="external">这里</a>，输出如下图所示</strong></p>
+<p><img src="http://7xsoqo.com1.z0.glb.clouddn.com/sort/output.png" alt="output"></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="http://developer.51cto.com/art/201403/430986.htm" target="_blank" rel="external">http://developer.51cto.com/art/201403/430986.htm</a> <a href="#fnref1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="http://bubkoo.com/2014/01/14/sort-algorithm/heap-sort/" target="_blank" rel="external">http://bubkoo.com/2014/01/14/sort-algorithm/heap-sort/</a> <a href="#fnref2" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;周末复习了数据结构中排序的知识，用c++实现了一遍（完整的项目代码见文末Github链接），总结如下。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="coding" scheme="https://hujichn.github.io/categories/coding/"/>
+    
+    
+      <category term="sort" scheme="https://hujichn.github.io/tags/sort/"/>
+    
+      <category term="c++" scheme="https://hujichn.github.io/tags/c/"/>
+    
+  </entry>
   
   <entry>
     <title>使用私有git管理项目代码</title>
